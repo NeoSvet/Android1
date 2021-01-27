@@ -2,6 +2,7 @@ package ru.neosvet.android1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button).setOnClickListener(v -> {
             label.setText(text.getText());
+        });
+
+        findViewById(R.id.openEditAct).setOnClickListener(v -> {
+           startActivity(new Intent(MainActivity.this, EditActivity.class));
         });
     }
 }

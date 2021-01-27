@@ -11,48 +11,55 @@
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:background="@android:color/holo_green_light"
         android:fontFamily="cursive"
+        android:padding="10dp"
         android:text="Hello World!"
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/text"
-        android:layout_margin="5dp"
-        android:padding="3dp"
         android:layout_width="200dp"
-        android:background="#BBBBBB"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#BBBBBB"
         android:fontFamily="sans-serif"
         android:hint="tip"
+        android:padding="3dp"
         android:text="Hello World!"
         android:textColor="@color/black"
         android:textSize="10sp" />
 
     <Button
         android:id="@+id/button"
-        android:text="Change"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Switch
-        android:text="switch"
-        android:fontFamily="monospace"
-        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Change" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:text="switch"
+        android:textSize="16sp"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <CheckBox
-        android:text="check box  "
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:background="@color/black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:text="check box  "
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/openEditAct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open activity with EditTexts"
+        android:textAllCaps="false" />
 </LinearLayout>
