@@ -17,44 +17,56 @@
         android:text="Hello World!"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/text"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#BBBBBB"
-        android:fontFamily="sans-serif"
-        android:hint="tip"
-        android:padding="3dp"
-        android:text="Hello World!"
-        android:textColor="@color/black"
-        android:textSize="10sp" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/text"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#BBBBBB"
+            android:fontFamily="sans-serif"
+            android:hint="tip"
+            android:padding="3dp"
+            android:text="Hello World!"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Change" />
+        android:orientation="horizontal">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:text="switch"
-        android:textSize="16sp"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="switch"
+            android:textSize="16sp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:text="check box  "
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:text="check box  "
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/openEditAct"
