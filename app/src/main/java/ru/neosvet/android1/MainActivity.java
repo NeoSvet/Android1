@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private TextView label;
     private EditText text;
-    private CalendarView calendarView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         label = findViewById(R.id.label);
         text = findViewById(R.id.text);
-        calendarView = findViewById(R.id.calendarView);
 
         findViewById(R.id.button).setOnClickListener(v -> {
             label.setText(text.getText());
@@ -30,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
            startActivity(new Intent(MainActivity.this, EditActivity.class));
         });
 
-        calendarView.setOnDateChangeListener((view, year, month, day) -> {
-            label.setText("new date: " + day + "." + (month+1) + "." + year);
+        findViewById(R.id.openCalendarAct).setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, CalendarActivity.class));
         });
     }
 }

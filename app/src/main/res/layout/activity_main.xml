@@ -75,10 +75,12 @@
         android:text="Open activity with EditTexts"
         android:textAllCaps="false" />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/openCalendarAct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open activity with CalendarView"
+        android:textAllCaps="false" />
 
 
 </LinearLayout>
