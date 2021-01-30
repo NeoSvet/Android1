@@ -1,10 +1,12 @@
-package ru.neosvet.android1;
+package ru.neosvet.android1.lesson1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.CalendarView;
 import android.widget.TextView;
+
+import ru.neosvet.android1.R;
 
 public class CalendarActivity extends AppCompatActivity {
     private TextView label;

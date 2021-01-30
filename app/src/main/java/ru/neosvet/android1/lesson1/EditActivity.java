@@ -1,8 +1,10 @@
-package ru.neosvet.android1;
+package ru.neosvet.android1.lesson1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import ru.neosvet.android1.R;
 
 public class EditActivity extends AppCompatActivity {
 

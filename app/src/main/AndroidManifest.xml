@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Android1">
-        <activity android:name=".CalendarActivity"></activity>
-        <activity android:name=".EditActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".lesson1.CalendarActivity"></activity>
+        <activity android:name=".lesson1.EditActivity" />
+        <activity android:name=".lesson1.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
