@@ -1,183 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:gravity="center"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvResult"
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/blue_alpha_gradient"
-        android:textSize="40sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/bNumber1"
-        style="@style/Button"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_span="4"
+            android:background="@drawable/blue_alpha_gradient"
+            android:textSize="40sp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/number1"
-        app:layout_constraintStart_toStartOf="@+id/tvResult"
-        app:layout_constraintTop_toBottomOf="@id/tvResult" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/bNumber2"
-        style="@style/Button"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/bNumber1"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number1" />
+
+        <Button
+            android:id="@+id/bNumber2"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number2" />
+
+        <Button
+            android:id="@+id/bNumber3"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number3" />
+
+        <Button
+            android:id="@+id/bDivision"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/division" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/number2"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber1"
-        app:layout_constraintTop_toBottomOf="@id/tvResult" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/bNumber3"
-        style="@style/Button"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/bNumber4"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number4" />
+
+        <Button
+            android:id="@+id/bNumber5"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number5" />
+
+        <Button
+            android:id="@+id/bNumber6"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number6" />
+
+        <Button
+            android:id="@+id/bMultiplication"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multiplication" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/number3"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber2"
-        app:layout_constraintTop_toBottomOf="@id/tvResult" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/bDivision"
-        style="@style/Button"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/bNumber7"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number7" />
+
+        <Button
+            android:id="@+id/bNumber8"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number8" />
+
+        <Button
+            android:id="@+id/bNumber9"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number9" />
+
+        <Button
+            android:id="@+id/bMunis"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minus" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/division"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber3"
-        app:layout_constraintTop_toBottomOf="@id/tvResult" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/bNumber4"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:text="@string/number4"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@id/tvResult"
-        app:layout_constraintTop_toBottomOf="@id/bNumber1" />
+        <Button
+            android:id="@+id/bDot"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dot" />
 
-    <Button
-        android:id="@+id/bNumber5"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/number5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber4"
-        app:layout_constraintTop_toBottomOf="@id/bNumber2" />
+        <Button
+            android:id="@+id/bNumber0"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0" />
 
-    <Button
-        android:id="@+id/bNumber6"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/number6"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber5"
-        app:layout_constraintTop_toBottomOf="@id/bNumber3" />
+        <Button
+            android:id="@+id/bEquals"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/equals" />
 
-    <Button
-        android:id="@+id/bMultiplication"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/multiplication"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber6"
-        app:layout_constraintTop_toBottomOf="@id/bDivision" />
+        <Button
+            android:id="@+id/bPlus"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plus" />
+    </TableRow>
 
-    <Button
-        android:id="@+id/bNumber7"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:text="@string/number7"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@id/tvResult"
-        app:layout_constraintTop_toBottomOf="@id/bNumber4" />
-
-    <Button
-        android:id="@+id/bNumber8"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/number8"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber7"
-        app:layout_constraintTop_toBottomOf="@id/bNumber5" />
-
-    <Button
-        android:id="@+id/bNumber9"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/number9"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber8"
-        app:layout_constraintTop_toBottomOf="@id/bNumber6" />
-
-    <Button
-        android:id="@+id/bMunis"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/minus"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber9"
-        app:layout_constraintTop_toBottomOf="@id/bMultiplication" />
-
-    <Button
-        android:id="@+id/bDot"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:text="@string/dot"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@id/tvResult"
-        app:layout_constraintTop_toBottomOf="@id/bNumber7" />
-
-    <Button
-        android:id="@+id/bNumber0"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/number0"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bDot"
-        app:layout_constraintTop_toBottomOf="@id/bNumber8" />
-
-    <Button
-        android:id="@+id/bEquals"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/equals"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bNumber0"
-        app:layout_constraintTop_toBottomOf="@id/bNumber9" />
-
-    <Button
-        android:id="@+id/bPlus"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/plus"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toEndOf="@id/bEquals"
-        app:layout_constraintTop_toBottomOf="@id/bMunis" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</TableLayout>
