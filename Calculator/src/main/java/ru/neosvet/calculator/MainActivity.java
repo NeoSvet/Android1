@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bMultiplication).setOnClickListener(calculator.getMultiplicationClick());
         findViewById(R.id.bDivision).setOnClickListener(calculator.getDivisionClick());
         findViewById(R.id.bDot).setOnClickListener(calculator.getDotClick());
-        findViewById(R.id.bBackspace).setOnClickListener(calculator.getBackspaceClick());
+        View bBackspace = findViewById(R.id.bBackspace);
+        bBackspace.setOnClickListener(calculator.getBackspaceClick());
+        bBackspace.setOnLongClickListener(calculator.getBackspaceLongClick());
         findViewById(R.id.bEquals).setOnClickListener(calculator.getEqualsClick());
     }
 

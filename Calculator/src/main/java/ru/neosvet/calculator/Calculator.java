@@ -4,8 +4,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 public class Calculator {
     enum Actions {
         NONE(""), PLUS("+"), MINUS("–"), MULTIPLICATION("×"), DIVISION("÷");
@@ -88,6 +86,16 @@ public class Calculator {
                 tvResult.setText(s.substring(0, s.length() - 2));
                 lastIsNumeral = true;
             }
+        };
+    }
+
+    public View.OnLongClickListener getBackspaceLongClick() {
+        return v -> {
+            tvResult.setText("");
+            number1 = "";
+            number2 = "";
+            action = Actions.NONE;
+            return true;
         };
     }
 
