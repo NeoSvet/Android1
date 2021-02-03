@@ -81,10 +81,13 @@ public class Calculator {
             if (tvResult.length() == 0)
                 return;
             String s = tvResult.getText().toString();
-            if (lastIsNumeral || s.length() == 1)
+            if (lastIsNumeral || s.length() == 1) {
                 tvResult.setText(s.substring(0, s.length() - 1));
-            else
+                lastIsNumeral = false;
+            } else {
                 tvResult.setText(s.substring(0, s.length() - 2));
+                lastIsNumeral = true;
+            }
         };
     }
 
