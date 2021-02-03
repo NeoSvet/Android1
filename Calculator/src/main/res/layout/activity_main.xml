@@ -124,7 +124,7 @@
             android:text="@string/number9" />
 
         <Button
-            android:id="@+id/bMunis"
+            android:id="@+id/bMinus"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

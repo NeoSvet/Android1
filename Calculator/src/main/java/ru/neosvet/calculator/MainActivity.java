@@ -3,10 +3,7 @@ package ru.neosvet.calculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private Calculator calculator;
@@ -26,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDotButton(findViewById(R.id.bDot))
                 .setBackspaceButton(findViewById(R.id.bBackspace))
                 .setPlusButton(findViewById(R.id.bPlus))
-                .setMinusButton(findViewById(R.id.bMunis))
+                .setMinusButton(findViewById(R.id.bMinus))
                 .setMultiplicationButton(findViewById(R.id.bMultiplication))
                 .setDivisionButton(findViewById(R.id.bDivision))
                 .setEqualsButton(findViewById(R.id.bEquals));
