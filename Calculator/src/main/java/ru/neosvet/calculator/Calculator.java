@@ -36,43 +36,46 @@ public class Calculator {
         };
     }
 
+    private void setAction(Actions action) {
+        if (tvResult.length() == 0)
+            return;
+        if (lastIsNumeral) {
+            tvResult.append(" ");
+        } else {
+            String s = tvResult.getText().toString();
+            tvResult.setText(s.substring(0, s.length() - 1));
+        }
+        this.action = action;
+        tvResult.append(action.toString());
+        lastIsNumeral = false;
+    }
+
     public View.OnClickListener getPlusEvent() {
         return v -> {
-            action = Actions.PLUS;
-            appendAction();
+            setAction(Actions.PLUS);
         };
     }
 
     public View.OnClickListener getMinusEvent() {
         return v -> {
-            action = Actions.MINUS;
-            appendAction();
+            setAction(Actions.MINUS);
         };
     }
 
     public View.OnClickListener getDivisionEvent() {
         return v -> {
-            action = Actions.DIVISION;
-            appendAction();
+            setAction(Actions.DIVISION);
         };
     }
 
     public View.OnClickListener getMultiplicationEvent() {
         return v -> {
-            action = Actions.MULTIPLICATION;
-            appendAction();
+            setAction(Actions.MULTIPLICATION);
         };
     }
 
-    private void appendAction() {
-        if (tvResult.length() > 0)
-            tvResult.append(" ");
-        tvResult.append(action.toString());
-        lastIsNumeral = false;
-    }
-
     public View.OnClickListener getBackspaceEvent() {
-      return v -> {
+        return v -> {
             if (tvResult.length() == 0)
                 return;
             String s = tvResult.getText().toString();
