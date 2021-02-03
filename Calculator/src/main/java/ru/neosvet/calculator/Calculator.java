@@ -90,10 +90,10 @@ public class Calculator {
     }
 
     public View.OnClickListener getNumeralEvent() {
-        return numberClickListener;
+        return numeralClickListener;
     }
 
-    private final View.OnClickListener numberClickListener = v -> {
+    private final View.OnClickListener numeralClickListener = v -> {
         Button b = (Button) v;
         if (tvResult.length() > 0 && !lastIsNumeral)
             tvResult.append(" ");
