@@ -1,6 +1,7 @@
 package ru.neosvet.calculator;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class Calculator {
@@ -123,6 +124,16 @@ public class Calculator {
     }
 
     private void setNumberButtons(View[] numberButtons) {
-        //TODO setOnClickListener
+        for (int i = 0; i < numberButtons.length; i++) {
+            numberButtons[i].setOnClickListener(numberClickListener);
+        }
     }
+
+    private final View.OnClickListener numberClickListener = v -> {
+        Button b = (Button) v;
+        if (tvResult.length() > 0 && !lastIsNumber)
+            tvResult.append(" ");
+        tvResult.append(b.getText().toString());
+        lastIsNumber = true;
+    };
 }
