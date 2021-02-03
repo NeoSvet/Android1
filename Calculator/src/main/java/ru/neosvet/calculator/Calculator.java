@@ -78,6 +78,11 @@ public class Calculator {
 
     public View.OnClickListener getMinusClick() {
         return v -> {
+            if (tvResult.length() == 0) {
+                number1 = "-";
+                tvResult.setText(number1);
+                return;
+            }
             setAction(Actions.MINUS);
         };
     }
