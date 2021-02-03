@@ -57,16 +57,14 @@ public class Calculator {
     }
 
     private void setAction(Actions action) {
-        if (tvResult.length() == 0)
+        if (tvResult.length() == 0 || number2.length() > 0)
             return;
-        if (action == Actions.NONE) {
-            tvResult.append(" ");
-        } else {
-            String s = tvResult.getText().toString();
-            tvResult.setText(s.substring(0, s.length() - 1));
-        }
         this.action = action;
-        tvResult.append(action.toString());
+        updateResult();
+    }
+
+    private void updateResult() {
+        tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
     }
 
     public View.OnClickListener getPlusClick() {
@@ -104,7 +102,7 @@ public class Calculator {
             } else {
                 action = Actions.NONE;
             }
-            tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
+            updateResult();
         };
     }
 
@@ -144,6 +142,6 @@ public class Calculator {
             number1 += numeral;
         else
             number2 += numeral;
-        tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
+        updateResult();
     };
 }
