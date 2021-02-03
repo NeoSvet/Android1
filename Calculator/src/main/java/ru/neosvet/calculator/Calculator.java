@@ -151,9 +151,7 @@ public class Calculator {
             number1 += numeral;
         else
             number2 += numeral;
-        if (tvResult.length() > 0 && !lastIsNumeral)
-            tvResult.append(" ");
-        tvResult.append(numeral);
+        tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
         lastIsNumeral = true;
     };
 }
