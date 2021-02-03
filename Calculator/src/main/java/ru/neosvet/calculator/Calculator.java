@@ -41,7 +41,7 @@ public class Calculator {
                     result = n1 + n2;
                     break;
                 case MINUS:
-                    result = n1 + n2;
+                    result = n1 - n2;
                     break;
                 case MULTIPLICATION:
                     result = n1 * n2;
@@ -52,7 +52,10 @@ public class Calculator {
                 default:
                     return;
             }
-            tvResult.setText(number1 + " " + action.toString() + " " + number2 + " = " + result);
+            tvResult.append(" = " + result);
+            action = Actions.NONE;
+            number1 = String.valueOf(result);
+            number2 = "";
         };
     }
 
