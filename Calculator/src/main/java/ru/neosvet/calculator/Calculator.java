@@ -31,8 +31,29 @@ public class Calculator {
     }
 
     public View.OnClickListener getEqualsClick() {
-        //TODO OnClickListener
         return v -> {
+            if (number2.length() == 0)
+                return;
+            float n1 = Float.parseFloat(number1);
+            float n2 = Float.parseFloat(number2);
+            float result;
+            switch (action) {
+                case PLUS:
+                    result = n1 + n2;
+                    break;
+                case MINUS:
+                    result = n1 + n2;
+                    break;
+                case MULTIPLICATION:
+                    result = n1 * n2;
+                    break;
+                case DIVISION:
+                    result = n1 / n2;
+                    break;
+                default:
+                    return;
+            }
+            tvResult.setText(number1 + " " + action.toString() + " " + number2 + " = " + result);
         };
     }
 
