@@ -116,7 +116,15 @@ public class Calculator {
     }
 
     private void setBackspaceButton(View button) {
-        //TODO setOnClickListener
+        button.setOnClickListener(v -> {
+            if (tvResult.length() == 0)
+                return;
+            String s = tvResult.getText().toString();
+            if (lastIsNumber || s.length() == 1)
+                tvResult.setText(s.substring(0, s.length() - 1));
+            else
+                tvResult.setText(s.substring(0, s.length() - 2));
+        });
     }
 
     private void setDotButton(View button) {
