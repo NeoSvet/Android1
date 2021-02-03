@@ -4,9 +4,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 public class Calculator {
     enum Actions {
-        NONE, PLUS, MINUS, MULTIPLICATION, DIVISION
+        NONE(""), PLUS("+"), MINUS("–"), MULTIPLICATION("×"), DIVISION("÷");
+
+        private String sym;
+
+        Actions(String s) {
+            sym = s;
+        }
+
+        @Override
+        public String toString() {
+            return sym;
+        }
     }
 
     public static class Factory {
@@ -95,24 +108,43 @@ public class Calculator {
         tvResult = textView;
     }
 
-    private void setPlusButton(View button) {
-        //TODO setOnClickListener
-    }
-
     private void setEqualsButton(View button) {
         //TODO setOnClickListener
     }
 
+    private void setPlusButton(View button) {
+        button.setOnClickListener( v -> {
+            action = Actions.PLUS;
+            appendAction();
+        });
+    }
+
     private void setMinusButton(View button) {
-        //TODO setOnClickListener
+        button.setOnClickListener( v -> {
+            action = Actions.MINUS;
+            appendAction();
+        });
     }
 
     private void setDivisionButton(View button) {
-        //TODO setOnClickListener
+        button.setOnClickListener( v -> {
+            action = Actions.DIVISION;
+            appendAction();
+        });
     }
 
     private void setMultiplicationButton(View button) {
-        //TODO setOnClickListener
+        button.setOnClickListener( v -> {
+            action = Actions.MULTIPLICATION;
+            appendAction();
+        });
+    }
+
+    private void appendAction() {
+        if (tvResult.length() > 0)
+            tvResult.append(" ");
+        tvResult.append(action.toString());
+        lastIsNumber = false;
     }
 
     private void setBackspaceButton(View button) {
