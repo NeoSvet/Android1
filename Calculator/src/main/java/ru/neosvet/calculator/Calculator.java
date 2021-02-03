@@ -30,7 +30,7 @@ public class Calculator {
         tvResult = textView;
     }
 
-    public View.OnClickListener getEqualsEvent() {
+    public View.OnClickListener getEqualsClick() {
         //TODO OnClickListener
         return v -> {
         };
@@ -50,31 +50,31 @@ public class Calculator {
         lastIsNumeral = false;
     }
 
-    public View.OnClickListener getPlusEvent() {
+    public View.OnClickListener getPlusClick() {
         return v -> {
             setAction(Actions.PLUS);
         };
     }
 
-    public View.OnClickListener getMinusEvent() {
+    public View.OnClickListener getMinusClick() {
         return v -> {
             setAction(Actions.MINUS);
         };
     }
 
-    public View.OnClickListener getDivisionEvent() {
+    public View.OnClickListener getDivisionClick() {
         return v -> {
             setAction(Actions.DIVISION);
         };
     }
 
-    public View.OnClickListener getMultiplicationEvent() {
+    public View.OnClickListener getMultiplicationClick() {
         return v -> {
             setAction(Actions.MULTIPLICATION);
         };
     }
 
-    public View.OnClickListener getBackspaceEvent() {
+    public View.OnClickListener getBackspaceClick() {
         return v -> {
             if (tvResult.length() == 0)
                 return;
@@ -86,13 +86,13 @@ public class Calculator {
         };
     }
 
-    public View.OnClickListener getDotEvent() {
+    public View.OnClickListener getDotClick() {
         //TODO OnClickListener
         return v -> {
         };
     }
 
-    public View.OnClickListener getNumeralEvent() {
+    public View.OnClickListener getNumeralClick() {
         return numeralClickListener;
     }
 

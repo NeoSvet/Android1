@@ -30,18 +30,18 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.bNumeral7), findViewById(R.id.bNumeral8), findViewById(R.id.bNumeral9)
         };
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setOnClickListener(calculator.getNumeralEvent());
+            buttons[i].setOnClickListener(calculator.getNumeralClick());
         }
     }
 
     private void initOtherButtons() {
-        findViewById(R.id.bPlus).setOnClickListener(calculator.getPlusEvent());
-        findViewById(R.id.bMinus).setOnClickListener(calculator.getMinusEvent());
-        findViewById(R.id.bMultiplication).setOnClickListener(calculator.getMultiplicationEvent());
-        findViewById(R.id.bDivision).setOnClickListener(calculator.getDivisionEvent());
-        findViewById(R.id.bDot).setOnClickListener(calculator.getDotEvent());
-        findViewById(R.id.bBackspace).setOnClickListener(calculator.getBackspaceEvent());
-        findViewById(R.id.bEquals).setOnClickListener(calculator.getEqualsEvent());
+        findViewById(R.id.bPlus).setOnClickListener(calculator.getPlusClick());
+        findViewById(R.id.bMinus).setOnClickListener(calculator.getMinusClick());
+        findViewById(R.id.bMultiplication).setOnClickListener(calculator.getMultiplicationClick());
+        findViewById(R.id.bDivision).setOnClickListener(calculator.getDivisionClick());
+        findViewById(R.id.bDot).setOnClickListener(calculator.getDotClick());
+        findViewById(R.id.bBackspace).setOnClickListener(calculator.getBackspaceClick());
+        findViewById(R.id.bEquals).setOnClickListener(calculator.getEqualsClick());
     }
 
 }
