@@ -22,6 +22,7 @@ public class Calculator {
         }
     }
 
+    private final String DOT = ".";
     private TextView tvResult;
     private boolean lastIsNumeral = false;
     private Actions action = Actions.NONE;
@@ -88,8 +89,17 @@ public class Calculator {
     }
 
     public View.OnClickListener getDotClick() {
-        //TODO OnClickListener
         return v -> {
+            if (action == Actions.NONE) {
+                if (number1.contains(DOT) || number1.length() == 0)
+                    return;
+                number1 += DOT;
+            } else {
+                if (number2.contains(DOT) || number2.length() == 0)
+                    return;
+                number2 += DOT;
+            }
+            tvResult.append(DOT);
         };
     }
 
