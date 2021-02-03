@@ -46,11 +46,11 @@ public class Calculator {
             return this;
         }
 
-        public Factory setNumberButtons(View[] numberButtons) {
+        public Factory setNumeralButtons(View[] numberButtons) {
             if (numberButtons.length != 10)
                 return this;
             init_state[1] = true;
-            calculator.setNumberButtons(numberButtons);
+            calculator.setNumeralButtons(numberButtons);
             return this;
         }
 
@@ -98,7 +98,7 @@ public class Calculator {
     } //END FACTORY
 
     private TextView tvResult;
-    private boolean lastIsNumber = false;
+    private boolean lastIsNumeral = false;
     private Actions action = Actions.NONE;
 
     private Calculator() {
@@ -144,7 +144,7 @@ public class Calculator {
         if (tvResult.length() > 0)
             tvResult.append(" ");
         tvResult.append(action.toString());
-        lastIsNumber = false;
+        lastIsNumeral = false;
     }
 
     private void setBackspaceButton(View button) {
@@ -152,7 +152,7 @@ public class Calculator {
             if (tvResult.length() == 0)
                 return;
             String s = tvResult.getText().toString();
-            if (lastIsNumber || s.length() == 1)
+            if (lastIsNumeral || s.length() == 1)
                 tvResult.setText(s.substring(0, s.length() - 1));
             else
                 tvResult.setText(s.substring(0, s.length() - 2));
@@ -163,7 +163,7 @@ public class Calculator {
         //TODO setOnClickListener
     }
 
-    private void setNumberButtons(View[] numberButtons) {
+    private void setNumeralButtons(View[] numberButtons) {
         for (int i = 0; i < numberButtons.length; i++) {
             numberButtons[i].setOnClickListener(numberClickListener);
         }
@@ -171,9 +171,9 @@ public class Calculator {
 
     private final View.OnClickListener numberClickListener = v -> {
         Button b = (Button) v;
-        if (tvResult.length() > 0 && !lastIsNumber)
+        if (tvResult.length() > 0 && !lastIsNumeral)
             tvResult.append(" ");
         tvResult.append(b.getText().toString());
-        lastIsNumber = true;
+        lastIsNumeral = true;
     };
 }

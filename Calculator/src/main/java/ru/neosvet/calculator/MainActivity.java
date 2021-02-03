@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private void initCalculator() {
         Calculator.Factory factory = new Calculator.Factory()
                 .setTextView(findViewById(R.id.tvResult))
-                .setNumberButtons(getNumberButtons())
+                .setNumeralButtons(getNumeralButtons())
                 .setDotButton(findViewById(R.id.bDot))
                 .setBackspaceButton(findViewById(R.id.bBackspace))
                 .setPlusButton(findViewById(R.id.bPlus))
@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Button[] getNumberButtons() {
-        return new Button[]{findViewById(R.id.bNumber0),
-                findViewById(R.id.bNumber1), findViewById(R.id.bNumber2), findViewById(R.id.bNumber3),
-                findViewById(R.id.bNumber4), findViewById(R.id.bNumber5), findViewById(R.id.bNumber6),
-                findViewById(R.id.bNumber7), findViewById(R.id.bNumber8), findViewById(R.id.bNumber9)
+    private Button[] getNumeralButtons() {
+        return new Button[]{findViewById(R.id.bNumeral0),
+                findViewById(R.id.bNumeral1), findViewById(R.id.bNumeral2), findViewById(R.id.bNumeral3),
+                findViewById(R.id.bNumeral4), findViewById(R.id.bNumeral5), findViewById(R.id.bNumeral6),
+                findViewById(R.id.bNumeral7), findViewById(R.id.bNumeral8), findViewById(R.id.bNumeral9)
         };
     }
 
