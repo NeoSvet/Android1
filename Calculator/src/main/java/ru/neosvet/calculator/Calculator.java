@@ -25,6 +25,7 @@ public class Calculator {
     private TextView tvResult;
     private boolean lastIsNumeral = false;
     private Actions action = Actions.NONE;
+    private String number1 = "", number2 = "";
 
     public Calculator(TextView textView) {
         tvResult = textView;
@@ -98,9 +99,14 @@ public class Calculator {
 
     private final View.OnClickListener numeralClickListener = v -> {
         Button b = (Button) v;
+        String numeral = b.getText().toString();
+        if (action == Actions.NONE)
+            number1 += numeral;
+        else
+            number2 += numeral;
         if (tvResult.length() > 0 && !lastIsNumeral)
             tvResult.append(" ");
-        tvResult.append(b.getText().toString());
+        tvResult.append(numeral);
         lastIsNumeral = true;
     };
 }
