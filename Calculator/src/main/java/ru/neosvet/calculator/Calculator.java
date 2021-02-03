@@ -78,14 +78,19 @@ public class Calculator {
         return v -> {
             if (tvResult.length() == 0)
                 return;
-            String s = tvResult.getText().toString();
-            if (lastIsNumeral || s.length() == 1) {
-                tvResult.setText(s.substring(0, s.length() - 1));
-                lastIsNumeral = false;
+            if (lastIsNumeral) {
+                if (number2.length() > 0) {
+                    number2 = number2.substring(0, number2.length() - 1);
+                    lastIsNumeral = number2.length() > 0;
+                } else {
+                    number1 = number1.substring(0, number1.length() - 1);
+                    lastIsNumeral = number1.length() > 0;
+                }
             } else {
-                tvResult.setText(s.substring(0, s.length() - 2));
-                lastIsNumeral = true;
+                action = Actions.NONE;
+                lastIsNumeral = number1.length() > 0;
             }
+            tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
         };
     }
 
