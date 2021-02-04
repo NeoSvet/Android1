@@ -18,6 +18,18 @@ public class Calculator {
         public String toString() {
             return sym;
         }
+
+        public static Actions parse(String s) {
+            if (s.equals(PLUS.toString()))
+                return PLUS;
+            if (s.equals(MINUS.toString()))
+                return MINUS;
+            if (s.equals(MULTIPLICATION.toString()))
+                return MULTIPLICATION;
+            if (s.equals(DIVISION.toString()))
+                return DIVISION;
+            return NONE;
+        }
     }
 
     private final String DOT = ".";
@@ -27,6 +39,37 @@ public class Calculator {
 
     public Calculator(TextView textView) {
         tvResult = textView;
+    }
+
+    public void parseValue(String value) {
+        tvResult.setText(value);
+
+        number2 = "";
+        action = Actions.NONE;
+
+        if (value.length() == 0) {
+            number1 = "";
+            return;
+        }
+
+        String[] m = value.split(" ");
+
+        if (m.length == 5) { //with result
+            number1 = m[4];
+            return;
+        } else
+            number1 = m[0];
+
+        if (m.length > 1) //with action
+            action = Actions.parse(m[1]);
+
+        if (m.length == 3) //with number2
+            number2 = m[2];
+    }
+
+    @Override
+    public String toString() {
+        return tvResult.getText().toString();
     }
 
     public View.OnClickListener getEqualsClick() {

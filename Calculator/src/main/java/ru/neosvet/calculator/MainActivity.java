@@ -1,5 +1,6 @@
 package ru.neosvet.calculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private final String CALCULATOR = "cal";
     private Calculator calculator;
 
     @Override
@@ -17,6 +19,18 @@ public class MainActivity extends AppCompatActivity {
         initCalculator();
         initNumeralButtons();
         initOtherButtons();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(CALCULATOR, calculator.toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        calculator.parseValue(savedInstanceState.getString(CALCULATOR));
     }
 
     private void initCalculator() {
