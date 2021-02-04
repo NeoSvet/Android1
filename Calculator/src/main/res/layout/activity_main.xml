@@ -19,6 +19,11 @@
             android:layout_margin="4dp"
             android:layout_span="3"
             android:background="@drawable/blue_alpha_gradient"
+            android:ellipsize="start"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textIsSelectable="true"
             android:textSize="40sp" />
 
         <ImageButton
