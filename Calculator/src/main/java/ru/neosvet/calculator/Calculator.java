@@ -8,7 +8,7 @@ public class Calculator {
     enum Actions {
         NONE(""), PLUS("+"), MINUS("–"), MULTIPLICATION("×"), DIVISION("÷");
 
-        private String sym;
+        private final String sym;
 
         Actions(String s) {
             sym = s;
@@ -33,7 +33,7 @@ public class Calculator {
     }
 
     private final String DOT = ".";
-    private TextView tvResult;
+    private final TextView tvResult;
     private Actions action = Actions.NONE;
     private String number1 = "", number2 = "";
 
@@ -114,9 +114,7 @@ public class Calculator {
     }
 
     public View.OnClickListener getPlusClick() {
-        return v -> {
-            setAction(Actions.PLUS);
-        };
+        return v -> setAction(Actions.PLUS);
     }
 
     public View.OnClickListener getMinusClick() {
@@ -131,15 +129,11 @@ public class Calculator {
     }
 
     public View.OnClickListener getDivisionClick() {
-        return v -> {
-            setAction(Actions.DIVISION);
-        };
+        return v -> setAction(Actions.DIVISION);
     }
 
     public View.OnClickListener getMultiplicationClick() {
-        return v -> {
-            setAction(Actions.MULTIPLICATION);
-        };
+        return v -> setAction(Actions.MULTIPLICATION);
     }
 
     public View.OnClickListener getBackspaceClick() {
