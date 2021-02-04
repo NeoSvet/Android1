@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNumeralButtons() {
-        Button[] buttons = new Button[]{findViewById(R.id.bNumeral0),
-                findViewById(R.id.bNumeral1), findViewById(R.id.bNumeral2), findViewById(R.id.bNumeral3),
-                findViewById(R.id.bNumeral4), findViewById(R.id.bNumeral5), findViewById(R.id.bNumeral6),
-                findViewById(R.id.bNumeral7), findViewById(R.id.bNumeral8), findViewById(R.id.bNumeral9)
+        Button[] buttons = new Button[]{findViewById(R.id.btnNumeral0),
+                findViewById(R.id.btnNumeral1), findViewById(R.id.btnNumeral2), findViewById(R.id.btnNumeral3),
+                findViewById(R.id.btnNumeral4), findViewById(R.id.btnNumeral5), findViewById(R.id.btnNumeral6),
+                findViewById(R.id.btnNumeral7), findViewById(R.id.btnNumeral8), findViewById(R.id.btnNumeral9)
         };
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setOnClickListener(calculator.getNumeralClick());
@@ -49,15 +49,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initOtherButtons() {
-        findViewById(R.id.bPlus).setOnClickListener(calculator.getPlusClick());
-        findViewById(R.id.bMinus).setOnClickListener(calculator.getMinusClick());
-        findViewById(R.id.bMultiplication).setOnClickListener(calculator.getMultiplicationClick());
-        findViewById(R.id.bDivision).setOnClickListener(calculator.getDivisionClick());
-        findViewById(R.id.bDot).setOnClickListener(calculator.getDotClick());
-        View bBackspace = findViewById(R.id.bBackspace);
+        findViewById(R.id.btnPlus).setOnClickListener(calculator.getPlusClick());
+        findViewById(R.id.btnMinus).setOnClickListener(calculator.getMinusClick());
+        findViewById(R.id.btnMultiplication).setOnClickListener(calculator.getMultiplicationClick());
+        findViewById(R.id.btnDivision).setOnClickListener(calculator.getDivisionClick());
+        findViewById(R.id.btnDot).setOnClickListener(calculator.getDotClick());
+        View bBackspace = findViewById(R.id.btnBackspace);
         bBackspace.setOnClickListener(calculator.getBackspaceClick());
         bBackspace.setOnLongClickListener(calculator.getBackspaceLongClick());
-        findViewById(R.id.bEquals).setOnClickListener(calculator.getEqualsClick());
+        findViewById(R.id.btnEquals).setOnClickListener(calculator.getEqualsClick());
     }
 
 }

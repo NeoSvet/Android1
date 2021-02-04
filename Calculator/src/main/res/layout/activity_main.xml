@@ -27,7 +27,7 @@
             android:textSize="40sp" />
 
         <ImageButton
-            android:id="@+id/bBackspace"
+            android:id="@+id/btnBackspace"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -40,28 +40,28 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/bNumeral1"
+            android:id="@+id/btnNumeral1"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral1" />
 
         <Button
-            android:id="@+id/bNumeral2"
+            android:id="@+id/btnNumeral2"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral2" />
 
         <Button
-            android:id="@+id/bNumeral3"
+            android:id="@+id/btnNumeral3"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral3" />
 
         <Button
-            android:id="@+id/bDivision"
+            android:id="@+id/btnDivision"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,28 +74,28 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/bNumeral4"
+            android:id="@+id/btnNumeral4"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral4" />
 
         <Button
-            android:id="@+id/bNumeral5"
+            android:id="@+id/btnNumeral5"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral5" />
 
         <Button
-            android:id="@+id/bNumeral6"
+            android:id="@+id/btnNumeral6"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral6" />
 
         <Button
-            android:id="@+id/bMultiplication"
+            android:id="@+id/btnMultiplication"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,28 +108,28 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/bNumeral7"
+            android:id="@+id/btnNumeral7"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral7" />
 
         <Button
-            android:id="@+id/bNumeral8"
+            android:id="@+id/btnNumeral8"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral8" />
 
         <Button
-            android:id="@+id/bNumeral9"
+            android:id="@+id/btnNumeral9"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral9" />
 
         <Button
-            android:id="@+id/bMinus"
+            android:id="@+id/btnMinus"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,28 +142,28 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/bDot"
+            android:id="@+id/btnDot"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dot" />
 
         <Button
-            android:id="@+id/bNumeral0"
+            android:id="@+id/btnNumeral0"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral0" />
 
         <Button
-            android:id="@+id/bEquals"
+            android:id="@+id/btnEquals"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/equals" />
 
         <Button
-            android:id="@+id/bPlus"
+            android:id="@+id/btnPlus"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
