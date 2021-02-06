@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">#6C9ADA</item>
         <item name="colorPrimaryVariant">#CC98B4DD</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@android:color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#CCA9E1F9</item>
         <item name="colorSecondaryVariant">#CC017EC6</item>
