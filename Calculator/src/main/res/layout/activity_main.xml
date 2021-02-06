@@ -1,173 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?CalculatorBackground"
-    android:gravity="center"
     tools:context=".MainActivity">
 
-    <TableRow
+    <TextView
+        android:id="@+id/tvResult"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_margin="@dimen/outer_indent"
+        android:background="@drawable/field_gradient"
+        android:ellipsize="start"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/field_indent_start"
+        android:paddingEnd="@dimen/field_indent_end"
+        android:singleLine="true"
+        android:textColor="?colorOnPrimary"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toStartOf="@id/btnBackspace"
+        app:layout_constraintBottom_toTopOf="@id/layoutNumpad"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBackspace"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginEnd="@dimen/back_indent_end"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_backspace_32"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvResult" />
+
+    <GridLayout
+        android:id="@+id/layoutNumpad"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/tvResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/outer_indent"
-            android:layout_span="3"
-            android:background="@drawable/field_gradient"
-            android:ellipsize="start"
-            android:padding="@dimen/inter_indent"
-            android:singleLine="true"
-            android:textColor="?colorOnPrimary"
-            android:textIsSelectable="true"
-            android:textSize="@dimen/text_size" />
-
-        <ImageButton
-            android:id="@+id/btnBackspace"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_baseline_backspace_32" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:columnCount="4"
+        android:rowCount="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/btnNumeral1"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="0"
+            android:layout_column="0"
             android:text="@string/numeral1" />
 
         <Button
             android:id="@+id/btnNumeral2"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="0"
+            android:layout_column="1"
             android:text="@string/numeral2" />
 
         <Button
             android:id="@+id/btnNumeral3"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="0"
+            android:layout_column="2"
             android:text="@string/numeral3" />
 
         <Button
             android:id="@+id/btnDivision"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="0"
+            android:layout_column="3"
             android:text="@string/division" />
-    </TableRow>
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
 
         <Button
             android:id="@+id/btnNumeral4"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="1"
+            android:layout_column="0"
             android:text="@string/numeral4" />
 
         <Button
             android:id="@+id/btnNumeral5"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="1"
+            android:layout_column="1"
             android:text="@string/numeral5" />
 
         <Button
             android:id="@+id/btnNumeral6"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="1"
+            android:layout_column="2"
             android:text="@string/numeral6" />
 
         <Button
             android:id="@+id/btnMultiplication"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="1"
+            android:layout_column="3"
             android:text="@string/multiplication" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
 
         <Button
             android:id="@+id/btnNumeral7"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="2"
+            android:layout_column="0"
             android:text="@string/numeral7" />
 
         <Button
             android:id="@+id/btnNumeral8"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="2"
+            android:layout_column="1"
             android:text="@string/numeral8" />
 
         <Button
             android:id="@+id/btnNumeral9"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="2"
+            android:layout_column="2"
             android:text="@string/numeral9" />
 
         <Button
             android:id="@+id/btnMinus"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="2"
+            android:layout_column="3"
             android:text="@string/minus" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
 
         <Button
             android:id="@+id/btnDot"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="3"
+            android:layout_column="0"
             android:text="@string/dot" />
 
         <Button
             android:id="@+id/btnNumeral0"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="3"
+            android:layout_column="1"
             android:text="@string/numeral0" />
 
         <Button
             android:id="@+id/btnEquals"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="3"
+            android:layout_column="2"
             android:text="@string/equals" />
 
         <Button
             android:id="@+id/btnPlus"
             style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_row="3"
+            android:layout_column="3"
             android:text="@string/plus" />
-    </TableRow>
 
-</TableLayout>
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
