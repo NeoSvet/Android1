@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="colorAccent">#77C09FE5</item>
         <item name="colorOnPrimarySurface">#8048689b</item>
+        <item name="CalculatorBackground">@drawable/star_sky</item>
     </style>
 
     <style name="Button">
