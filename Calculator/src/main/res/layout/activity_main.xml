@@ -7,10 +7,10 @@
     android:background="?CalculatorBackground"
     tools:context=".MainActivity">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
+        android:layout_height="@dimen/first_row_height"
         android:layout_margin="@dimen/outer_indent"
         android:background="@drawable/field_gradient"
         android:ellipsize="start"
@@ -21,14 +21,14 @@
         android:textColor="?colorOnPrimary"
         android:textIsSelectable="true"
         android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@id/btnBackspace"
         app:layout_constraintBottom_toTopOf="@id/layoutNumpad"
+        app:layout_constraintEnd_toStartOf="@id/btnBackspace"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnBackspace"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_height"
+        android:layout_height="@dimen/first_row_height"
         android:layout_marginEnd="@dimen/back_indent_end"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_baseline_backspace_32"
@@ -46,150 +46,166 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral1"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="0"
-            android:text="@string/numeral1" />
+            android:text="@string/numeral1"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral2"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="1"
-            android:text="@string/numeral2" />
+            android:text="@string/numeral2"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral3"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="2"
-            android:text="@string/numeral3" />
+            android:text="@string/numeral3"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDivision"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="3"
-            android:text="@string/division" />
+            android:text="@string/division"
+            app:backgroundTintMode="screen" />
 
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral4"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="0"
-            android:text="@string/numeral4" />
+            android:text="@string/numeral4"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral5"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="1"
-            android:text="@string/numeral5" />
+            android:text="@string/numeral5"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral6"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="2"
-            android:text="@string/numeral6" />
+            android:text="@string/numeral6"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMultiplication"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="3"
-            android:text="@string/multiplication" />
+            android:text="@string/multiplication"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral7"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="0"
-            android:text="@string/numeral7" />
+            android:text="@string/numeral7"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral8"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="1"
-            android:text="@string/numeral8" />
+            android:text="@string/numeral8"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral9"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="2"
-            android:text="@string/numeral9" />
+            android:text="@string/numeral9"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMinus"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="2"
             android:layout_column="3"
-            android:text="@string/minus" />
+            android:text="@string/minus"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDot"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="3"
             android:layout_column="0"
-            android:text="@string/dot" />
+            android:text="@string/dot"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNumeral0"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="3"
             android:layout_column="1"
-            android:text="@string/numeral0" />
+            android:text="@string/numeral0"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEquals"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="3"
             android:layout_column="2"
-            android:text="@string/equals" />
+            android:text="@string/equals"
+            app:backgroundTintMode="screen" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPlus"
             style="@style/Button"
             android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="wrap_content"
             android:layout_row="3"
             android:layout_column="3"
-            android:text="@string/plus" />
+            android:text="@string/plus"
+            app:backgroundTintMode="screen" />
 
     </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
