@@ -16,15 +16,15 @@
             android:id="@+id/tvResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="@dimen/outer_indent"
             android:layout_span="3"
             android:background="@drawable/blue_alpha_gradient"
             android:ellipsize="start"
-            android:padding="10dp"
+            android:padding="@dimen/inter_indent"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textIsSelectable="true"
-            android:textSize="40sp" />
+            android:textSize="@dimen/primary_text_size" />
 
         <ImageButton
             android:id="@+id/btnBackspace"

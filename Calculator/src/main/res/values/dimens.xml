@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="primary_text_size">40sp</dimen>
+    <dimen name="secondary_text_size">30sp</dimen>
+    <dimen name="outer_indent">4dp</dimen>
+    <dimen name="inter_indent">10dp</dimen>
+</resources>

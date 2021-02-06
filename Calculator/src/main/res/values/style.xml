@@ -5,8 +5,8 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">30sp</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+        <item name="android:layout_margin">@dimen/outer_indent</item>
         <item name="android:background">@drawable/button</item>
     </style>
 </resources>
