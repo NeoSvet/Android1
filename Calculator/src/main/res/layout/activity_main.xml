@@ -18,11 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/outer_indent"
             android:layout_span="3"
-            android:background="@drawable/blue_alpha_gradient"
+            android:background="@drawable/field_gradient"
             android:ellipsize="start"
             android:padding="@dimen/inter_indent"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="?colorOnPrimary"
             android:textIsSelectable="true"
             android:textSize="@dimen/text_size" />
 
