@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Calculator.Callback {
     private final String CALCULATOR = "cal";
     private Calculator calculator;
+    private TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        calculator.parseValue(savedInstanceState.getString(CALCULATOR));
+        calculator.setValue(savedInstanceState.getString(CALCULATOR));
     }
 
     private void initCalculator() {
-        calculator = new Calculator(findViewById(R.id.tvResult));
+        tvResult = findViewById(R.id.tvResult);
+        calculator = new Calculator(this);
     }
 
     private void initNumeralButtons() {
@@ -60,4 +63,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnEquals).setOnClickListener(calculator.getEqualsClick());
     }
 
+    @Override
+    public void setResult(String value) {
+        tvResult.setText(value);
+    }
 }

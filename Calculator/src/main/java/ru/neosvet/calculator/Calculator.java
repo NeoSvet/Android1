@@ -2,9 +2,12 @@ package ru.neosvet.calculator;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class Calculator {
+    public interface Callback {
+        void setResult(String value);
+    }
+
     enum Actions {
         NONE(""), PLUS("+"), MINUS("–"), MULTIPLICATION("×"), DIVISION("÷");
 
@@ -33,16 +36,17 @@ public class Calculator {
     }
 
     private final String DOT = ".";
-    private final TextView tvResult;
+    private final Callback parent;
     private Actions action = Actions.NONE;
-    private String number1 = "", number2 = "";
+    private String value = "", number1 = "", number2 = "";
 
-    public Calculator(TextView textView) {
-        tvResult = textView;
+    public Calculator(Callback parent) {
+        this.parent = parent;
     }
 
-    public void parseValue(String value) {
-        tvResult.setText(value);
+    public void setValue(String value) {
+        this.value = value;
+        parent.setResult(value);
 
         number2 = "";
         action = Actions.NONE;
@@ -69,7 +73,7 @@ public class Calculator {
 
     @Override
     public String toString() {
-        return tvResult.getText().toString();
+        return value;
     }
 
     public View.OnClickListener getEqualsClick() {
@@ -95,7 +99,8 @@ public class Calculator {
                 default:
                     return;
             }
-            tvResult.append(" = " + result);
+            value += " = " + result;
+            parent.setResult(value);
             action = Actions.NONE;
             number1 = String.valueOf(result);
             number2 = "";
@@ -103,14 +108,15 @@ public class Calculator {
     }
 
     private void setAction(Actions action) {
-        if (tvResult.length() == 0 || number2.length() > 0)
+        if (value.length() == 0 || number2.length() > 0)
             return;
         this.action = action;
         updateResult();
     }
 
     private void updateResult() {
-        tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
+        value = (number1 + " " + action.toString() + " " + number2).trim();
+        parent.setResult(value);
     }
 
     public View.OnClickListener getPlusClick() {
@@ -119,9 +125,10 @@ public class Calculator {
 
     public View.OnClickListener getMinusClick() {
         return v -> {
-            if (tvResult.length() == 0) {
+            if (value.length() == 0) {
                 number1 = "-";
-                tvResult.setText(number1);
+                value = number1;
+                parent.setResult(value);
                 return;
             }
             setAction(Actions.MINUS);
@@ -138,7 +145,7 @@ public class Calculator {
 
     public View.OnClickListener getBackspaceClick() {
         return v -> {
-            if (tvResult.length() == 0)
+            if (value.length() == 0)
                 return;
             if (number2.length() > 0) {
                 number2 = number2.substring(0, number2.length() - 1);
@@ -153,7 +160,8 @@ public class Calculator {
 
     public View.OnLongClickListener getBackspaceLongClick() {
         return v -> {
-            tvResult.setText("");
+            value = "";
+            parent.setResult(value);
             number1 = "";
             number2 = "";
             action = Actions.NONE;
@@ -172,7 +180,8 @@ public class Calculator {
                     return;
                 number2 += DOT;
             }
-            tvResult.append(DOT);
+            value += DOT;
+            parent.setResult(value);
         };
     }
 
