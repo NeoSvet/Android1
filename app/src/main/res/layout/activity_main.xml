@@ -82,5 +82,12 @@
         android:text="Open activity with CalendarView"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/openMyCalculator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open my calculator"
+        android:textAllCaps="false" />
+
 
 </LinearLayout>
