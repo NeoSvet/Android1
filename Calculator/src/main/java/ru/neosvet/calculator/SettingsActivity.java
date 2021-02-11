@@ -17,7 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         decorer = new Decorer(this);
-        decorer.setThemeFor(this);
+        decorer.applyTheme(this);
         setContentView(R.layout.activity_settings);
         initToolbar();
 

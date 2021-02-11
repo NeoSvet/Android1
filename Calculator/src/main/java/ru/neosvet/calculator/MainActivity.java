@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements Calculator.Callba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Decorer decorer = new Decorer(this);
-        decorer.setThemeFor(this);
+        decorer.applyTheme(this);
         setContentView(R.layout.activity_main);
         initToolbar();
 

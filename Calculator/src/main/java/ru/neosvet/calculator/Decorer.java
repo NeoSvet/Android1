@@ -44,7 +44,7 @@ public class Decorer {
         }
     }
 
-    public void setThemeFor(Activity act) {
+    public void applyTheme(Activity act) {
         switch (theme) {
             case SYSTEM:
                 act.setTheme(R.style.Theme_Android1);
