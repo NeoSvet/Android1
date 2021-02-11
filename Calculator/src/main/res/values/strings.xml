@@ -16,4 +16,5 @@
     <string name="multiplication">×</string>
     <string name="division">÷</string>
     <string name="dot">.</string>
+    <string name="settings">Настройки</string>
 </resources>
