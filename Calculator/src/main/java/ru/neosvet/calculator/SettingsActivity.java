@@ -1,6 +1,7 @@
 package ru.neosvet.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Build;
@@ -18,10 +19,18 @@ public class SettingsActivity extends AppCompatActivity {
         decorer = new Decorer(this);
         decorer.setThemeFor(this);
         setContentView(R.layout.activity_settings);
+        initToolbar();
 
         initViews();
         initDecor();
         initListener();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void initDecor() {

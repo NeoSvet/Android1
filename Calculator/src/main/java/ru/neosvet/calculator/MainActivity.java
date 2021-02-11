@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity implements Calculator.Callback {
     private final String CALCULATOR = "cal";
@@ -22,10 +23,16 @@ public class MainActivity extends AppCompatActivity implements Calculator.Callba
         Decorer decorer = new Decorer(this);
         decorer.setThemeFor(this);
         setContentView(R.layout.activity_main);
+        initToolbar();
 
         initCalculator();
         initNumeralButtons();
         initOtherButtons();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override

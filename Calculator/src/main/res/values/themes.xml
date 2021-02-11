@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Android1" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.Android1" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#6C9ADA</item>
         <item name="colorPrimaryVariant">#CC98B4DD</item>
@@ -15,6 +15,7 @@
         <item name="colorAccent">#CC9347E8</item>
         <item name="colorOnPrimarySurface">#CC2A75ED</item>
         <item name="CalculatorBackground">@drawable/blue_field</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay</item>
     </style>
 
     <style name="Button">
@@ -27,7 +28,7 @@
         <item name="android:background">@drawable/button</item>
     </style>
 
-    <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#6C9ADA</item>
         <item name="colorPrimaryVariant">#CC98B4DD</item>
@@ -42,9 +43,18 @@
         <item name="colorAccent">#CC9347E8</item>
         <item name="colorOnPrimarySurface">#CC2A75ED</item>
         <item name="CalculatorBackground">@drawable/blue_field</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay</item>
     </style>
 
-    <style name="Theme.Dark" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Theme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorPrimaryVariant">#80113366</item>
@@ -59,5 +69,6 @@
         <item name="colorAccent">#CC9347E8</item>
         <item name="colorOnPrimarySurface">#8048689b</item>
         <item name="CalculatorBackground">@drawable/star_sky</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay.Dark</item>
     </style>
 </resources>
