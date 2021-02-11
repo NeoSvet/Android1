@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements Calculator.Callba
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        startActivity(new Intent(this, SettingsActivity.class));
         return super.onOptionsItemSelected(item);
     }
 

@@ -17,4 +17,8 @@
     <string name="division">÷</string>
     <string name="dot">.</string>
     <string name="settings">Настройки</string>
+    <string name="decor">Оформление</string>
+    <string name="system">Системное</string>
+    <string name="light">Светлое</string>
+    <string name="dark">Тёмное</string>
 </resources>
