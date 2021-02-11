@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Calculator</string>
-    <string name="number1">1</string>
-    <string name="number2">2</string>
-    <string name="number3">3</string>
-    <string name="number4">4</string>
-    <string name="number5">5</string>
-    <string name="number6">6</string>
-    <string name="number7">7</string>
-    <string name="number8">8</string>
-    <string name="number9">9</string>
-    <string name="number0">0</string>
+    <string name="numeral1">1</string>
+    <string name="numeral2">2</string>
+    <string name="numeral3">3</string>
+    <string name="numeral4">4</string>
+    <string name="numeral5">5</string>
+    <string name="numeral6">6</string>
+    <string name="numeral7">7</string>
+    <string name="numeral8">8</string>
+    <string name="numeral9">9</string>
+    <string name="numeral0">0</string>
     <string name="equals">=</string>
     <string name="plus">+</string>
     <string name="minus">–</string>

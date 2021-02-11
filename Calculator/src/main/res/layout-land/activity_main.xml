@@ -32,6 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_backspace_32" />
+
+        <Button
+            android:id="@+id/btnEquals"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/equals" />
     </TableRow>
 
     <TableRow
@@ -59,6 +66,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/numeral3" />
+
+        <Button
+            android:id="@+id/btnDot"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dot" />
 
         <Button
             android:id="@+id/btnDivision"
@@ -95,6 +109,14 @@
             android:text="@string/numeral6" />
 
         <Button
+            android:id="@+id/btnNumeral0"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/numeral0" />
+
+
+        <Button
             android:id="@+id/btnMultiplication"
             style="@style/Button"
             android:layout_width="wrap_content"
@@ -129,45 +151,18 @@
             android:text="@string/numeral9" />
 
         <Button
-            android:id="@+id/btnMinus"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/minus" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnDot"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dot" />
-
-        <Button
-            android:id="@+id/btnNumeral0"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/numeral0" />
-
-        <Button
-            android:id="@+id/btnEquals"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/equals" />
-
-        <Button
             android:id="@+id/btnPlus"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/plus" />
+
+        <Button
+            android:id="@+id/btnMinus"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minus" />
     </TableRow>
 
 </TableLayout>
