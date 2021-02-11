@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements Calculator.Callba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Decorer decorer = new Decorer(this);
+        decorer.setThemeFor(this);
         setContentView(R.layout.activity_main);
 
         initCalculator();
