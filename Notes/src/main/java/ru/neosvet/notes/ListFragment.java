@@ -34,16 +34,22 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private void loadListTo(ViewGroup container) {
         float size = getResources().getDimension(R.dimen.text_size);
         int padding = getResources().getDimensionPixelSize(R.dimen.default_margin);
+        String[] titles = getTitles();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < titles.length; i++) {
             TextView textView = new TextView(container.getContext());
-            textView.setText("Note #" + i);
+            textView.setText(titles[i]);
             textView.setId(i);
             textView.setPadding(padding, padding, 0, 0);
             textView.setTextSize(size);
             textView.setOnClickListener(this);
             container.addView(textView);
         }
+    }
+
+    private String[] getTitles() {
+        MainActivity main = (MainActivity) getActivity();
+        return main.getNotes().getListTitles(0, 10);
     }
 
     @Override

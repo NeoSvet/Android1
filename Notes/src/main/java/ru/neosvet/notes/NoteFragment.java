@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import ru.neosvet.notes.note.Item;
+
 public class NoteFragment extends Fragment {
     private static final String ARG_ID_NOTE = "note";
     private EditText etTitle, etDate, etDes;
@@ -48,6 +50,10 @@ public class NoteFragment extends Fragment {
     }
 
     private void loadNote() {
-        etTitle.setText("id=" + id_note);
+        MainActivity main = (MainActivity) getActivity();
+        Item note = main.getNotes().getNote(id_note);
+        etTitle.setText(note.getTitle());
+        etDate.setText(note.getDate());
+        etDes.setText(note.getDes());
     }
 }

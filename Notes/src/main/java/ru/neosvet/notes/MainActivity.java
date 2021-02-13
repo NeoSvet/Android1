@@ -5,19 +5,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import ru.neosvet.notes.note.Base;
+import ru.neosvet.notes.note.SampleBase;
+
 public class MainActivity extends AppCompatActivity {
     private final String BACK_TO_LIST = "BackToList";
     private boolean isBackToList = false;
+    private Base notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initBase();
 
         if (savedInstanceState == null)
             openList();
         else
             isBackToList = savedInstanceState.getBoolean(BACK_TO_LIST);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        notes.open();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        notes.close();
+    }
+
+    private void initBase() {
+        notes = new SampleBase();
+        notes.open();
+    }
+
+    public Base getNotes() {
+        return notes;
     }
 
     @Override
