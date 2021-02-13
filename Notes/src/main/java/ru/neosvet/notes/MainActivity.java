@@ -10,17 +10,17 @@ import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity {
-    private final String BACK_TO_LIST = "BackToList", ID_NOTE = "note";
+    private final String BACK_TO_LIST = "BackToList", ID_NOTE = "note", ORIENTATION = "orientation";
     private int id_note = -1;
     private boolean isBackToList = false;
-    private boolean isLandscapeOrientation;
+    private boolean isLandOrientation;
     private Base notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isLandscapeOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         initBase();
 
         if (savedInstanceState == null)
@@ -32,21 +32,17 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         isBackToList = savedInstanceState.getBoolean(BACK_TO_LIST);
         id_note = savedInstanceState.getInt(ID_NOTE);
-        checkOrientation();
+        checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
     }
 
-    private void checkOrientation() {
-        if (!isLandscapeOrientation) {
-            if (id_note > -1 )
-                openNote(id_note);
-            return;
-        }
-
-        if (!isBackToList)
+    private void checkOrientation(boolean isPrevLand) {
+        if (isPrevLand == isLandOrientation)
             return;
 
-        openList();
-        if (id_note > -1 )
+        if (isLandOrientation)
+            openList();
+
+        if (id_note > -1)
             openNote(id_note);
     }
 
@@ -74,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(BACK_TO_LIST, isBackToList);
+        outState.putBoolean(ORIENTATION, isLandOrientation);
         outState.putInt(ID_NOTE, id_note);
         super.onSaveInstanceState(outState);
     }
@@ -90,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
         NoteFragment note = NoteFragment.newInstance(id);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(isLandscapeOrientation ? R.id.note_container
+                .replace(isLandOrientation ? R.id.note_container
                         : R.id.main_container, note)
                 .commit();
-        isBackToList = !isLandscapeOrientation;
+        isBackToList = !isLandOrientation;
     }
 
     @Override
