@@ -76,35 +76,33 @@ public class Calculator {
         return value;
     }
 
-    public View.OnClickListener getEqualsClick() {
-        return v -> {
-            if (number2.length() == 0)
+    public void doCalculate() {
+        if (number2.length() == 0)
+            return;
+        float n1 = Float.parseFloat(number1);
+        float n2 = Float.parseFloat(number2);
+        float result;
+        switch (action) {
+            case PLUS:
+                result = n1 + n2;
+                break;
+            case MINUS:
+                result = n1 - n2;
+                break;
+            case MULTIPLICATION:
+                result = n1 * n2;
+                break;
+            case DIVISION:
+                result = n1 / n2;
+                break;
+            default:
                 return;
-            float n1 = Float.parseFloat(number1);
-            float n2 = Float.parseFloat(number2);
-            float result;
-            switch (action) {
-                case PLUS:
-                    result = n1 + n2;
-                    break;
-                case MINUS:
-                    result = n1 - n2;
-                    break;
-                case MULTIPLICATION:
-                    result = n1 * n2;
-                    break;
-                case DIVISION:
-                    result = n1 / n2;
-                    break;
-                default:
-                    return;
-            }
-            value += " = " + result;
-            parent.setResult(value);
-            action = Actions.NONE;
-            number1 = String.valueOf(result);
-            number2 = "";
-        };
+        }
+        value += " = " + result;
+        parent.setResult(value);
+        action = Actions.NONE;
+        number1 = String.valueOf(result);
+        number2 = "";
     }
 
     private void setAction(Actions action) {
@@ -119,83 +117,68 @@ public class Calculator {
         parent.setResult(value);
     }
 
-    public View.OnClickListener getPlusClick() {
-        return v -> setAction(Actions.PLUS);
+    public void actionPlus() {
+        setAction(Actions.PLUS);
     }
 
-    public View.OnClickListener getMinusClick() {
-        return v -> {
-            if (value.length() == 0) {
-                number1 = "-";
-                value = number1;
-                parent.setResult(value);
-                return;
-            }
-            setAction(Actions.MINUS);
-        };
-    }
-
-    public View.OnClickListener getDivisionClick() {
-        return v -> setAction(Actions.DIVISION);
-    }
-
-    public View.OnClickListener getMultiplicationClick() {
-        return v -> setAction(Actions.MULTIPLICATION);
-    }
-
-    public View.OnClickListener getBackspaceClick() {
-        return v -> {
-            if (value.length() == 0)
-                return;
-            if (number2.length() > 0) {
-                number2 = number2.substring(0, number2.length() - 1);
-            } else if (action == Actions.NONE) {
-                number1 = number1.substring(0, number1.length() - 1);
-            } else {
-                action = Actions.NONE;
-            }
-            updateResult();
-        };
-    }
-
-    public View.OnLongClickListener getBackspaceLongClick() {
-        return v -> {
-            value = "";
+    public void actionMinus() {
+        if (value.length() == 0) {
+            number1 = "-";
+            value = number1;
             parent.setResult(value);
-            number1 = "";
-            number2 = "";
+            return;
+        }
+        setAction(Actions.MINUS);
+    }
+
+    public void actionDivision() {
+        setAction(Actions.DIVISION);
+    }
+
+    public void actionMultiplication() {
+        setAction(Actions.MULTIPLICATION);
+    }
+
+    public void doBackspace() {
+        if (value.length() == 0)
+            return;
+        if (number2.length() > 0) {
+            number2 = number2.substring(0, number2.length() - 1);
+        } else if (action == Actions.NONE) {
+            number1 = number1.substring(0, number1.length() - 1);
+        } else {
             action = Actions.NONE;
-            return true;
-        };
+        }
+        updateResult();
     }
 
-    public View.OnClickListener getDotClick() {
-        return v -> {
-            if (action == Actions.NONE) {
-                if (number1.contains(DOT) || number1.length() == 0)
-                    return;
-                number1 += DOT;
-            } else {
-                if (number2.contains(DOT) || number2.length() == 0)
-                    return;
-                number2 += DOT;
-            }
-            value += DOT;
-            parent.setResult(value);
-        };
+    public void doClear() {
+        value = "";
+        parent.setResult(value);
+        number1 = "";
+        number2 = "";
+        action = Actions.NONE;
     }
 
-    public View.OnClickListener getNumeralClick() {
-        return numeralClickListener;
+    public void printDot() {
+        if (action == Actions.NONE) {
+            if (number1.contains(DOT) || number1.length() == 0)
+                return;
+            number1 += DOT;
+        } else {
+            if (number2.contains(DOT) || number2.length() == 0)
+                return;
+            number2 += DOT;
+        }
+        value += DOT;
+        parent.setResult(value);
     }
 
-    private final View.OnClickListener numeralClickListener = v -> {
-        Button b = (Button) v;
-        String numeral = b.getText().toString();
+    public void printNumeral(String numeral) {
         if (action == Actions.NONE)
             number1 += numeral;
         else
             number2 += numeral;
         updateResult();
-    };
+    }
 }

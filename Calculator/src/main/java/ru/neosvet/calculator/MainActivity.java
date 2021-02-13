@@ -10,9 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity implements Calculator.Callback {
+public class MainActivity extends AppCompatActivity implements Calculator.Callback, View.OnClickListener {
     private final String CALCULATOR = "cal";
     private Calculator calculator;
     private TextView tvResult;
@@ -73,24 +74,33 @@ public class MainActivity extends AppCompatActivity implements Calculator.Callba
                 findViewById(R.id.btnNumeral7), findViewById(R.id.btnNumeral8), findViewById(R.id.btnNumeral9)
         };
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setOnClickListener(calculator.getNumeralClick());
+            buttons[i].setOnClickListener(this);
         }
     }
 
     private void initOtherButtons() {
-        findViewById(R.id.btnPlus).setOnClickListener(calculator.getPlusClick());
-        findViewById(R.id.btnMinus).setOnClickListener(calculator.getMinusClick());
-        findViewById(R.id.btnMultiplication).setOnClickListener(calculator.getMultiplicationClick());
-        findViewById(R.id.btnDivision).setOnClickListener(calculator.getDivisionClick());
-        findViewById(R.id.btnDot).setOnClickListener(calculator.getDotClick());
+        findViewById(R.id.btnPlus).setOnClickListener(v -> calculator.actionPlus());
+        findViewById(R.id.btnMinus).setOnClickListener(v -> calculator.actionMinus());
+        findViewById(R.id.btnMultiplication).setOnClickListener(v -> calculator.actionMultiplication());
+        findViewById(R.id.btnDivision).setOnClickListener(v -> calculator.actionDivision());
+        findViewById(R.id.btnDot).setOnClickListener(v -> calculator.printDot());
         View bBackspace = findViewById(R.id.btnBackspace);
-        bBackspace.setOnClickListener(calculator.getBackspaceClick());
-        bBackspace.setOnLongClickListener(calculator.getBackspaceLongClick());
-        findViewById(R.id.btnEquals).setOnClickListener(calculator.getEqualsClick());
+        bBackspace.setOnClickListener(v -> calculator.doBackspace());
+        bBackspace.setOnLongClickListener(v -> {
+            calculator.doClear();
+            return true;
+        });
+        findViewById(R.id.btnEquals).setOnClickListener(v -> calculator.doCalculate());
     }
 
     @Override
     public void setResult(String value) {
         tvResult.setText(value);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Button b = (Button) v;
+        calculator.printNumeral(b.getText().toString());
     }
 }
