@@ -8,9 +8,9 @@ public class SampleBase implements Base {
 
     @Override
     public void open() {
-        notes.add(new Item("Note #1", "Date #1", "Des #1"));
-        notes.add(new Item("Note #2", "Date #2", "Des #2"));
-        notes.add(new Item("Note #3", "Date #3", "Des #3"));
+        notes.add(new Item("Note #1", 1613200007650L, "Des #1"));
+        notes.add(new Item("Note #2", 1613244000000L, "Des #2"));
+        notes.add(new Item("Note #3", 1613244207650L, "Des #3"));
     }
 
     @Override

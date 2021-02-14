@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ru.neosvet.notes.note.Item;
 
 public class NoteFragment extends Fragment {
     private static final String ARG_ID_NOTE = "note";
-    private EditText etTitle, etDate, etDes;
+    private EditText etTitle, etDes;
+    private TextView tvDate;
     private int id_note;
 
     public static NoteFragment newInstance(int id_note) {
@@ -44,8 +46,9 @@ public class NoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         etTitle = view.findViewById(R.id.etTitle);
-        etDate = view.findViewById(R.id.etDate);
+        tvDate = view.findViewById(R.id.tvDate);
         etDes = view.findViewById(R.id.etDes);
+
         loadNote();
     }
 
@@ -53,7 +56,7 @@ public class NoteFragment extends Fragment {
         MainActivity main = (MainActivity) getActivity();
         Item note = main.getNotes().getNote(id_note);
         etTitle.setText(note.getTitle());
-        etDate.setText(note.getDate());
+        tvDate.setText(note.getDateString());
         etDes.setText(note.getDes());
     }
 }
