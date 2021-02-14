@@ -10,11 +10,12 @@ import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity {
-    private final String BACK_TO_LIST = "BackToList", ID_NOTE = "note", ORIENTATION = "orientation";
+    private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", ID_NOTE = "note", ORIENTATION = "orientation";
+    private final byte TYPE_LIST = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int id_note = -1;
-    private boolean isBackToList = false;
     private boolean isLandOrientation;
     private Base notes;
+    private byte typeMainFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        isBackToList = savedInstanceState.getBoolean(BACK_TO_LIST);
+        typeMainFrag = savedInstanceState.getByte(TYPE_MAIN_FRAG);
         id_note = savedInstanceState.getInt(ID_NOTE);
         checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
     }
@@ -39,11 +40,19 @@ public class MainActivity extends AppCompatActivity {
         if (isPrevLand == isLandOrientation)
             return;
 
-        if (isLandOrientation)
-            openList();
-
-        if (id_note > -1)
-            openNote(id_note);
+        switch (typeMainFrag) {
+            case TYPE_LIST:
+                break;
+            case TYPE_NOTE:
+                if (isLandOrientation)
+                    openList();
+                openNote(id_note);
+                break;
+            case TYPE_DATE:
+                if (isLandOrientation)
+                    openNote(id_note);
+                break;
+        }
     }
 
     @Override
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(BACK_TO_LIST, isBackToList);
+        outState.putByte(TYPE_MAIN_FRAG, typeMainFrag);
         outState.putBoolean(ORIENTATION, isLandOrientation);
         outState.putInt(ID_NOTE, id_note);
         super.onSaveInstanceState(outState);
@@ -80,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.main_container, new ListFragment())
                 .commit();
+        typeMainFrag = TYPE_LIST;
     }
 
     public void openNote(int id) {
@@ -90,16 +100,38 @@ public class MainActivity extends AppCompatActivity {
                 .replace(isLandOrientation ? R.id.note_container
                         : R.id.main_container, note)
                 .commit();
-        isBackToList = !isLandOrientation;
+        if (!isLandOrientation)
+            typeMainFrag = TYPE_NOTE;
+    }
+
+    public void openDate() {
+        DateFragment date = DateFragment.newInstance(notes.getNote(id_note).getDate());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, date)
+                .commit();
+        typeMainFrag = TYPE_DATE;
     }
 
     @Override
     public void onBackPressed() {
-        if (isBackToList) {
-            id_note = -1;
-            isBackToList = false;
-            openList();
-            return;
+        switch (typeMainFrag) {
+            case TYPE_LIST:
+                break;
+            case TYPE_NOTE:
+                if (isLandOrientation)
+                    break;
+                else {
+                    id_note = -1;
+                    openList();
+                    return;
+                }
+            case TYPE_DATE:
+                if (isLandOrientation)
+                    openList();
+                else
+                    openNote(id_note);
+                return;
         }
         super.onBackPressed();
     }

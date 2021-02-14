@@ -48,8 +48,16 @@ public class NoteFragment extends Fragment {
         etTitle = view.findViewById(R.id.etTitle);
         tvDate = view.findViewById(R.id.tvDate);
         etDes = view.findViewById(R.id.etDes);
+        initListeners();
 
         loadNote();
+    }
+
+    private void initListeners() {
+        tvDate.setOnClickListener(v -> {
+            MainActivity main = (MainActivity) getActivity();
+            main.openDate();
+        });
     }
 
     private void loadNote() {
