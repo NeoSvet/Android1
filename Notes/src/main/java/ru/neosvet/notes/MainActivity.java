@@ -10,9 +10,9 @@ import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity {
-    private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", ID_NOTE = "note", ORIENTATION = "orientation";
+    private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
     private final byte TYPE_LIST = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
-    private int id_note = -1;
+    private int noteId = -1;
     private boolean isLandOrientation;
     private Base notes;
     private byte typeMainFrag;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         typeMainFrag = savedInstanceState.getByte(TYPE_MAIN_FRAG);
-        id_note = savedInstanceState.getInt(ID_NOTE);
+        noteId = savedInstanceState.getInt(NOTE_ID);
         checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
     }
 
@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
             case TYPE_NOTE:
                 if (isLandOrientation)
                     openList();
-                openNote(id_note);
+                openNote(noteId);
                 break;
             case TYPE_DATE:
                 if (isLandOrientation)
-                    openNote(id_note);
+                    openNote(noteId);
                 break;
         }
     }
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putByte(TYPE_MAIN_FRAG, typeMainFrag);
         outState.putBoolean(ORIENTATION, isLandOrientation);
-        outState.putInt(ID_NOTE, id_note);
+        outState.putInt(NOTE_ID, noteId);
         super.onSaveInstanceState(outState);
     }
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openNote(int id) {
-        id_note = id;
+        noteId = id;
         NoteFragment note = NoteFragment.newInstance(id);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDate() {
-        DateFragment date = DateFragment.newInstance(notes.getNote(id_note).getDate());
+        DateFragment date = DateFragment.newInstance(notes.getNote(noteId).getDate());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, date)
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isLandOrientation)
                     break;
                 else {
-                    id_note = -1;
+                    noteId = -1;
                     openList();
                     return;
                 }
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isLandOrientation)
                     openList();
                 else
-                    openNote(id_note);
+                    openNote(noteId);
                 return;
         }
         super.onBackPressed();

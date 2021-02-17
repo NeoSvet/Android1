@@ -15,15 +15,15 @@ import android.widget.TextView;
 import ru.neosvet.notes.note.Item;
 
 public class NoteFragment extends Fragment {
-    private static final String ARG_ID_NOTE = "note";
+    private static final String ARG_NOTE_ID = "note";
     private EditText etTitle, etDes;
     private TextView tvDate;
-    private int id_note;
+    private int noteId;
 
-    public static NoteFragment newInstance(int id_note) {
+    public static NoteFragment newInstance(int noteId) {
         NoteFragment fragment = new NoteFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ID_NOTE, id_note);
+        args.putInt(ARG_NOTE_ID, noteId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,7 +32,7 @@ public class NoteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            id_note = getArguments().getInt(ARG_ID_NOTE);
+            noteId = getArguments().getInt(ARG_NOTE_ID);
         }
     }
 
@@ -62,7 +62,7 @@ public class NoteFragment extends Fragment {
 
     private void loadNote() {
         MainActivity main = (MainActivity) getActivity();
-        Item note = main.getNotes().getNote(id_note);
+        Item note = main.getNotes().getNote(noteId);
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         etDes.setText(note.getDes());
