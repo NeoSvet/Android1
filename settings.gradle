@@ -1,3 +1,4 @@
+include ':Notes'
 include ':Calculator'
 include ':app'
 rootProject.name = "Android1"

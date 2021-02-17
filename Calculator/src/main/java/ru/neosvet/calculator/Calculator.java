@@ -2,9 +2,12 @@ package ru.neosvet.calculator;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class Calculator {
+    public interface Callback {
+        void setResult(String value);
+    }
+
     enum Actions {
         NONE(""), PLUS("+"), MINUS("–"), MULTIPLICATION("×"), DIVISION("÷");
 
@@ -33,16 +36,17 @@ public class Calculator {
     }
 
     private final String DOT = ".";
-    private final TextView tvResult;
+    private final Callback parent;
     private Actions action = Actions.NONE;
-    private String number1 = "", number2 = "";
+    private String value = "", number1 = "", number2 = "";
 
-    public Calculator(TextView textView) {
-        tvResult = textView;
+    public Calculator(Callback parent) {
+        this.parent = parent;
     }
 
-    public void parseValue(String value) {
-        tvResult.setText(value);
+    public void setValue(String value) {
+        this.value = value;
+        parent.setResult(value);
 
         number2 = "";
         action = Actions.NONE;
@@ -69,124 +73,112 @@ public class Calculator {
 
     @Override
     public String toString() {
-        return tvResult.getText().toString();
+        return value;
     }
 
-    public View.OnClickListener getEqualsClick() {
-        return v -> {
-            if (number2.length() == 0)
+    public void doCalculate() {
+        if (number2.length() == 0)
+            return;
+        float n1 = Float.parseFloat(number1);
+        float n2 = Float.parseFloat(number2);
+        float result;
+        switch (action) {
+            case PLUS:
+                result = n1 + n2;
+                break;
+            case MINUS:
+                result = n1 - n2;
+                break;
+            case MULTIPLICATION:
+                result = n1 * n2;
+                break;
+            case DIVISION:
+                result = n1 / n2;
+                break;
+            default:
                 return;
-            float n1 = Float.parseFloat(number1);
-            float n2 = Float.parseFloat(number2);
-            float result;
-            switch (action) {
-                case PLUS:
-                    result = n1 + n2;
-                    break;
-                case MINUS:
-                    result = n1 - n2;
-                    break;
-                case MULTIPLICATION:
-                    result = n1 * n2;
-                    break;
-                case DIVISION:
-                    result = n1 / n2;
-                    break;
-                default:
-                    return;
-            }
-            tvResult.append(" = " + result);
-            action = Actions.NONE;
-            number1 = String.valueOf(result);
-            number2 = "";
-        };
+        }
+        value += " = " + result;
+        parent.setResult(value);
+        action = Actions.NONE;
+        number1 = String.valueOf(result);
+        number2 = "";
     }
 
     private void setAction(Actions action) {
-        if (tvResult.length() == 0 || number2.length() > 0)
+        if (value.length() == 0 || number2.length() > 0)
             return;
         this.action = action;
         updateResult();
     }
 
     private void updateResult() {
-        tvResult.setText((number1 + " " + action.toString() + " " + number2).trim());
+        value = (number1 + " " + action.toString() + " " + number2).trim();
+        parent.setResult(value);
     }
 
-    public View.OnClickListener getPlusClick() {
-        return v -> setAction(Actions.PLUS);
+    public void actionPlus() {
+        setAction(Actions.PLUS);
     }
 
-    public View.OnClickListener getMinusClick() {
-        return v -> {
-            if (tvResult.length() == 0) {
-                number1 = "-";
-                tvResult.setText(number1);
-                return;
-            }
-            setAction(Actions.MINUS);
-        };
+    public void actionMinus() {
+        if (value.length() == 0) {
+            number1 = "-";
+            value = number1;
+            parent.setResult(value);
+            return;
+        }
+        setAction(Actions.MINUS);
     }
 
-    public View.OnClickListener getDivisionClick() {
-        return v -> setAction(Actions.DIVISION);
+    public void actionDivision() {
+        setAction(Actions.DIVISION);
     }
 
-    public View.OnClickListener getMultiplicationClick() {
-        return v -> setAction(Actions.MULTIPLICATION);
+    public void actionMultiplication() {
+        setAction(Actions.MULTIPLICATION);
     }
 
-    public View.OnClickListener getBackspaceClick() {
-        return v -> {
-            if (tvResult.length() == 0)
-                return;
-            if (number2.length() > 0) {
-                number2 = number2.substring(0, number2.length() - 1);
-            } else if (action == Actions.NONE) {
-                number1 = number1.substring(0, number1.length() - 1);
-            } else {
-                action = Actions.NONE;
-            }
-            updateResult();
-        };
-    }
-
-    public View.OnLongClickListener getBackspaceLongClick() {
-        return v -> {
-            tvResult.setText("");
-            number1 = "";
-            number2 = "";
+    public void doBackspace() {
+        if (value.length() == 0)
+            return;
+        if (number2.length() > 0) {
+            number2 = number2.substring(0, number2.length() - 1);
+        } else if (action == Actions.NONE) {
+            number1 = number1.substring(0, number1.length() - 1);
+        } else {
             action = Actions.NONE;
-            return true;
-        };
+        }
+        updateResult();
     }
 
-    public View.OnClickListener getDotClick() {
-        return v -> {
-            if (action == Actions.NONE) {
-                if (number1.contains(DOT) || number1.length() == 0)
-                    return;
-                number1 += DOT;
-            } else {
-                if (number2.contains(DOT) || number2.length() == 0)
-                    return;
-                number2 += DOT;
-            }
-            tvResult.append(DOT);
-        };
+    public void doClear() {
+        value = "";
+        parent.setResult(value);
+        number1 = "";
+        number2 = "";
+        action = Actions.NONE;
     }
 
-    public View.OnClickListener getNumeralClick() {
-        return numeralClickListener;
+    public void printDot() {
+        if (action == Actions.NONE) {
+            if (number1.contains(DOT) || number1.length() == 0)
+                return;
+            number1 += DOT;
+        } else {
+            if (number2.contains(DOT) || number2.length() == 0)
+                return;
+            number2 += DOT;
+        }
+        value += DOT;
+        parent.setResult(value);
     }
 
-    private final View.OnClickListener numeralClickListener = v -> {
-        Button b = (Button) v;
-        String numeral = b.getText().toString();
+    public void printNumeral(String numeral) {
         if (action == Actions.NONE)
             number1 += numeral;
         else
             number2 += numeral;
         updateResult();
-    };
+    }
 }

@@ -1,16 +1,74 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Android1" parent="Theme.AppCompat">
+    <style name="Theme.Android1" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">#6C9ADA</item>
+        <item name="colorPrimaryVariant">#CC98B4DD</item>
+        <item name="colorOnPrimary">@android:color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/gray</item>
-        <item name="colorSecondaryVariant">@color/gray</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">#CCA9E1F9</item>
+        <item name="colorSecondaryVariant">#CC017EC6</item>
+        <item name="colorOnSecondary">#99ccff</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="colorAccent">#CC9347E8</item>
+        <item name="colorOnPrimarySurface">#CC2A75ED</item>
+        <item name="CalculatorBackground">@drawable/blue_field</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">@dimen/outer_indent</item>
+        <item name="android:background">@drawable/button</item>
+    </style>
+
+    <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#6C9ADA</item>
+        <item name="colorPrimaryVariant">#CC98B4DD</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#CCA9E1F9</item>
+        <item name="colorSecondaryVariant">#CC017EC6</item>
+        <item name="colorOnSecondary">#99ccff</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">#CC9347E8</item>
+        <item name="colorOnPrimarySurface">#CC2A75ED</item>
+        <item name="CalculatorBackground">@drawable/blue_field</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay</item>
+    </style>
+
+    <style name="AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Theme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryVariant">#80113366</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#5599ccff</item>
+        <item name="colorSecondaryVariant">#55406092</item>
+        <item name="colorOnSecondary">#48689b</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">#CC9347E8</item>
+        <item name="colorOnPrimarySurface">#8048689b</item>
+        <item name="CalculatorBackground">@drawable/star_sky</item>
+        <item name="AppBarOverlay">@style/AppBarOverlay.Dark</item>
     </style>
 </resources>
