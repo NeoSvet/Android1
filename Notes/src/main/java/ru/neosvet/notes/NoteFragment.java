@@ -16,7 +16,7 @@ import ru.neosvet.notes.note.Item;
 
 public class NoteFragment extends Fragment {
     private static final String ARG_NOTE_ID = "note";
-    private EditText etTitle, etDes;
+    private EditText etTitle, etDescription;
     private TextView tvDate;
     private int noteId;
 
@@ -47,7 +47,7 @@ public class NoteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         etTitle = view.findViewById(R.id.etTitle);
         tvDate = view.findViewById(R.id.tvDate);
-        etDes = view.findViewById(R.id.etDes);
+        etDescription = view.findViewById(R.id.etDescription);
         initListeners();
 
         loadNote();
@@ -65,6 +65,6 @@ public class NoteFragment extends Fragment {
         Item note = main.getNotes().getNote(noteId);
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
-        etDes.setText(note.getDes());
+        etDescription.setText(note.getDescription());
     }
 }

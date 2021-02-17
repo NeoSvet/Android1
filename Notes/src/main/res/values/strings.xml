@@ -2,5 +2,5 @@
     <string name="app_name">Notes</string>
     <string name="title">Заголовок</string>
     <string name="date">Дата</string>
-    <string name="des">Описание</string>
+    <string name="description">Описание</string>
 </resources>

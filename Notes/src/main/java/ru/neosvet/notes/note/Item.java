@@ -3,13 +3,13 @@ package ru.neosvet.notes.note;
 import java.util.Calendar;
 
 public class Item {
-    private String title, des;
+    private String title, description;
     private long date;
 
-    public Item(String title, long date, String des) {
+    public Item(String title, long date, String description) {
         this.title = title;
         this.date = date;
-        this.des = des;
+        this.description = description;
     }
 
     public String getTitle() {
@@ -42,11 +42,11 @@ public class Item {
         this.date = date;
     }
 
-    public String getDes() {
-        return des;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDes(String des) {
-        this.des = des;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
