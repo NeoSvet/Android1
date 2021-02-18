@@ -1,5 +1,7 @@
 package ru.neosvet.notes;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,9 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ru.neosvet.notes.exchange.ObserverDate;
+import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.Item;
 
-public class NoteFragment extends Fragment {
+public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note";
     private EditText etTitle, etDescription;
     private TextView tvDate;
@@ -77,6 +81,13 @@ public class NoteFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            PublisherDate.subscribe(this);
+    }
+
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
             MainActivity main = (MainActivity) getActivity();
@@ -90,5 +101,13 @@ public class NoteFragment extends Fragment {
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         etDescription.setText(note.getDescription());
+    }
+
+    @Override
+    public void updateDate(long date) {
+        MainActivity main = (MainActivity) getActivity();
+        Item note = main.getNotes().getNote(noteId);
+        note.setDate(date);
+        tvDate.setText(note.getDateString());
     }
 }

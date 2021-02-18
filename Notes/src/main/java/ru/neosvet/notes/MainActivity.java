@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import ru.neosvet.notes.exchange.ObserverDate;
+import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.SampleBase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
     private final byte TYPE_LIST = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int noteId = -1;
@@ -62,8 +64,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isLandOrientation)
+            PublisherDate.subscribe(this);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        PublisherDate.unsubscribe();
         notes.close();
     }
 
@@ -134,5 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void updateDate(long date) {
+        notes.getNote(noteId).setDate(date);
     }
 }
