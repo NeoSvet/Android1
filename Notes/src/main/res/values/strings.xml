@@ -11,4 +11,6 @@
     <string name="help">Справка</string>
     <string name="navigation_drawer_open">drawer open</string>
     <string name="navigation_drawer_close">drawer close</string>
+    <string name="help_fragment">Тут будет о приложении и справка</string>
+    <string name="settings_fragment">Тут будут настройки</string>
 </resources>

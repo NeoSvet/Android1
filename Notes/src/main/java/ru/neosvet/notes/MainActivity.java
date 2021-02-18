@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
-    private final byte TYPE_LIST = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
+    private final byte TYPE_OTHER = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int noteId = -1;
     private boolean isLandOrientation;
     private Base notes;
@@ -69,11 +70,21 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                 openList();
                 return true;
             case R.id.nav_settings:
+                openFragment(new SettingsFragment());
                 return true;
             case R.id.nav_help:
+                openFragment(new HelpFragment());
                 return true;
         }
         return false;
+    }
+
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, fragment)
+                .commit();
+        typeMainFrag = TYPE_OTHER;
     }
 
     @Override
@@ -89,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
             return;
 
         switch (typeMainFrag) {
-            case TYPE_LIST:
-                break;
             case TYPE_NOTE:
                 if (isLandOrientation)
                     openList();
@@ -141,11 +150,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     private void openList() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, new ListFragment())
-                .commit();
-        typeMainFrag = TYPE_LIST;
+        openFragment(new ListFragment());
     }
 
     public void openNote(int id) {
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     @Override
     public void onBackPressed() {
         switch (typeMainFrag) {
-            case TYPE_LIST:
+            case TYPE_OTHER:
                 break;
             case TYPE_NOTE:
                 if (isLandOrientation)
