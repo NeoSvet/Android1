@@ -3,4 +3,6 @@
     <string name="title">Заголовок</string>
     <string name="date">Дата</string>
     <string name="description">Описание</string>
+    <string name="share">Поделиться</string>
+    <string name="attach">Прикрепить</string>
 </resources>
