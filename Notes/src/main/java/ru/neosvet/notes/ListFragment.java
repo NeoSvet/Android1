@@ -53,12 +53,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         loadListTo((ViewGroup) view);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //search
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadListTo(ViewGroup container) {
         float size = getResources().getDimension(R.dimen.text_size);
         int padding = getResources().getDimensionPixelSize(R.dimen.default_margin);
