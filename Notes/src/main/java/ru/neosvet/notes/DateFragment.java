@@ -22,7 +22,6 @@ import ru.neosvet.notes.exchange.PublisherDate;
 
 public class DateFragment extends Fragment {
     private static final String ARG_DATE = "date";
-    private long date;
     private DatePicker dpDate;
     private EditText etHour, etMinute, etFocused;
     private Button btnSave;
@@ -33,14 +32,6 @@ public class DateFragment extends Fragment {
         args.putLong(ARG_DATE, date);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            date = getArguments().getLong(ARG_DATE);
-        }
     }
 
     @Override
@@ -132,7 +123,8 @@ public class DateFragment extends Fragment {
 
     private void showDate() {
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(date);
+        if (getArguments() != null)
+            c.setTimeInMillis(getArguments().getLong(ARG_DATE));
         dpDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         etHour.setText(String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
         etMinute.setText(String.valueOf(c.get(Calendar.MINUTE)));
