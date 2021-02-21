@@ -15,7 +15,7 @@ import java.util.List;
 import ru.neosvet.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
-    private List<String> notes = new ArrayList<>();
+    private List<ListItem> notes = new ArrayList<>();
     private final NotesHandler handler;
     private boolean isFinish = false;
 
@@ -23,7 +23,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.handler = handler;
     }
 
-    public void addItems(String[] items) {
+    public void addItems(ListItem[] items) {
         if (items == null) {
             isFinish = true;
             return;
@@ -53,15 +53,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
-        private final MaterialTextView textView;
+        private final MaterialTextView tvTitle, tvSubtitle;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.item_title);
+            tvTitle = itemView.findViewById(R.id.item_title);
+            tvSubtitle = itemView.findViewById(R.id.item_subtitle);
         }
 
-        public void onBind(String title) {
-            textView.setText(title);
+        public void onBind(ListItem item) {
+            tvTitle.setText(item.getTitle());
+            tvSubtitle.setText(item.getSubtitle());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -9,14 +9,28 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/item_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/default_margin"
-        android:ellipsize="end"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

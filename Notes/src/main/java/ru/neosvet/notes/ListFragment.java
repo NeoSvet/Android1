@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.NotesHandler;
 import ru.neosvet.notes.note.BaseItem;
@@ -75,16 +76,16 @@ public class ListFragment extends Fragment implements NotesHandler {
         adapter.addItems(getTitles(0));
     }
 
-    private String[] getTitles(int offset) {
+    private ListItem[] getTitles(int offset) {
         MainActivity main = (MainActivity) getActivity();
         BaseItem[] items = main.getNotes().getList(offset, 10);
         if (items == null)
             return null;
-        String[] titles = new String[items.length];
+        ListItem[] list = new ListItem[items.length];
         for (int i = 0; i < items.length; i++) {
-            titles[i] = items[i].getTitle();
+            list[i] = new ListItem(items[i].getTitle(), items[i].getDateString());
         }
-        return titles;
+        return list;
     }
 
     @Override
