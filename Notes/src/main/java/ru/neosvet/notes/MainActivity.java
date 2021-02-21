@@ -17,15 +17,14 @@ import com.google.android.material.navigation.NavigationView;
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.Base;
+import ru.neosvet.notes.note.CurrentBase;
 import ru.neosvet.notes.note.RandomBase;
-import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
     private final byte TYPE_OTHER = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int noteId = -1;
     private boolean isLandOrientation;
-    private Base notes;
     private byte typeMainFrag;
 
     @Override
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         setSupportActionBar(toolbar);
         initDrawerMenu(toolbar);
         isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        initBase();
 
         if (savedInstanceState == null)
             openList();
@@ -121,12 +119,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        notes.open();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (!isLandOrientation)
@@ -137,16 +129,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     protected void onStop() {
         super.onStop();
         PublisherDate.unsubscribe();
-        notes.close();
-    }
-
-    private void initBase() {
-        notes = new RandomBase();
-        notes.open();
-    }
-
-    public Base getNotes() {
-        return notes;
+        CurrentBase.get().close();
     }
 
     @Override
@@ -173,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     public void openDate() {
-        DateFragment date = DateFragment.newInstance(notes.getNote(noteId).getDate());
+        DateFragment date = DateFragment.newInstance(CurrentBase.get().getNote(noteId).getDate());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, date)
@@ -206,6 +189,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
     @Override
     public void updateDate(long date) {
-        notes.getNote(noteId).setDate(date);
+        CurrentBase.get().getNote(noteId).setDate(date);
     }
 }

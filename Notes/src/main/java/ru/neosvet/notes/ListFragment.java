@@ -22,6 +22,7 @@ import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.NotesHandler;
 import ru.neosvet.notes.note.BaseItem;
+import ru.neosvet.notes.note.CurrentBase;
 
 public class ListFragment extends Fragment implements NotesHandler {
     private final NotesAdapter adapter = new NotesAdapter(this);
@@ -77,8 +78,7 @@ public class ListFragment extends Fragment implements NotesHandler {
     }
 
     private ListItem[] getList(int offset) {
-        MainActivity main = (MainActivity) getActivity();
-        BaseItem[] items = main.getNotes().getList(offset, 10);
+        BaseItem[] items = CurrentBase.get().getList(offset, 10);
         if (items == null)
             return null;
         ListItem[] list = new ListItem[items.length];
