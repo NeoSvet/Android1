@@ -1,5 +1,7 @@
 package ru.neosvet.notes.list;
 
-public interface NotesClicker {
+public interface NotesHandler {
     void onItemClicked(int position);
+
+    void updateList(int offset);
 }

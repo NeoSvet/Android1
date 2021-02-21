@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,12 +19,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import ru.neosvet.notes.list.NotesAdapter;
-import ru.neosvet.notes.list.NotesClicker;
-import ru.neosvet.notes.note.Base;
+import ru.neosvet.notes.list.NotesHandler;
 import ru.neosvet.notes.note.BaseItem;
 
-public class ListFragment extends Fragment implements NotesClicker {
+public class ListFragment extends Fragment implements NotesHandler {
     private final NotesAdapter adapter = new NotesAdapter(this);
+    private final Handler updateAdapter = new Handler(msg -> {
+        adapter.notifyDataSetChanged();
+        return false;
+    });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +72,12 @@ public class ListFragment extends Fragment implements NotesClicker {
     }
 
     private void loadList() {
-        adapter.setItems(getTitles());
+        adapter.addItems(getTitles(0));
     }
 
-    private String[] getTitles() {
+    private String[] getTitles(int offset) {
         MainActivity main = (MainActivity) getActivity();
-        BaseItem[] items = main.getNotes().getList(0, 10);
+        BaseItem[] items = main.getNotes().getList(offset, 10);
         if (items == null)
             return null;
         String[] titles = new String[items.length];
@@ -88,5 +91,11 @@ public class ListFragment extends Fragment implements NotesClicker {
     public void onItemClicked(int position) {
         MainActivity main = (MainActivity) getActivity();
         main.openNote(position);
+    }
+
+    @Override
+    public void updateList(int offset) {
+        adapter.addItems(getTitles(offset));
+        updateAdapter.sendEmptyMessage(0);
     }
 }
