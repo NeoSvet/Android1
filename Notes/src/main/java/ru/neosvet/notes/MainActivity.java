@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.Base;
+import ru.neosvet.notes.note.RandomBase;
 import ru.neosvet.notes.note.SampleBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     private void initBase() {
-        notes = new SampleBase();
+        notes = new RandomBase();
         notes.open();
     }
 
