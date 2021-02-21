@@ -104,10 +104,9 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                     openList();
                 else {
                     //во избежание второго меню заметки, скрываем предыдущее
-                    for (Fragment f : getSupportFragmentManager().getFragments()) {
-                        if (f instanceof NoteFragment)
-                            f.setMenuVisibility(false);
-                    }
+                    NoteFragment note = getNoteFragment();
+                    if (note != null)
+                        note.setMenuVisibility(false);
                 }
                 openNote(noteId);
                 break;
@@ -116,6 +115,14 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                     openNote(noteId);
                 break;
         }
+    }
+
+    private NoteFragment getNoteFragment() {
+        for (Fragment f : getSupportFragmentManager().getFragments()) {
+            if (f instanceof NoteFragment)
+                return (NoteFragment) f;
+        }
+        return null;
     }
 
     @Override
@@ -170,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
             case TYPE_OTHER:
                 break;
             case TYPE_NOTE:
+                NoteFragment note = getNoteFragment();
+                if (note != null && note.onBack())
+                    return;
                 if (isLandOrientation)
                     break;
                 else {

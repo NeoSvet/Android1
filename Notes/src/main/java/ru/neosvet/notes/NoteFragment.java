@@ -96,6 +96,17 @@ public class NoteFragment extends Fragment implements ObserverDate {
             PublisherDate.subscribe(this);
     }
 
+    public boolean onBack() {
+        if (inEdit) {
+            btnEditor.setText(R.string.edit);
+            etDescription.setVisibility(View.GONE);
+            tvDescription.setVisibility(View.VISIBLE);
+            inEdit = false;
+            return true;
+        }
+        return false;
+    }
+
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
             MainActivity main = (MainActivity) getActivity();
