@@ -161,8 +161,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                 .replace(isLandOrientation ? R.id.note_container
                         : R.id.main_container, note)
                 .commit();
-        if (!isLandOrientation)
-            typeMainFrag = TYPE_NOTE;
+        typeMainFrag = TYPE_NOTE;
     }
 
     public void openDate() {
