@@ -41,9 +41,9 @@ public class RandomBase implements Base {
 
     @Override
     public BaseItem getNote(int id) {
-        if (id < notes.size())
-            return notes.get(id);
-        return null;
+        if (id >= notes.size())
+            generateTo(id + 1);
+        return notes.get(id);
     }
 
     @Override
