@@ -103,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
             case TYPE_NOTE:
                 if (isLandOrientation)
                     openList();
+                else {
+                    //во избежание второго меню заметки, скрываем предыдущее
+                    for (Fragment f : getSupportFragmentManager().getFragments()) {
+                        if (f instanceof NoteFragment)
+                            f.setMenuVisibility(false);
+                    }
+                }
                 openNote(noteId);
                 break;
             case TYPE_DATE:
