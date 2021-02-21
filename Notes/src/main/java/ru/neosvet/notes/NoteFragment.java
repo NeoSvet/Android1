@@ -8,12 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +27,9 @@ import ru.neosvet.notes.note.BaseItem;
 public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note";
     private EditText etTitle, etDescription;
-    private TextView tvDate;
+    private TextView tvDate, tvDescription;
+    private Button btnEditor;
+    private boolean inEdit = false;
     private int noteId;
 
     public static NoteFragment newInstance(int noteId) {
@@ -63,6 +67,9 @@ public class NoteFragment extends Fragment implements ObserverDate {
         etTitle = view.findViewById(R.id.etTitle);
         tvDate = view.findViewById(R.id.tvDate);
         etDescription = view.findViewById(R.id.etDescription);
+        tvDescription = view.findViewById(R.id.tvDescription);
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
+        btnEditor = view.findViewById(R.id.btnEditor);
         initListeners();
 
         loadNote();
@@ -93,6 +100,29 @@ public class NoteFragment extends Fragment implements ObserverDate {
             MainActivity main = (MainActivity) getActivity();
             main.openDate();
         });
+        btnEditor.setOnClickListener(v -> {
+            if (inEdit) {
+                btnEditor.setText(R.string.edit);
+                updateDescription(etDescription.getText().toString());
+                etDescription.setVisibility(View.GONE);
+                tvDescription.setVisibility(View.VISIBLE);
+            } else {
+                btnEditor.setText(R.string.save);
+                etDescription.setText(tvDescription.getText());
+                tvDescription.setVisibility(View.GONE);
+                etDescription.setVisibility(View.VISIBLE);
+            }
+            inEdit = !inEdit;
+        });
+    }
+
+    private void updateDescription(String des) {
+        MainActivity main = (MainActivity) getActivity();
+        BaseItem note = main.getNotes().getNote(noteId);
+        if (note == null)
+            return;
+        note.setDescription(des);
+        tvDescription.setText(des);
     }
 
     private void loadNote() {
@@ -102,7 +132,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
             return;
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
-        etDescription.setText(note.getDescription());
+        tvDescription.setText(note.getDescription());
     }
 
     @Override

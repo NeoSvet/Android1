@@ -14,4 +14,5 @@
     <string name="help_fragment">Тут будет о приложении и справка</string>
     <string name="settings_fragment">Тут будут настройки</string>
     <string name="search">Поиск</string>
+    <string name="edit">Изменить</string>
 </resources>
