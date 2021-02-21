@@ -73,10 +73,10 @@ public class ListFragment extends Fragment implements NotesHandler {
     }
 
     private void loadList() {
-        adapter.addItems(getTitles(0));
+        adapter.addItems(getList(0));
     }
 
-    private ListItem[] getTitles(int offset) {
+    private ListItem[] getList(int offset) {
         MainActivity main = (MainActivity) getActivity();
         BaseItem[] items = main.getNotes().getList(offset, 10);
         if (items == null)
@@ -96,7 +96,7 @@ public class ListFragment extends Fragment implements NotesHandler {
 
     @Override
     public void updateList(int offset) {
-        adapter.addItems(getTitles(offset));
+        adapter.addItems(getList(offset));
         updateAdapter.sendEmptyMessage(0);
     }
 }
