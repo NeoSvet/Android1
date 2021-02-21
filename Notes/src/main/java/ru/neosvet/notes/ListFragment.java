@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,10 +16,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class ListFragment extends Fragment implements View.OnClickListener {
+import ru.neosvet.notes.list.NotesAdapter;
+import ru.neosvet.notes.list.NotesClicker;
+
+public class ListFragment extends Fragment implements NotesClicker {
+    private final NotesAdapter adapter = new NotesAdapter(this);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,23 +56,18 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadListTo((ViewGroup) view);
+        initList(view);
+        loadList();
     }
 
-    private void loadListTo(ViewGroup container) {
-        float size = getResources().getDimension(R.dimen.text_size);
-        int padding = getResources().getDimensionPixelSize(R.dimen.default_margin);
-        String[] titles = getTitles();
+    private void initList(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.rvNotes);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setAdapter(adapter);
+    }
 
-        for (int i = 0; i < titles.length; i++) {
-            TextView textView = new TextView(container.getContext());
-            textView.setText(titles[i]);
-            textView.setId(i);
-            textView.setPadding(padding, padding, 0, 0);
-            textView.setTextSize(size);
-            textView.setOnClickListener(this);
-            container.addView(textView);
-        }
+    private void loadList() {
+        adapter.setItems(getTitles());
     }
 
     private String[] getTitles() {
@@ -75,8 +76,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onItemClicked(int position) {
         MainActivity main = (MainActivity) getActivity();
-        main.openNote(v.getId());
+        main.openNote(position);
     }
 }
