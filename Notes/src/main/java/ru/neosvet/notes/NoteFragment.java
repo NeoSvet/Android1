@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
-import ru.neosvet.notes.note.Item;
+import ru.neosvet.notes.note.BaseItem;
 
 public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note";
@@ -97,7 +97,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
     private void loadNote() {
         MainActivity main = (MainActivity) getActivity();
-        Item note = main.getNotes().getNote(noteId);
+        BaseItem note = main.getNotes().getNote(noteId);
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         etDescription.setText(note.getDescription());
@@ -106,7 +106,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
     @Override
     public void updateDate(long date) {
         MainActivity main = (MainActivity) getActivity();
-        Item note = main.getNotes().getNote(noteId);
+        BaseItem note = main.getNotes().getNote(noteId);
         note.setDate(date);
         tvDate.setText(note.getDateString());
     }

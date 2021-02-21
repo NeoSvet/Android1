@@ -2,11 +2,11 @@ package ru.neosvet.notes.note;
 
 import java.util.Calendar;
 
-public class Item {
+public class BaseItem {
     private String title, description;
     private long date;
 
-    public Item(String title, long date, String description) {
+    public BaseItem(String title, long date, String description) {
         this.title = title;
         this.date = date;
         this.description = description;

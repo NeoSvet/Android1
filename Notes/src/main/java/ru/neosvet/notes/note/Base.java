@@ -5,7 +5,7 @@ public interface Base {
 
     String[] getListTitles(int offset, int limit);
 
-    Item getNote(int id);
+    BaseItem getNote(int id);
 
     void close();
 }
