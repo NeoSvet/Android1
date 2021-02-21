@@ -48,6 +48,5 @@ public class RandomBase implements Base {
 
     @Override
     public void close() {
-        notes.clear();
     }
 }

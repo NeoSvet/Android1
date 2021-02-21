@@ -35,6 +35,5 @@ public class SampleBase implements Base {
 
     @Override
     public void close() {
-        notes.clear();
     }
 }
