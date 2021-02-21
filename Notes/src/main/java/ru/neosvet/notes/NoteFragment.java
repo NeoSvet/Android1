@@ -98,6 +98,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
     private void loadNote() {
         MainActivity main = (MainActivity) getActivity();
         BaseItem note = main.getNotes().getNote(noteId);
+        if (note == null)
+            return;
         etTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         etDescription.setText(note.getDescription());
@@ -107,6 +109,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
     public void updateDate(long date) {
         MainActivity main = (MainActivity) getActivity();
         BaseItem note = main.getNotes().getNote(noteId);
+        if (note == null)
+            return;
         note.setDate(date);
         tvDate.setText(note.getDateString());
     }
