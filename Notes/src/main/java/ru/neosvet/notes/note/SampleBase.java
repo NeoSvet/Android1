@@ -14,10 +14,16 @@ public class SampleBase implements Base {
     }
 
     @Override
-    public String[] getListTitles(int offset, int limit) {
-        return new String[]{notes.get(0).getTitle(),
-                notes.get(1).getTitle(),
-                notes.get(2).getTitle()};
+    public BaseItem[] getList(int offset, int limit) {
+        if (offset + limit > notes.size())
+            limit = notes.size() - offset;
+        if (limit < 1)
+            return null;
+        BaseItem[] m = new BaseItem[limit];
+        for (int i = 0; i < limit; i++) {
+            m[i] = notes.get(i + offset);
+        }
+        return m;
     }
 
     @Override

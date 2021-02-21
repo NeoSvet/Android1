@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.NotesClicker;
+import ru.neosvet.notes.note.Base;
+import ru.neosvet.notes.note.BaseItem;
 
 public class ListFragment extends Fragment implements NotesClicker {
     private final NotesAdapter adapter = new NotesAdapter(this);
@@ -72,7 +74,14 @@ public class ListFragment extends Fragment implements NotesClicker {
 
     private String[] getTitles() {
         MainActivity main = (MainActivity) getActivity();
-        return main.getNotes().getListTitles(0, 10);
+        BaseItem[] items = main.getNotes().getList(0, 10);
+        if (items == null)
+            return null;
+        String[] titles = new String[items.length];
+        for (int i = 0; i < items.length; i++) {
+            titles[i] = items[i].getTitle();
+        }
+        return titles;
     }
 
     @Override
