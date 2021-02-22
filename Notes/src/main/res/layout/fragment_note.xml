@@ -8,25 +8,45 @@
     android:paddingEnd="@dimen/default_margin"
     tools:context=".NoteFragment">
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_marginBottom="20dp"
+        android:text="@string/title"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:background="@color/edit_color"
         android:hint="@string/title"
-        android:inputType="text"
-        android:maxLines="1"
+        android:paddingStart="@dimen/default_margin"
+        android:paddingTop="0dp"
+        android:paddingEnd="@dimen/default_margin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tvDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDate"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:background="@color/edit_color"
+        android:paddingStart="@dimen/default_margin"
+        android:paddingEnd="@dimen/default_margin"
         android:text="@string/date"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <TextView
         android:id="@+id/tvDescription"
@@ -49,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/default_margin"
-        android:background="#1139A938"
+        android:background="@color/edit_color"
         android:gravity="top"
         android:hint="@string/description"
         android:inputType="textMultiLine"

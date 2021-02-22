@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,7 +30,7 @@ import ru.neosvet.notes.note.CurrentBase;
 public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note";
     private EditText etTitle, etDescription;
-    private TextView tvDate, tvDescription;
+    private TextView tvTitle, tvDate, tvDescription;
     private Button btnEditor;
     private boolean inEdit = false;
     private int noteId;
@@ -66,6 +68,9 @@ public class NoteFragment extends Fragment implements ObserverDate {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         etTitle = view.findViewById(R.id.etTitle);
+        etTitle.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etTitle.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        tvTitle = view.findViewById(R.id.tvTitle);
         tvDate = view.findViewById(R.id.tvDate);
         etDescription = view.findViewById(R.id.etDescription);
         tvDescription = view.findViewById(R.id.tvDescription);
@@ -98,9 +103,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
     public boolean onBack() {
         if (inEdit) {
-            btnEditor.setText(R.string.edit);
-            etDescription.setVisibility(View.GONE);
-            tvDescription.setVisibility(View.VISIBLE);
+            closeEditing();
             inEdit = false;
             return true;
         }
@@ -114,12 +117,14 @@ public class NoteFragment extends Fragment implements ObserverDate {
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
-                btnEditor.setText(R.string.edit);
-                updateDescription(etDescription.getText().toString());
-                etDescription.setVisibility(View.GONE);
-                tvDescription.setVisibility(View.VISIBLE);
+                updateNote(etTitle.getText().toString(),
+                        etDescription.getText().toString());
+                closeEditing();
             } else {
                 btnEditor.setText(R.string.save);
+                etTitle.setText(tvTitle.getText());
+                tvTitle.setVisibility(View.INVISIBLE);
+                etTitle.setVisibility(View.VISIBLE);
                 etDescription.setText(tvDescription.getText());
                 tvDescription.setVisibility(View.GONE);
                 etDescription.setVisibility(View.VISIBLE);
@@ -128,11 +133,21 @@ public class NoteFragment extends Fragment implements ObserverDate {
         });
     }
 
-    private void updateDescription(String des) {
+    private void closeEditing() {
+        btnEditor.setText(R.string.edit);
+        etTitle.setVisibility(View.GONE);
+        tvTitle.setVisibility(View.VISIBLE);
+        etDescription.setVisibility(View.GONE);
+        tvDescription.setVisibility(View.VISIBLE);
+    }
+
+    private void updateNote(String title, String des) {
         BaseItem note = CurrentBase.get().getNote(noteId);
         if (note == null)
             return;
+        note.setTitle(title);
         note.setDescription(des);
+        tvTitle.setText(title);
         tvDescription.setText(des);
     }
 
@@ -140,7 +155,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
         BaseItem note = CurrentBase.get().getNote(noteId);
         if (note == null)
             return;
-        etTitle.setText(note.getTitle());
+        tvTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         tvDescription.setText(note.getDescription());
     }
