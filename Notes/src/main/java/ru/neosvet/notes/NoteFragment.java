@@ -28,11 +28,11 @@ import ru.neosvet.notes.note.BaseItem;
 import ru.neosvet.notes.note.CurrentBase;
 
 public class NoteFragment extends Fragment implements ObserverDate {
-    private static final String ARG_NOTE_ID = "note";
+    private static final String ARG_NOTE_ID = "note", ARG_TITLE = "title", ARG_DES = "des";
     private EditText etTitle, etDescription;
     private TextView tvTitle, tvDate, tvDescription;
     private Button btnEditor;
-    private boolean inEdit = false;
+    private static boolean inEdit = false;
     private int noteId;
 
     public static NoteFragment newInstance(int noteId) {
@@ -79,6 +79,21 @@ public class NoteFragment extends Fragment implements ObserverDate {
         initListeners();
 
         loadNote();
+
+        if (inEdit) {
+            openEditing();
+            etTitle.setText(getArguments().getString(ARG_TITLE));
+            etDescription.setText(getArguments().getString(ARG_DES));
+        }
+    }
+
+    public Bundle getMyArguments() {
+        Bundle outState = (Bundle)getArguments().clone();
+        if (inEdit) {
+            outState.putString(ARG_TITLE, etTitle.getText().toString());
+            outState.putString(ARG_DES, etDescription.getText().toString());
+        }
+        return outState;
     }
 
     @Override
@@ -94,6 +109,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -104,7 +120,6 @@ public class NoteFragment extends Fragment implements ObserverDate {
     public boolean onBack() {
         if (inEdit) {
             closeEditing();
-            inEdit = false;
             return true;
         }
         return false;
@@ -121,19 +136,24 @@ public class NoteFragment extends Fragment implements ObserverDate {
                         etDescription.getText().toString());
                 closeEditing();
             } else {
-                btnEditor.setText(R.string.save);
                 etTitle.setText(tvTitle.getText());
-                tvTitle.setVisibility(View.INVISIBLE);
-                etTitle.setVisibility(View.VISIBLE);
                 etDescription.setText(tvDescription.getText());
-                tvDescription.setVisibility(View.GONE);
-                etDescription.setVisibility(View.VISIBLE);
+                openEditing();
             }
-            inEdit = !inEdit;
         });
     }
 
+    private void openEditing() {
+        inEdit = true;
+        btnEditor.setText(R.string.save);
+        tvTitle.setVisibility(View.INVISIBLE);
+        etTitle.setVisibility(View.VISIBLE);
+        tvDescription.setVisibility(View.GONE);
+        etDescription.setVisibility(View.VISIBLE);
+    }
+
     private void closeEditing() {
+        inEdit = false;
         btnEditor.setText(R.string.edit);
         etTitle.setVisibility(View.GONE);
         tvTitle.setVisibility(View.VISIBLE);

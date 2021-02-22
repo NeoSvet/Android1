@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,9 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
-import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.CurrentBase;
-import ru.neosvet.notes.note.RandomBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
@@ -100,19 +99,35 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
         switch (typeMainFrag) {
             case TYPE_NOTE:
-                if (isLandOrientation)
-                    openList();
-                else {
-                    //во избежание второго меню заметки, скрываем предыдущее
-                    NoteFragment note = getNoteFragment();
-                    if (note != null)
-                        note.setMenuVisibility(false);
+                NoteFragment note = getNoteFragment();
+                if (note == null) {
+                    openNote(noteId);
+                    return;
                 }
-                openNote(noteId);
+                Bundle args = note.getMyArguments();
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().remove(note).commit();
+                manager.executePendingTransactions();
+                note.setArguments(args);
+                if (isLandOrientation) {
+                    openList();
+                    manager.beginTransaction()
+                            .replace(R.id.note_container, note).commit();
+                    typeMainFrag = TYPE_NOTE;
+                } else {
+                    manager.beginTransaction()
+                            .replace(R.id.main_container, note).commit();
+                }
                 break;
             case TYPE_DATE:
-                if (isLandOrientation)
+                if (isLandOrientation) {
                     openNote(noteId);
+                    typeMainFrag = TYPE_DATE;
+                } else {
+                    NoteFragment note2 = getNoteFragment();
+                    if (note2 != null) //во избежание второго меню заметки, скрываем предыдущее
+                        note2.setMenuVisibility(false);
+                }
                 break;
         }
     }
