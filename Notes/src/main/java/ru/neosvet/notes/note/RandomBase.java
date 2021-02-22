@@ -49,4 +49,9 @@ public class RandomBase implements Base {
     @Override
     public void close() {
     }
+
+    @Override
+    public boolean isClosed() {
+        return false;
+    }
 }

@@ -7,7 +7,8 @@ public class CurrentBase {
         if (base == null) {
             base = new RandomBase();
             base.open();
-        }
+        } else if (base.isClosed())
+            base.open();
         return base;
     }
 }

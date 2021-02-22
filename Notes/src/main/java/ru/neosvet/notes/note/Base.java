@@ -8,4 +8,6 @@ public interface Base {
     BaseItem getNote(int id);
 
     void close();
+
+    boolean isClosed();
 }

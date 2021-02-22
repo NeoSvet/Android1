@@ -36,4 +36,9 @@ public class SampleBase implements Base {
     @Override
     public void close() {
     }
+
+    @Override
+    public boolean isClosed() {
+        return false;
+    }
 }
