@@ -2,10 +2,12 @@ package ru.neosvet.notes;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
@@ -88,7 +90,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
     }
 
     public Bundle getMyArguments() {
-        Bundle outState = (Bundle)getArguments().clone();
+        Bundle outState = (Bundle) getArguments().clone();
         if (inEdit) {
             outState.putString(ARG_TITLE, etTitle.getText().toString());
             outState.putString(ARG_DES, etDescription.getText().toString());
@@ -127,6 +129,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
+            if (inEdit)
+                return;
             MainActivity main = (MainActivity) getActivity();
             main.openDate();
         });
@@ -150,6 +154,7 @@ public class NoteFragment extends Fragment implements ObserverDate {
         etTitle.setVisibility(View.VISIBLE);
         tvDescription.setVisibility(View.GONE);
         etDescription.setVisibility(View.VISIBLE);
+        tvDate.setBackgroundColor(-1);
     }
 
     private void closeEditing() {
@@ -159,6 +164,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
         tvTitle.setVisibility(View.VISIBLE);
         etDescription.setVisibility(View.GONE);
         tvDescription.setVisibility(View.VISIBLE);
+        tvDate.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                R.color.edit_color));
     }
 
     private void updateNote(String title, String des) {
