@@ -15,4 +15,7 @@
     <string name="settings_fragment">Тут будут настройки</string>
     <string name="search">Поиск</string>
     <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отменить</string>
+    <string name="note_removed">Заметка была удалена</string>
 </resources>
