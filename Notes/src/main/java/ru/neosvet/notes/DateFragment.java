@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -107,7 +106,7 @@ public class DateFragment extends Fragment {
             if (hasFocus)
                 etFocused = (TextInputEditText) v;
             else {
-                EditText et = (EditText) v;
+                TextInputEditText et = (TextInputEditText) v;
                 if (et.length() == 0)
                     et.setText("0");
             }
