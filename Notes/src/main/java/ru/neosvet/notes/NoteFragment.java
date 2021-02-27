@@ -24,6 +24,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
+
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.BaseItem;
@@ -31,9 +35,9 @@ import ru.neosvet.notes.note.CurrentBase;
 
 public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note", ARG_TITLE = "title", ARG_DES = "des";
-    private EditText etTitle, etDescription;
-    private TextView tvTitle, tvDate, tvDescription;
-    private Button btnEditor;
+    private TextInputEditText etTitle, etDescription;
+    private MaterialTextView tvTitle, tvDate, tvDescription;
+    private MaterialButton btnEditor;
     private static boolean inEdit = false;
     private int noteId;
 

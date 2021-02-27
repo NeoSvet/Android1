@@ -16,6 +16,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.Calendar;
 
 import ru.neosvet.notes.exchange.PublisherDate;
@@ -23,8 +26,8 @@ import ru.neosvet.notes.exchange.PublisherDate;
 public class DateFragment extends Fragment {
     private static final String ARG_DATE = "date";
     private DatePicker dpDate;
-    private EditText etHour, etMinute, etFocused;
-    private Button btnSave;
+    private TextInputEditText etHour, etMinute, etFocused;
+    private MaterialButton btnSave;
 
     public static DateFragment newInstance(long date) {
         DateFragment fragment = new DateFragment();
@@ -104,7 +107,7 @@ public class DateFragment extends Fragment {
 
         View.OnFocusChangeListener onFocus = (v, hasFocus) -> {
             if (hasFocus)
-                etFocused = (EditText) v;
+                etFocused = (TextInputEditText) v;
             else {
                 EditText et = (EditText) v;
                 if (et.length() == 0)
