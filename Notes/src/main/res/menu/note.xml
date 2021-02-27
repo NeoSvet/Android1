@@ -5,10 +5,15 @@
         android:id="@+id/share"
         android:icon="@drawable/ic_baseline_share_24"
         android:title="@string/share"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/attach"
         android:icon="@drawable/ic_baseline_attach_file_24"
         android:title="@string/attach"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -111,6 +111,9 @@ public class NoteFragment extends Fragment implements ObserverDate {
             case R.id.attach:
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.delete:
+                Toast.makeText(requireContext(), R.string.delete, Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
