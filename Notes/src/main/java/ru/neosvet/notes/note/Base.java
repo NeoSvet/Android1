@@ -7,6 +7,8 @@ public interface Base {
 
     BaseItem getNote(int id);
 
+    boolean removeNote(int id);
+
     void close();
 
     boolean isClosed();

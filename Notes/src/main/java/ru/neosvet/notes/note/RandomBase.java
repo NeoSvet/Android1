@@ -47,6 +47,14 @@ public class RandomBase implements Base {
     }
 
     @Override
+    public boolean removeNote(int id) {
+        if (id >= notes.size())
+            return false;
+        notes.remove(id);
+        return true;
+    }
+
+    @Override
     public void close() {
     }
 
