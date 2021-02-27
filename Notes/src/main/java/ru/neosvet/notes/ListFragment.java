@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +30,7 @@ import ru.neosvet.notes.list.NotesHandler;
 import ru.neosvet.notes.list.SwipeHelper;
 import ru.neosvet.notes.note.BaseItem;
 import ru.neosvet.notes.note.CurrentBase;
+import ru.neosvet.notes.note.Remover;
 
 public class ListFragment extends Fragment implements NotesHandler {
     private final NotesAdapter adapter = new NotesAdapter(this);
@@ -38,7 +38,9 @@ public class ListFragment extends Fragment implements NotesHandler {
         adapter.notifyDataSetChanged();
         return false;
     });
+    private final int TIME_TO_REMOVE = 3000;
     private RecyclerView recyclerView;
+    private Remover remover;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +76,13 @@ public class ListFragment extends Fragment implements NotesHandler {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
         loadList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (remover != null && remover.isStart())
+            remover.cancel();
     }
 
     private void initList(View view) {
@@ -120,17 +129,19 @@ public class ListFragment extends Fragment implements NotesHandler {
         final ListItem item = adapter.getItem(pos);
         adapter.removeItem(pos);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                remover.cancel();
                 adapter.restoreItem(item, pos);
                 recyclerView.scrollToPosition(pos);
             }
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        Log.d("mylog", "duration: " +snackbar.getDuration());
+        remover = new Remover(TIME_TO_REMOVE, pos);
+        remover.start();
     }
 
     private int getColor(int id) {
