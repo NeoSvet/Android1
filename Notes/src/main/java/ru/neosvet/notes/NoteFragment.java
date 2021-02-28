@@ -157,7 +157,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
         etTitle.setVisibility(View.VISIBLE);
         tvDescription.setVisibility(View.GONE);
         etDescription.setVisibility(View.VISIBLE);
-        tvDate.setBackgroundColor(-1);
+        tvDate.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                android.R.color.transparent));
     }
 
     private void closeEditing() {
