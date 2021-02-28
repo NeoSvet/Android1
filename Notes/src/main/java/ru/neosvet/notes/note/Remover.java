@@ -29,6 +29,11 @@ public class Remover {
         timer.interrupt();
     }
 
+    public void now() {
+        cancel();
+        CurrentBase.get().removeNote(id);
+    }
+
     public boolean isStart() {
         return isStart;
     }

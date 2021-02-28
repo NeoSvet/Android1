@@ -82,7 +82,7 @@ public class ListFragment extends Fragment implements NotesHandler {
     public void onStop() {
         super.onStop();
         if (remover != null && remover.isStart())
-            remover.cancel();
+            remover.now();
     }
 
     private void initList(View view) {
