@@ -96,7 +96,7 @@ public class ListFragment extends Fragment implements NotesHandler {
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         null,
-                        getBitmap(R.drawable.delete),
+                        getBitmap(R.mipmap.delete),
                         getColor(R.color.purple_200), radius,
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
@@ -107,7 +107,7 @@ public class ListFragment extends Fragment implements NotesHandler {
                 ));
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         null,
-                        getBitmap(R.drawable.share),
+                        getBitmap(R.mipmap.share),
                         getColor(R.color.teal_700), radius,
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
