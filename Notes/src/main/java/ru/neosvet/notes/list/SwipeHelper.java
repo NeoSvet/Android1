@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Queue;
 
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
-
-    public static final int BUTTON_WIDTH = 120;
+    private static final int BUTTON_WIDTH_IN_PX = 70;
+    private int buttonWidthInDp;
     private RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
     private GestureDetector gestureDetector;
@@ -76,6 +76,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         super(0, ItemTouchHelper.LEFT);
         this.buttons = new ArrayList<>();
         this.gestureDetector = new GestureDetector(context, gestureListener);
+        buttonWidthInDp = (int) (BUTTON_WIDTH_IN_PX * Resources.getSystem().getDisplayMetrics().density);
         buttonsBuffer = new HashMap<>();
         recoverQueue = new LinkedList<Integer>() {
             @Override
@@ -109,7 +110,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             buttons.clear();
 
         buttonsBuffer.clear();
-        swipeThreshold = 0.5f * buttons.size() * BUTTON_WIDTH;
+        swipeThreshold = 0.5f * buttons.size() * buttonWidthInDp;
         recoverSwipedItem();
     }
 
@@ -150,7 +151,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     buffer = buttonsBuffer.get(pos);
                 }
 
-                translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
+                translationX = dX * buffer.size() * buttonWidthInDp / itemView.getWidth();
                 drawButtons(c, itemView, buffer, pos, translationX);
             }
         }
