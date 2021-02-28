@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         super.onRestoreInstanceState(savedInstanceState);
         typeMainFrag = savedInstanceState.getByte(TYPE_MAIN_FRAG);
         noteId = savedInstanceState.getInt(NOTE_ID);
-        checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
+        if (noteId > -1)
+            checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
     }
 
     private void checkOrientation(boolean isPrevLand) {
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     private void openList() {
-        openFragment(new ListFragment());
+        openFragment(ListFragment.newInstance(-1));
     }
 
     public void openNote(int id) {
@@ -215,5 +216,27 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     @Override
     public void updateDate(long date) {
         CurrentBase.get().getNote(noteId).setDate(date);
+    }
+
+    public void removeNote(int id) {
+        if (noteId == id)
+            noteId = -1;
+        NoteFragment note = getNoteFragment();
+        getSupportFragmentManager().beginTransaction().remove(note).commit();
+        if (isLandOrientation) {
+            ListFragment list = null;
+            for (Fragment f : getSupportFragmentManager().getFragments()) {
+                if (f instanceof ListFragment)
+                    list = (ListFragment) f;
+            }
+            if (list != null) {
+                int pos = list.findPosById(id);
+                if (pos == -1)
+                    return;
+                list.removeItem(pos);
+                return;
+            }
+        }
+        openFragment(ListFragment.newInstance(id));
     }
 }

@@ -38,9 +38,18 @@ public class ListFragment extends Fragment implements NotesHandler {
         adapter.notifyDataSetChanged();
         return false;
     });
+    private static final String ARG_ID_FOR_REMOVE = "ARG_REM_ID";
     private final int TIME_TO_REMOVE = 3000;
     private RecyclerView recyclerView;
     private Remover remover;
+
+    public static ListFragment newInstance(int id_for_remove) {
+        ListFragment fragment = new ListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_ID_FOR_REMOVE, id_for_remove);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,7 +134,7 @@ public class ListFragment extends Fragment implements NotesHandler {
         Toast.makeText(requireContext(), getResources().getString(R.string.share) + pos, Toast.LENGTH_LONG).show();
     }
 
-    private void removeItem(int pos) {
+    public void removeItem(int pos) {
         final ListItem item = adapter.getItem(pos);
         int id = item.getId();
         adapter.removeItem(pos);
@@ -156,6 +165,13 @@ public class ListFragment extends Fragment implements NotesHandler {
 
     private void loadList() {
         adapter.addItems(getList(0));
+        int id = getArguments().getInt(ARG_ID_FOR_REMOVE, -1);
+        if (id > -1) {
+            int pos = findPosById(id);
+            recyclerView.scrollToPosition(pos);
+            removeItem(pos);
+            setArguments(new Bundle());
+        }
     }
 
     private ListItem[] getList(int offset) {
@@ -179,5 +195,23 @@ public class ListFragment extends Fragment implements NotesHandler {
     public void updateList(int offset) {
         adapter.addItems(getList(offset));
         updateAdapter.sendEmptyMessage(0);
+    }
+
+    public int findPosById(int id) {
+        int i = 0;
+        while (true) {
+            if (adapter.getItem(i).getId() == id) {
+                return i;
+            }
+            i++;
+            if (i == adapter.getItemCount()) {
+                ListItem[] list = getList(i);
+                if (list == null)
+                    return -1;
+//                if(list[0].getId()>id)
+//                    return -1;
+                adapter.addItems(list);
+            }
+        }
     }
 }

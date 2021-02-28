@@ -107,7 +107,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                Toast.makeText(requireContext(), R.string.delete, Toast.LENGTH_SHORT).show();
+                MainActivity main = (MainActivity) getActivity();
+                main.removeNote(noteId);
                 break;
         }
         return super.onOptionsItemSelected(item);
