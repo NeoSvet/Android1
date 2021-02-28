@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+//download from https://zatackcoder.com/android-recyclerview-swipe-to-multiple-options/
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private static final int BUTTON_WIDTH_IN_PX = 70;
     private int buttonWidthInDp;
