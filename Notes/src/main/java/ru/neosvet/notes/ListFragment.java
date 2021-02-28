@@ -127,6 +127,7 @@ public class ListFragment extends Fragment implements NotesHandler {
 
     private void removeItem(int pos) {
         final ListItem item = adapter.getItem(pos);
+        int id = item.getId();
         adapter.removeItem(pos);
 
         Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
@@ -140,7 +141,7 @@ public class ListFragment extends Fragment implements NotesHandler {
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        remover = new Remover(TIME_TO_REMOVE, pos);
+        remover = new Remover(TIME_TO_REMOVE, id);
         remover.start();
     }
 
@@ -163,15 +164,15 @@ public class ListFragment extends Fragment implements NotesHandler {
             return null;
         ListItem[] list = new ListItem[items.length];
         for (int i = 0; i < items.length; i++) {
-            list[i] = new ListItem(items[i].getTitle(), items[i].getDateString());
+            list[i] = new ListItem(items[i].getId(), items[i].getTitle(), items[i].getDateString());
         }
         return list;
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onItemClicked(int id) {
         MainActivity main = (MainActivity) getActivity();
-        main.openNote(position);
+        main.openNote(id);
     }
 
     @Override
