@@ -1,17 +1,27 @@
 package ru.neosvet.notes;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.google.android.material.navigation.NavigationView;
+
+import ru.neosvet.notes.exchange.ObserverDate;
+import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.Base;
 import ru.neosvet.notes.note.SampleBase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
-    private final byte TYPE_LIST = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
+    private final byte TYPE_OTHER = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int noteId = -1;
     private boolean isLandOrientation;
     private Base notes;
@@ -20,12 +30,61 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        initDrawerMenu(toolbar);
         isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         initBase();
 
         if (savedInstanceState == null)
             openList();
+    }
+
+    private void initDrawerMenu(Toolbar toolbar) {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (navigateFragment(id)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private boolean navigateFragment(int id) {
+        switch (id) {
+            case R.id.nav_notes:
+                openList();
+                return true;
+            case R.id.nav_settings:
+                openFragment(new SettingsFragment());
+                return true;
+            case R.id.nav_help:
+                openFragment(new HelpFragment());
+                return true;
+        }
+        return false;
+    }
+
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, fragment)
+                .commit();
+        typeMainFrag = TYPE_OTHER;
     }
 
     @Override
@@ -41,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         switch (typeMainFrag) {
-            case TYPE_LIST:
-                break;
             case TYPE_NOTE:
                 if (isLandOrientation)
                     openList();
@@ -62,8 +119,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isLandOrientation)
+            PublisherDate.subscribe(this);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        PublisherDate.unsubscribe();
         notes.close();
     }
 
@@ -85,11 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openList() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, new ListFragment())
-                .commit();
-        typeMainFrag = TYPE_LIST;
+        openFragment(new ListFragment());
     }
 
     public void openNote(int id) {
@@ -116,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         switch (typeMainFrag) {
-            case TYPE_LIST:
+            case TYPE_OTHER:
                 break;
             case TYPE_NOTE:
                 if (isLandOrientation)
@@ -134,5 +195,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void updateDate(long date) {
+        notes.getNote(noteId).setDate(date);
     }
 }

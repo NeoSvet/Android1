@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="notes">Заметки</string>
     <string name="title">Заголовок</string>
     <string name="date">Дата</string>
     <string name="description">Описание</string>
+    <string name="share">Поделиться</string>
+    <string name="attach">Прикрепить</string>
+    <string name="save">Сохранить</string>
+    <string name="settings">Настройки</string>
+    <string name="help">Справка</string>
+    <string name="navigation_drawer_open">drawer open</string>
+    <string name="navigation_drawer_close">drawer close</string>
+    <string name="help_fragment">Тут будет о приложении и справка</string>
+    <string name="settings_fragment">Тут будут настройки</string>
+    <string name="search">Поиск</string>
 </resources>
