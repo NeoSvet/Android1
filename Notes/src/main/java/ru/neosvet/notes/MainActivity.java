@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                     openNote(noteId);
                     return;
                 }
-                Bundle args = note.getMyArguments();
+                Bundle args = note.getArguments();
                 FragmentManager manager = getSupportFragmentManager();
                 manager.beginTransaction().remove(note).commit();
                 manager.executePendingTransactions();

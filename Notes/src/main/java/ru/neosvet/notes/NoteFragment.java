@@ -29,11 +29,12 @@ import ru.neosvet.notes.note.BaseItem;
 import ru.neosvet.notes.note.CurrentBase;
 
 public class NoteFragment extends Fragment implements ObserverDate {
-    private static final String ARG_NOTE_ID = "note", ARG_TITLE = "title", ARG_DES = "des";
+    private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",
+            ARG_TITLE = "title", ARG_DES = "des";
     private TextInputEditText etTitle, etDescription;
     private MaterialTextView tvTitle, tvDate, tvDescription;
     private MaterialButton btnEditor;
-    private static boolean inEdit = false;
+    private boolean inEdit = false;
     private int noteId;
 
     public static NoteFragment newInstance(int noteId) {
@@ -81,20 +82,24 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
         loadNote();
 
+        Bundle args = getArguments();
+        inEdit = args.getBoolean(ARG_EDIT, false);
         if (inEdit) {
             openEditing();
-            etTitle.setText(getArguments().getString(ARG_TITLE));
-            etDescription.setText(getArguments().getString(ARG_DES));
+            etTitle.setText(args.getString(ARG_TITLE));
+            etDescription.setText(args.getString(ARG_DES));
         }
     }
 
-    public Bundle getMyArguments() {
-        Bundle outState = (Bundle) getArguments().clone();
+    @Override
+    public void onPause() {
+        super.onPause();
+        Bundle args = getArguments();
+        args.putBoolean(ARG_EDIT, inEdit);
         if (inEdit) {
-            outState.putString(ARG_TITLE, etTitle.getText().toString());
-            outState.putString(ARG_DES, etDescription.getText().toString());
+            args.putString(ARG_TITLE, etTitle.getText().toString());
+            args.putString(ARG_DES, etDescription.getText().toString());
         }
-        return outState;
     }
 
     @Override
