@@ -25,6 +25,7 @@ public class DateFragment extends Fragment {
     private DatePicker dpDate;
     private TextInputEditText etHour, etMinute, etFocused;
     private MaterialButton btnSave;
+    private Calendar calendar = Calendar.getInstance();
 
     public static DateFragment newInstance(long time) {
         DateFragment fragment = new DateFragment();
@@ -116,13 +117,12 @@ public class DateFragment extends Fragment {
     }
 
     private long getCurrentDate() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, dpDate.getYear());
-        c.set(Calendar.MONTH, dpDate.getMonth());
-        c.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
-        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
-        c.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
-        return c.getTimeInMillis();
+        calendar.set(Calendar.YEAR, dpDate.getYear());
+        calendar.set(Calendar.MONTH, dpDate.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
+        return calendar.getTimeInMillis();
     }
 
     private void hideTitleDatePicker() {
@@ -132,11 +132,10 @@ public class DateFragment extends Fragment {
     }
 
     private void showDate() {
-        Calendar c = Calendar.getInstance();
         if (getArguments() != null)
-            c.setTimeInMillis(getArguments().getLong(ARG_TIME));
-        dpDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-        etHour.setText(String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
-        etMinute.setText(String.valueOf(c.get(Calendar.MINUTE)));
+            calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
+        dpDate.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        etHour.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+        etMinute.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
     }
 }
