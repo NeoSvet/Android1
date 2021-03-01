@@ -53,15 +53,15 @@ public class DateFragment extends Fragment {
         initListeners();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getArguments().putLong(ARG_TIME, getCurrentDate());
+    }
+
     private void initListeners() {
         btnSave.setOnClickListener(v -> {
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.YEAR, dpDate.getYear());
-            c.set(Calendar.MONTH, dpDate.getMonth());
-            c.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
-            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
-            c.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
-            PublisherDate.notify(c.getTimeInMillis());
+            PublisherDate.notify(getCurrentDate());
             requireActivity().onBackPressed();
         });
 
@@ -113,6 +113,16 @@ public class DateFragment extends Fragment {
         };
         etHour.setOnFocusChangeListener(onFocus);
         etMinute.setOnFocusChangeListener(onFocus);
+    }
+
+    private long getCurrentDate() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, dpDate.getYear());
+        c.set(Calendar.MONTH, dpDate.getMonth());
+        c.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
+        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
+        c.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
+        return c.getTimeInMillis();
     }
 
     private void hideTitleDatePicker() {
