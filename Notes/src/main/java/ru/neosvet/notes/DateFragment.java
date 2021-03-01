@@ -21,15 +21,15 @@ import java.util.Calendar;
 import ru.neosvet.notes.exchange.PublisherDate;
 
 public class DateFragment extends Fragment {
-    private static final String ARG_DATE = "date";
+    public static final String ARG_TIME = "time";
     private DatePicker dpDate;
     private TextInputEditText etHour, etMinute, etFocused;
     private MaterialButton btnSave;
 
-    public static DateFragment newInstance(long date) {
+    public static DateFragment newInstance(long time) {
         DateFragment fragment = new DateFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_DATE, date);
+        args.putLong(ARG_TIME, time);
         fragment.setArguments(args);
         return fragment;
     }
@@ -124,7 +124,7 @@ public class DateFragment extends Fragment {
     private void showDate() {
         Calendar c = Calendar.getInstance();
         if (getArguments() != null)
-            c.setTimeInMillis(getArguments().getLong(ARG_DATE));
+            c.setTimeInMillis(getArguments().getLong(ARG_TIME));
         dpDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         etHour.setText(String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
         etMinute.setText(String.valueOf(c.get(Calendar.MINUTE)));
