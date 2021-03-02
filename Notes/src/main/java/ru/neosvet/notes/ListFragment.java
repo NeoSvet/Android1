@@ -138,6 +138,8 @@ public class ListFragment extends Fragment implements NotesHandler {
         final ListItem item = adapter.getItem(pos);
         int id = item.getId();
         adapter.removeItem(pos);
+        MainActivity main = (MainActivity) getActivity();
+        main.removeNoteFragment(id);
 
         Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {

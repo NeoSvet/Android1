@@ -137,10 +137,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
-            if (inEdit)
-                return;
             MainActivity main = (MainActivity) getActivity();
-            main.openDate();
+            main.openDate(CurrentBase.get().getNote(noteId).getDate());
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
@@ -162,8 +160,6 @@ public class NoteFragment extends Fragment implements ObserverDate {
         etTitle.setVisibility(View.VISIBLE);
         tvDescription.setVisibility(View.GONE);
         etDescription.setVisibility(View.VISIBLE);
-        tvDate.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                android.R.color.transparent));
     }
 
     private void closeEditing() {
@@ -173,8 +169,6 @@ public class NoteFragment extends Fragment implements ObserverDate {
         tvTitle.setVisibility(View.VISIBLE);
         etDescription.setVisibility(View.GONE);
         tvDescription.setVisibility(View.VISIBLE);
-        tvDate.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.edit_color));
     }
 
     private void updateNote(String title, String des) {

@@ -20,11 +20,11 @@ import ru.neosvet.notes.exchange.PublisherDate;
 import ru.neosvet.notes.note.CurrentBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
-    private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
-    private final byte TYPE_OTHER = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
+    private final String MAIN_STACK = "stack", NOTE_ID = "note", ORIENTATION = "orientation",
+            TAG_LIST = "list", TAG_NOTE = "note", TAG_DATE = "date";
     private int noteId = -1;
     private boolean isLandOrientation;
-    private byte typeMainFrag;
+    private FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,15 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         setSupportActionBar(toolbar);
         initDrawerMenu(toolbar);
         isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        manager = getSupportFragmentManager();
 
-        if (savedInstanceState == null)
-            openList();
+        if (savedInstanceState == null) {
+            //пришлось повторить код, ибо если использовать openList(),
+            //то будет добавлен в стэк и при возрате назад будет пустой экран
+            manager.beginTransaction()
+                    .replace(R.id.main_container, ListFragment.newInstance(-1), TAG_LIST)
+                    .commit();
+        }
     }
 
     private void initDrawerMenu(Toolbar toolbar) {
@@ -78,17 +84,15 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     private void openFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
+        manager.beginTransaction()
                 .replace(R.id.main_container, fragment)
+                .addToBackStack(MAIN_STACK)
                 .commit();
-        typeMainFrag = TYPE_OTHER;
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        typeMainFrag = savedInstanceState.getByte(TYPE_MAIN_FRAG);
         noteId = savedInstanceState.getInt(NOTE_ID);
         if (noteId > -1)
             checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
@@ -98,47 +102,39 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         if (isPrevLand == isLandOrientation)
             return;
 
-        switch (typeMainFrag) {
-            case TYPE_NOTE:
-                NoteFragment note = getNoteFragment();
-                if (note == null) {
-                    openNote(noteId);
-                    return;
-                }
-                Bundle args = note.getArguments();
-                FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction().remove(note).commit();
-                manager.executePendingTransactions();
-                note.setArguments(args);
-                if (isLandOrientation) {
-                    openList();
-                    manager.beginTransaction()
-                            .replace(R.id.note_container, note).commit();
-                    typeMainFrag = TYPE_NOTE;
-                } else {
-                    manager.beginTransaction()
-                            .replace(R.id.main_container, note).commit();
-                }
-                break;
-            case TYPE_DATE:
-                if (isLandOrientation) {
-                    openNote(noteId);
-                    typeMainFrag = TYPE_DATE;
-                } else {
-                    NoteFragment note2 = getNoteFragment();
-                    if (note2 != null) //во избежание второго меню заметки, скрываем предыдущее
-                        note2.setMenuVisibility(false);
-                }
-                break;
-        }
-    }
+        if (noteId == -1)
+            return;
 
-    private NoteFragment getNoteFragment() {
-        for (Fragment f : getSupportFragmentManager().getFragments()) {
-            if (f instanceof NoteFragment)
-                return (NoteFragment) f;
+        Fragment note = manager.findFragmentByTag(TAG_NOTE);
+        if (note == null) {
+            openNote(noteId);
+            return;
         }
-        return null;
+        Bundle args = note.getArguments();
+        if (!isLandOrientation) //prev orientation is land
+            manager.beginTransaction().remove(note).commit();
+        //note.setMenuVisibility(false); //скрываем меню заметки открытой во второй области
+        note = new NoteFragment();
+        note.setArguments(args);
+        long time = 0;
+        Fragment date = manager.findFragmentByTag(TAG_DATE);
+        if (date != null) {
+            time = date.getArguments().getLong(DateFragment.ARG_TIME);
+            super.onBackPressed(); //close date
+        }
+        if (isLandOrientation) { //prev orientation is port
+            super.onBackPressed(); //close note
+            manager.beginTransaction()
+                    .replace(R.id.note_container, note, TAG_NOTE)
+                    .commit();
+        } else { //prev orientation is land
+            manager.beginTransaction()
+                    .replace(R.id.main_container, note, TAG_NOTE)
+                    .addToBackStack(MAIN_STACK)
+                    .commit();
+        }
+        if (time > 0)
+            openDate(time);
     }
 
     @Override
@@ -157,58 +153,47 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putByte(TYPE_MAIN_FRAG, typeMainFrag);
         outState.putBoolean(ORIENTATION, isLandOrientation);
         outState.putInt(NOTE_ID, noteId);
         super.onSaveInstanceState(outState);
     }
 
     private void openList() {
-        openFragment(ListFragment.newInstance(-1));
+        manager.beginTransaction()
+                .replace(R.id.main_container, ListFragment.newInstance(-1), TAG_LIST)
+                .addToBackStack(MAIN_STACK)
+                .commit();
     }
 
     public void openNote(int id) {
         noteId = id;
         NoteFragment note = NoteFragment.newInstance(id);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(isLandOrientation ? R.id.note_container
-                        : R.id.main_container, note)
-                .commit();
-        typeMainFrag = TYPE_NOTE;
+        if (isLandOrientation) {
+            manager.beginTransaction()
+                    .replace(R.id.note_container, note, TAG_NOTE)
+                    .commit();
+        } else {
+            manager.beginTransaction()
+                    .replace(R.id.main_container, note, TAG_NOTE)
+                    .addToBackStack(MAIN_STACK)
+                    .commit();
+        }
     }
 
-    public void openDate() {
-        DateFragment date = DateFragment.newInstance(CurrentBase.get().getNote(noteId).getDate());
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, date)
+    public void openDate(long time) {
+        manager.beginTransaction()
+                .replace(R.id.main_container, DateFragment.newInstance(time), TAG_DATE)
+                .addToBackStack(MAIN_STACK)
                 .commit();
-        typeMainFrag = TYPE_DATE;
     }
 
     @Override
     public void onBackPressed() {
-        switch (typeMainFrag) {
-            case TYPE_OTHER:
-                break;
-            case TYPE_NOTE:
-                NoteFragment note = getNoteFragment();
-                if (note != null && note.onBack())
-                    return;
-                if (isLandOrientation)
-                    break;
-                else {
-                    noteId = -1;
-                    openList();
-                    return;
-                }
-            case TYPE_DATE:
-                if (isLandOrientation)
-                    openList();
-                else
-                    openNote(noteId);
+        if (noteId > -1 && manager.findFragmentByTag(TAG_DATE) == null) {
+            NoteFragment note = (NoteFragment) manager.findFragmentByTag(TAG_NOTE);
+            if (note != null && note.onBack())
                 return;
+            noteId = -1;
         }
         super.onBackPressed();
     }
@@ -218,17 +203,21 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         CurrentBase.get().getNote(noteId).setDate(date);
     }
 
+    public void removeNoteFragment(int id) {
+        if (!isLandOrientation || id != noteId)
+            return;
+        noteId = -1;
+        Fragment note = manager.findFragmentByTag(TAG_NOTE);
+        manager.beginTransaction().remove(note).commit();
+    }
+
     public void removeNote(int id) {
         if (noteId == id)
             noteId = -1;
-        NoteFragment note = getNoteFragment();
-        getSupportFragmentManager().beginTransaction().remove(note).commit();
+        Fragment note = manager.findFragmentByTag(TAG_NOTE);
+        manager.beginTransaction().remove(note).commit();
         if (isLandOrientation) {
-            ListFragment list = null;
-            for (Fragment f : getSupportFragmentManager().getFragments()) {
-                if (f instanceof ListFragment)
-                    list = (ListFragment) f;
-            }
+            ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
             if (list != null) {
                 int pos = list.findPosById(id);
                 if (pos == -1)
