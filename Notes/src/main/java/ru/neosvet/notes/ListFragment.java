@@ -81,6 +81,17 @@ public class ListFragment extends Fragment implements NotesHandler {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.add) {
+            BaseItem note = CurrentBase.get().addNote();
+            adapter.addItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
+            recyclerView.scrollToPosition(0);
+            onItemClicked(note.getId());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
@@ -166,7 +177,8 @@ public class ListFragment extends Fragment implements NotesHandler {
     }
 
     private void loadList() {
-        adapter.addItems(getList(0));
+        if (adapter.getItemCount() == 0)
+            adapter.addItems(getList(0));
         int id = getArguments().getInt(ARG_ID_FOR_REMOVE, -1);
         if (id > -1) {
             int pos = findPosById(id);
@@ -210,8 +222,6 @@ public class ListFragment extends Fragment implements NotesHandler {
                 ListItem[] list = getList(i);
                 if (list == null)
                     return -1;
-//                if(list[0].getId()>id)
-//                    return -1;
                 adapter.addItems(list);
             }
         }

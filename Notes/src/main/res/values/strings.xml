@@ -19,4 +19,5 @@
     <string name="cancel">Отменить</string>
     <string name="note_removed">Заметка была удалена</string>
     <string name="now">Сейчас</string>
+    <string name="add">Добавить</string>
 </resources>
