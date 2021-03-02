@@ -42,6 +42,15 @@ public class SampleBase implements Base {
     }
 
     @Override
+    public BaseItem addNote() {
+        int id = notes.size();
+        BaseItem item = new BaseItem(id, "Note #" + (id + 1),
+                System.currentTimeMillis(), "Des #" + (id + 1));
+        notes.add(item);
+        return item;
+    }
+
+    @Override
     public void close() {
     }
 

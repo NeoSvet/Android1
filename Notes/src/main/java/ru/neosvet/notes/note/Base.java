@@ -9,6 +9,8 @@ public interface Base {
 
     boolean removeNote(int id);
 
+    BaseItem addNote();
+
     void close();
 
     boolean isClosed();

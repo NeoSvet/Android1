@@ -76,6 +76,15 @@ public class RandomBase implements Base {
     }
 
     @Override
+    public BaseItem addNote() {
+        last_id++;
+        BaseItem item = new BaseItem(last_id, "Note #" + notes.size() + ", id " + last_id,
+                System.currentTimeMillis(), "Des #" + notes.size());
+        notes.add(item);
+        return item;
+    }
+
+    @Override
     public void close() {
     }
 
