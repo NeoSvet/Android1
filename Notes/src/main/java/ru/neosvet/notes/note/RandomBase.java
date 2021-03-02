@@ -51,7 +51,14 @@ public class RandomBase implements Base {
     }
 
     private int findIndexById(int id) {
-        int n = notes.get(id).getId();
+        int n;
+        if (id >= notes.size()) {
+            n = notes.size() - 1;
+            while (n > -1 && notes.get(n).getId() != id)
+                n--;
+            return n;
+        }
+        n = notes.get(id).getId();
         if (n < id) {
             n = id + 1;
             while (n < notes.size() && notes.get(n).getId() != id)
