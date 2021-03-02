@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +42,21 @@ public class DateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_date, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuItem item = menu.add(R.string.now);
+        item.setIcon(R.drawable.ic_baseline_today_24);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        showDate(Calendar.getInstance());
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -50,7 +68,9 @@ public class DateFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSave);
         hideTitleDatePicker();
 
-        showDate();
+        if (getArguments() != null)
+            calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
+        showDate(calendar);
         initListeners();
     }
 
@@ -131,9 +151,7 @@ public class DateFragment extends Fragment {
         layout.getChildAt(0).setVisibility(View.GONE);
     }
 
-    private void showDate() {
-        if (getArguments() != null)
-            calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
+    private void showDate(Calendar calendar) {
         dpDate.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         etHour.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         etMinute.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
