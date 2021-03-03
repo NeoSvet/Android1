@@ -26,13 +26,13 @@ import java.util.List;
 
 import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
-import ru.neosvet.notes.list.NotesHandler;
+import ru.neosvet.notes.list.ListHandler;
 import ru.neosvet.notes.list.SwipeHelper;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Remover;
 
-public class ListFragment extends Fragment implements NotesHandler {
+public class ListFragment extends Fragment implements ListHandler {
     private final NotesAdapter adapter = new NotesAdapter(this);
     private final Handler updateAdapter = new Handler(msg -> {
         adapter.notifyDataSetChanged();

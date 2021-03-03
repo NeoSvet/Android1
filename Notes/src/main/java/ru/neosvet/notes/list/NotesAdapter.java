@@ -16,10 +16,10 @@ import ru.neosvet.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
     private List<ListItem> data = new ArrayList<>();
-    private final NotesHandler handler;
+    private final ListHandler handler;
     private boolean isFinish = false;
 
-    public NotesAdapter(NotesHandler handler) {
+    public NotesAdapter(ListHandler handler) {
         this.handler = handler;
     }
 
