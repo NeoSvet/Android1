@@ -1,4 +1,4 @@
-package ru.neosvet.notes.exchange;
+package ru.neosvet.notes.observer;
 
 public class PublisherDate {
     private static ObserverDate observer;

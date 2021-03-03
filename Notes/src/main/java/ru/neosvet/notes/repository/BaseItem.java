@@ -1,4 +1,4 @@
-package ru.neosvet.notes.note;
+package ru.neosvet.notes.repository;
 
 import java.util.Calendar;
 

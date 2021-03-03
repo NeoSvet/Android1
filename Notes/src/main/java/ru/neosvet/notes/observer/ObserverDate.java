@@ -1,4 +1,4 @@
-package ru.neosvet.notes.exchange;
+package ru.neosvet.notes.observer;
 
 public interface ObserverDate {
     void updateDate(long date);

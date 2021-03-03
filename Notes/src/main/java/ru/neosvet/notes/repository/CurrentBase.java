@@ -1,4 +1,4 @@
-package ru.neosvet.notes.note;
+package ru.neosvet.notes.repository;
 
 public class CurrentBase {
     private static Base base = null;

@@ -28,9 +28,9 @@ import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.NotesHandler;
 import ru.neosvet.notes.list.SwipeHelper;
-import ru.neosvet.notes.note.BaseItem;
-import ru.neosvet.notes.note.CurrentBase;
-import ru.neosvet.notes.note.Remover;
+import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.CurrentBase;
+import ru.neosvet.notes.repository.Remover;
 
 public class ListFragment extends Fragment implements NotesHandler {
     private final NotesAdapter adapter = new NotesAdapter(this);

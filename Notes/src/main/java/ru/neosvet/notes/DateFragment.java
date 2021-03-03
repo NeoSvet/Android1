@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
-import ru.neosvet.notes.exchange.PublisherDate;
+import ru.neosvet.notes.observer.PublisherDate;
 
 public class DateFragment extends Fragment {
     public static final String ARG_TIME = "time";

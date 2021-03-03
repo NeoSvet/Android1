@@ -1,4 +1,4 @@
-package ru.neosvet.notes.note;
+package ru.neosvet.notes.repository;
 
 public class Remover {
     private final int delay;

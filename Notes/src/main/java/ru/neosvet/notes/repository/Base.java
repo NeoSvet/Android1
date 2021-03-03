@@ -1,4 +1,4 @@
-package ru.neosvet.notes.note;
+package ru.neosvet.notes.repository;
 
 public interface Base {
     void open();

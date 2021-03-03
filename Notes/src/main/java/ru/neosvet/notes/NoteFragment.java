@@ -16,17 +16,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
-import ru.neosvet.notes.exchange.ObserverDate;
-import ru.neosvet.notes.exchange.PublisherDate;
-import ru.neosvet.notes.note.BaseItem;
-import ru.neosvet.notes.note.CurrentBase;
+import ru.neosvet.notes.observer.ObserverDate;
+import ru.neosvet.notes.observer.PublisherDate;
+import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.CurrentBase;
 
 public class NoteFragment extends Fragment implements ObserverDate {
     private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",

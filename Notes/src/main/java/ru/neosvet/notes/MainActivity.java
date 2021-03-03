@@ -15,9 +15,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 
-import ru.neosvet.notes.exchange.ObserverDate;
-import ru.neosvet.notes.exchange.PublisherDate;
-import ru.neosvet.notes.note.CurrentBase;
+import ru.neosvet.notes.observer.ObserverDate;
+import ru.neosvet.notes.observer.PublisherDate;
+import ru.neosvet.notes.repository.CurrentBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String MAIN_STACK = "stack", NOTE_ID = "note", ORIENTATION = "orientation",
