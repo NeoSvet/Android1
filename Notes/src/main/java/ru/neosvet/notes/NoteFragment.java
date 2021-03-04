@@ -140,7 +140,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
             MainActivity main = (MainActivity) getActivity();
-            main.openDate(CurrentBase.get().getNote(noteId).getDate());
+            main.openDate(noteId, CurrentBase.get().getNote(noteId).getDate());
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {

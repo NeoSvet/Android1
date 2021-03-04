@@ -18,9 +18,8 @@ import com.google.android.material.navigation.NavigationView;
 import ru.neosvet.notes.repository.CurrentBase;
 
 public class MainActivity extends AppCompatActivity {
-    private final String MAIN_STACK = "stack", NOTE_ID = "note", ORIENTATION = "orientation",
+    private final String MAIN_STACK = "stack", ORIENTATION = "orientation",
             TAG_LIST = "list", TAG_NOTE = "note", TAG_DATE = "date";
-    private int noteId = -1;
     private boolean isLandOrientation;
     private FragmentManager manager;
 
@@ -91,21 +90,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        noteId = savedInstanceState.getInt(NOTE_ID);
-        if (noteId > -1)
-            checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
+        checkOrientation(savedInstanceState.getBoolean(ORIENTATION));
     }
 
     private void checkOrientation(boolean isPrevLand) {
         if (isPrevLand == isLandOrientation)
             return;
 
-        if (noteId == -1)
-            return;
-
         Fragment note = manager.findFragmentByTag(TAG_NOTE);
         if (note == null) {
-            openNote(noteId);
             return;
         }
         Bundle args = note.getArguments();
@@ -115,8 +108,10 @@ public class MainActivity extends AppCompatActivity {
         note = new NoteFragment();
         note.setArguments(args);
         long time = 0;
+        int id = -1;
         Fragment date = manager.findFragmentByTag(TAG_DATE);
         if (date != null) {
+            id = date.getArguments().getInt(DateFragment.ARG_ID);
             time = date.getArguments().getLong(DateFragment.ARG_TIME);
             super.onBackPressed(); //close date
         }
@@ -131,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
                     .addToBackStack(MAIN_STACK)
                     .commit();
         }
-        if (time > 0)
-            openDate(time);
+        if (id > -1)
+            openDate(id, time);
     }
 
     @Override
@@ -144,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(ORIENTATION, isLandOrientation);
-        outState.putInt(NOTE_ID, noteId);
         super.onSaveInstanceState(outState);
     }
 
@@ -156,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openNote(int id) {
-        noteId = id;
         NoteFragment note = NoteFragment.newInstance(id);
         if (isLandOrientation) {
             manager.beginTransaction()
@@ -170,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void openDate(long time) {
+    public void openDate(int noteId, long time) {
         manager.beginTransaction()
                 .replace(R.id.main_container, DateFragment.newInstance(noteId, time), TAG_DATE)
                 .addToBackStack(MAIN_STACK)
@@ -179,11 +172,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (noteId > -1 && manager.findFragmentByTag(TAG_DATE) == null) {
+        if (manager.findFragmentByTag(TAG_DATE) == null) {
             NoteFragment note = (NoteFragment) manager.findFragmentByTag(TAG_NOTE);
             if (note != null && note.onBack())
                 return;
-            noteId = -1;
         }
         super.onBackPressed();
     }

@@ -6,7 +6,7 @@ import java.util.List;
 public class PublisherNote {
     private static List<ObserverNote> observers = new ArrayList<>();
     private static String title = null, description = null;
-    private static int id;
+    private static int id = -1;
     private static long date = -1;
     private static boolean deleted = false;
 
@@ -54,7 +54,8 @@ public class PublisherNote {
         PublisherNote.deleted = false;
     }
 
-    private static void clear() {
+    public static void clear() {
+        PublisherNote.id = -1;
         PublisherNote.date = -1;
         PublisherNote.title = null;
         PublisherNote.description = null;

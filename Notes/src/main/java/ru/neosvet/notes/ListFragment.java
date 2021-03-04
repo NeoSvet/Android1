@@ -205,21 +205,11 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     }
 
     private int findPosById(int id) {
-        if (adapter.getItemCount() == 0)
-            return -1;
-        int i = 0;
-        while (true) {
-            if (adapter.getItem(i).getId() == id) {
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            if (adapter.getItem(i).getId() == id)
                 return i;
-            }
-            i++;
-            if (i == adapter.getItemCount()) {
-                ListItem[] list = getList(i);
-                if (list == null)
-                    return -1;
-                adapter.addItems(list);
-            }
         }
+        return -1;
     }
 
     @Override
@@ -243,6 +233,11 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
 
     @Override
     public void delete(int id) {
+        BaseItem item = CurrentBase.get().getNote(id);
+        if (item == null) {
+            PublisherNote.clear();
+            return;
+        }
         int pos = findPosById(id);
         if (pos == -1)
             deleteNote(id);
