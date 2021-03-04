@@ -21,4 +21,12 @@ public class ListItem {
     public String getSubtitle() {
         return subtitle;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
 }
