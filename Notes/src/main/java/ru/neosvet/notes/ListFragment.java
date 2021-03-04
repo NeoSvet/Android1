@@ -32,7 +32,7 @@ import ru.neosvet.notes.observer.ObserverNote;
 import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
-import ru.neosvet.notes.repository.Remover;
+import ru.neosvet.notes.repository.Deleter;
 
 public class ListFragment extends Fragment implements ListHandler, ObserverNote {
     private final NotesAdapter adapter = new NotesAdapter(this);
@@ -40,9 +40,9 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         adapter.notifyDataSetChanged();
         return false;
     });
-    private final int TIME_TO_REMOVE = 3000;
+    private final int TIME_TO_DELETE = 3000;
     private RecyclerView recyclerView;
-    private Remover remover;
+    private Deleter deleter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,8 +102,8 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     public void onStop() {
         super.onStop();
         PublisherNote.unsubscribe(this);
-        if (remover != null && remover.isStart())
-            remover.now();
+        if (deleter != null && deleter.isStart())
+            deleter.now();
     }
 
     private void initList(View view) {
@@ -151,20 +151,20 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         int id = item.getId();
         adapter.removeItem(pos);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
+        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PublisherNote.cancelDelete(id);
-                remover.cancel();
+                deleter.cancel();
                 adapter.restoreItem(item, pos);
                 recyclerView.scrollToPosition(pos);
             }
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        remover = new Remover(TIME_TO_REMOVE, id);
-        remover.start();
+        deleter = new Deleter(TIME_TO_DELETE, id);
+        deleter.start();
     }
 
     private int getColor(int id) {
@@ -251,17 +251,17 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     }
 
     private void deleteNote(int id) {
-        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
+        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PublisherNote.cancelDelete(id);
-                remover.cancel();
+                deleter.cancel();
             }
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        remover = new Remover(TIME_TO_REMOVE, id);
-        remover.start();
+        deleter = new Deleter(TIME_TO_DELETE, id);
+        deleter.start();
     }
 }

@@ -1,12 +1,12 @@
 package ru.neosvet.notes.repository;
 
-public class Remover {
+public class Deleter {
     private final int delay;
     private final int id;
     private Thread timer;
     private boolean isStart = false;
 
-    public Remover(int delay, int id) {
+    public Deleter(int delay, int id) {
         this.delay = delay;
         this.id = id;
     }
