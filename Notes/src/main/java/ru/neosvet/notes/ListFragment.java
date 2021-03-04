@@ -222,6 +222,8 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     }
 
     public int findPosById(int id) {
+        if (adapter.getItemCount() == 0)
+            return -1;
         int i = 0;
         while (true) {
             if (adapter.getItem(i).getId() == id) {
@@ -239,8 +241,6 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
 
     @Override
     public void updateDate(int id, long date) {
-        if (adapter.getItemCount() == 0)
-            return;
         int pos = findPosById(id);
         if (pos == -1)
             return;
@@ -251,8 +251,6 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
 
     @Override
     public void updateContent(int id, String title, String description) {
-        if (adapter.getItemCount() == 0)
-            return;
         int pos = findPosById(id);
         if (pos == -1)
             return;
