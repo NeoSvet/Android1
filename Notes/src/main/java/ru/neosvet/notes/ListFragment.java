@@ -24,15 +24,17 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import ru.neosvet.notes.list.ListHandler;
 import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
-import ru.neosvet.notes.list.ListHandler;
 import ru.neosvet.notes.list.SwipeHelper;
+import ru.neosvet.notes.observer.ObserverNote;
+import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Remover;
 
-public class ListFragment extends Fragment implements ListHandler {
+public class ListFragment extends Fragment implements ListHandler, ObserverNote {
     private final NotesAdapter adapter = new NotesAdapter(this);
     private final Handler updateAdapter = new Handler(msg -> {
         adapter.notifyDataSetChanged();
@@ -99,8 +101,16 @@ public class ListFragment extends Fragment implements ListHandler {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        PublisherNote.queryChanges(this);
+        PublisherNote.subscribe(this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+        PublisherNote.unsubscribe(this);
         if (remover != null && remover.isStart())
             remover.now();
     }
@@ -225,5 +235,28 @@ public class ListFragment extends Fragment implements ListHandler {
                 adapter.addItems(list);
             }
         }
+    }
+
+    @Override
+    public void updateDate(int id, long date) {
+        if (adapter.getItemCount() == 0)
+            return;
+        int pos = findPosById(id);
+        if (pos == -1)
+            return;
+        BaseItem item = new BaseItem(id, null, date, null);
+        adapter.getItem(pos).setSubtitle(item.getDateString());
+        adapter.notifyItemChanged(pos);
+    }
+
+    @Override
+    public void updateContent(int id, String title, String description) {
+        if (adapter.getItemCount() == 0)
+            return;
+        int pos = findPosById(id);
+        if (pos == -1)
+            return;
+        adapter.getItem(pos).setTitle(title);
+        adapter.notifyItemChanged(pos);
     }
 }

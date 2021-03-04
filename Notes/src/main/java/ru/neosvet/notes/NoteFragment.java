@@ -1,7 +1,5 @@
 package ru.neosvet.notes;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
@@ -22,12 +20,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
-import ru.neosvet.notes.observer.ObserverDate;
-import ru.neosvet.notes.observer.PublisherDate;
+import ru.neosvet.notes.observer.ObserverNote;
+import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 
-public class NoteFragment extends Fragment implements ObserverDate {
+public class NoteFragment extends Fragment implements ObserverNote {
     private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",
             ARG_TITLE = "title", ARG_DES = "des";
     private TextInputEditText etTitle, etDescription;
@@ -118,12 +116,17 @@ public class NoteFragment extends Fragment implements ObserverDate {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        PublisherNote.queryChanges(this);
+        PublisherNote.subscribe(this);
+    }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            PublisherDate.subscribe(this);
+    public void onStop() {
+        super.onStop();
+        PublisherNote.unsubscribe(this);
     }
 
     public boolean onBack() {
@@ -141,7 +144,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
-                updateNote(etTitle.getText().toString(),
+                PublisherNote.notifyContent(noteId,
+                        etTitle.getText().toString(),
                         etDescription.getText().toString());
                 closeEditing();
             } else {
@@ -190,11 +194,20 @@ public class NoteFragment extends Fragment implements ObserverDate {
     }
 
     @Override
-    public void updateDate(long date) {
-        BaseItem note = CurrentBase.get().getNote(noteId);
+    public void updateDate(int id, long date) {
+        if (id != noteId)
+            return;
+        BaseItem note = CurrentBase.get().getNote(id);
         if (note == null)
             return;
         note.setDate(date);
         tvDate.setText(note.getDateString());
+    }
+
+    @Override
+    public void updateContent(int id, String title, String description) {
+        if (id != noteId)
+            return;
+        updateNote(title, description);
     }
 }

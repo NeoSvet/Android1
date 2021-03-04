@@ -15,11 +15,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 
-import ru.neosvet.notes.observer.ObserverDate;
-import ru.neosvet.notes.observer.PublisherDate;
 import ru.neosvet.notes.repository.CurrentBase;
 
-public class MainActivity extends AppCompatActivity implements ObserverDate {
+public class MainActivity extends AppCompatActivity {
     private final String MAIN_STACK = "stack", NOTE_ID = "note", ORIENTATION = "orientation",
             TAG_LIST = "list", TAG_NOTE = "note", TAG_DATE = "date";
     private int noteId = -1;
@@ -138,16 +136,8 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (!isLandOrientation)
-            PublisherDate.subscribe(this);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
-        PublisherDate.unsubscribe();
         CurrentBase.get().close();
     }
 
@@ -182,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
     public void openDate(long time) {
         manager.beginTransaction()
-                .replace(R.id.main_container, DateFragment.newInstance(time), TAG_DATE)
+                .replace(R.id.main_container, DateFragment.newInstance(noteId, time), TAG_DATE)
                 .addToBackStack(MAIN_STACK)
                 .commit();
     }
@@ -196,11 +186,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
             noteId = -1;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public void updateDate(long date) {
-        CurrentBase.get().getNote(noteId).setDate(date);
     }
 
     public void removeNoteFragment(int id) {

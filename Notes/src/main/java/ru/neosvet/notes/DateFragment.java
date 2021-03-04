@@ -21,18 +21,20 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
-import ru.neosvet.notes.observer.PublisherDate;
+import ru.neosvet.notes.observer.PublisherNote;
 
 public class DateFragment extends Fragment {
-    public static final String ARG_TIME = "time";
+    public static final String ARG_TIME = "time", ARG_ID = "id";
+    private int noteId;
     private DatePicker dpDate;
     private TextInputEditText etHour, etMinute, etFocused;
     private MaterialButton btnSave;
     private Calendar calendar = Calendar.getInstance();
 
-    public static DateFragment newInstance(long time) {
+    public static DateFragment newInstance(int id, long time) {
         DateFragment fragment = new DateFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_ID, id);
         args.putLong(ARG_TIME, time);
         fragment.setArguments(args);
         return fragment;
@@ -67,8 +69,10 @@ public class DateFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSave);
         hideTitleDatePicker();
 
-        if (getArguments() != null)
+        if (getArguments() != null) {
+            noteId = getArguments().getInt(ARG_ID);
             calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
+        }
         showDate(calendar);
         initListeners();
     }
@@ -81,7 +85,7 @@ public class DateFragment extends Fragment {
 
     private void initListeners() {
         btnSave.setOnClickListener(v -> {
-            PublisherDate.notify(getCurrentDate());
+            PublisherNote.notifyDate(noteId, getCurrentDate());
             requireActivity().onBackPressed();
         });
 
