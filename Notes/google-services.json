@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "289500141375",
+    "project_id": "neonotes-730dd",
+    "storage_bucket": "neonotes-730dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289500141375:android:58b95dec5ede4bc860658a",
+        "android_client_info": {
+          "package_name": "ru.neosvet.notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289500141375-ai4j8hvl43phflmgvdl8j0grtlti8gui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyICly4Wf-WMqzbLlSa27mmnFQgrO3c60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289500141375-ai4j8hvl43phflmgvdl8j0grtlti8gui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
