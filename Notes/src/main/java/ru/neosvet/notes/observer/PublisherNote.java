@@ -8,6 +8,7 @@ public class PublisherNote {
     private static String title = null, description = null;
     private static int id;
     private static long date = -1;
+    private static boolean deleted = false;
 
     public static void subscribe(ObserverNote observer) {
         observers.add(observer);
@@ -38,13 +39,33 @@ public class PublisherNote {
         }
     }
 
+    public static void notifyDelete(int id) {
+        clear();
+        PublisherNote.id = id;
+        PublisherNote.deleted = true;
+        for (ObserverNote observer : observers) {
+            observer.delete(id);
+        }
+    }
+
+    public static void cancelDelete(int id) {
+        if (PublisherNote.id != id)
+            return;
+        PublisherNote.deleted = false;
+    }
+
     private static void clear() {
         PublisherNote.date = -1;
         PublisherNote.title = null;
         PublisherNote.description = null;
+        PublisherNote.deleted = false;
     }
 
     public static void queryChanges(ObserverNote observer) {
+        if (deleted) {
+            observer.delete(id);
+            return;
+        }
         if (date != -1)
             observer.updateDate(id, date);
         if (title != null)

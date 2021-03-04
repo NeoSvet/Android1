@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             //пришлось повторить код, ибо если использовать openList(),
             //то будет добавлен в стэк и при возрате назад будет пустой экран
             manager.beginTransaction()
-                    .replace(R.id.main_container, ListFragment.newInstance(-1), TAG_LIST)
+                    .replace(R.id.main_container, new ListFragment(), TAG_LIST)
                     .commit();
         }
     }
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openList() {
         manager.beginTransaction()
-                .replace(R.id.main_container, ListFragment.newInstance(-1), TAG_LIST)
+                .replace(R.id.main_container, new ListFragment(), TAG_LIST)
                 .addToBackStack(MAIN_STACK)
                 .commit();
     }
@@ -186,31 +186,5 @@ public class MainActivity extends AppCompatActivity {
             noteId = -1;
         }
         super.onBackPressed();
-    }
-
-    public void removeNoteFragment(int id) {
-        if (!isLandOrientation || id != noteId)
-            return;
-        noteId = -1;
-        Fragment note = manager.findFragmentByTag(TAG_NOTE);
-        manager.beginTransaction().remove(note).commit();
-    }
-
-    public void removeNote(int id) {
-        if (noteId == id)
-            noteId = -1;
-        Fragment note = manager.findFragmentByTag(TAG_NOTE);
-        manager.beginTransaction().remove(note).commit();
-        if (isLandOrientation) {
-            ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
-            if (list != null) {
-                int pos = list.findPosById(id);
-                if (pos == -1)
-                    return;
-                list.removeItem(pos);
-                return;
-            }
-        }
-        openFragment(ListFragment.newInstance(id));
     }
 }

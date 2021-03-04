@@ -40,18 +40,9 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         adapter.notifyDataSetChanged();
         return false;
     });
-    private static final String ARG_ID_FOR_REMOVE = "ARG_REM_ID";
     private final int TIME_TO_REMOVE = 3000;
     private RecyclerView recyclerView;
     private Remover remover;
-
-    public static ListFragment newInstance(int id_for_remove) {
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_ID_FOR_REMOVE, id_for_remove);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,7 +122,7 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                removeItem(pos);
+                                PublisherNote.notifyDelete(adapter.getItem(pos).getId());
                             }
                         }
                 ));
@@ -155,17 +146,16 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         Toast.makeText(requireContext(), getResources().getString(R.string.share) + pos, Toast.LENGTH_LONG).show();
     }
 
-    public void removeItem(int pos) {
+    private void removeItem(int pos) {
         final ListItem item = adapter.getItem(pos);
         int id = item.getId();
         adapter.removeItem(pos);
-        MainActivity main = (MainActivity) getActivity();
-        main.removeNoteFragment(id);
 
         Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PublisherNote.cancelDelete(id);
                 remover.cancel();
                 adapter.restoreItem(item, pos);
                 recyclerView.scrollToPosition(pos);
@@ -189,13 +179,6 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     private void loadList() {
         if (adapter.getItemCount() == 0)
             adapter.addItems(getList(0));
-        int id = getArguments().getInt(ARG_ID_FOR_REMOVE, -1);
-        if (id > -1) {
-            int pos = findPosById(id);
-            recyclerView.scrollToPosition(pos);
-            removeItem(pos);
-            setArguments(new Bundle());
-        }
     }
 
     private ListItem[] getList(int offset) {
@@ -221,7 +204,7 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         updateAdapter.sendEmptyMessage(0);
     }
 
-    public int findPosById(int id) {
+    private int findPosById(int id) {
         if (adapter.getItemCount() == 0)
             return -1;
         int i = 0;
@@ -256,5 +239,29 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
             return;
         adapter.getItem(pos).setTitle(title);
         adapter.notifyItemChanged(pos);
+    }
+
+    @Override
+    public void delete(int id) {
+        int pos = findPosById(id);
+        if (pos == -1)
+            deleteNote(id);
+        else
+            removeItem(pos);
+    }
+
+    private void deleteNote(int id) {
+        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_removed, TIME_TO_REMOVE);
+        snackbar.setAction(R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PublisherNote.cancelDelete(id);
+                remover.cancel();
+            }
+        });
+        snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
+        snackbar.show();
+        remover = new Remover(TIME_TO_REMOVE, id);
+        remover.start();
     }
 }

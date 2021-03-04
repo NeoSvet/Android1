@@ -1,5 +1,6 @@
 package ru.neosvet.notes;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
@@ -109,8 +110,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                MainActivity main = (MainActivity) getActivity();
-                main.removeNote(noteId);
+                PublisherNote.notifyDelete(noteId);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -209,5 +209,18 @@ public class NoteFragment extends Fragment implements ObserverNote {
         if (id != noteId)
             return;
         updateNote(title, description);
+    }
+
+    @Override
+    public void delete(int id) {
+        if (id != noteId)
+            return;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getFragmentManager().beginTransaction().remove(this).commit();
+        } else {
+            closeEditing();
+            getActivity().onBackPressed();
+        }
+
     }
 }
