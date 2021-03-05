@@ -20,6 +20,7 @@
     <string name="now">Сейчас</string>
     <string name="add">Добавить</string>
     <string name="load">Загрузка</string>
+    <string name="error">Ошибка</string>
     <string name="google_auth">Аутентификация через Google</string>
     <string name="sign_out">Выйти</string>
     <string name="sign_failure">Вход не удался</string>

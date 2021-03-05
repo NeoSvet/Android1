@@ -197,7 +197,8 @@ public class MainActivity extends AppCompatActivity implements BaseHandler {
     @Override
     public void onError(String message) {
         tvStatus.setVisibility(View.GONE);
-        Toast.makeText(this, "Error: " + message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.error)
+                + ": " + message, Toast.LENGTH_LONG).show();
     }
 
     @Override
