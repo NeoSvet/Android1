@@ -136,7 +136,7 @@ public class FireBase implements Base, OnFailureListener {
         BaseItem note = getNote(id);
         final Map<String, Object> map = getMapFrom(note);
         base.collection(TABLE)
-                .document(String.valueOf(last_id))
+                .document(String.valueOf(id))
                 .set(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
