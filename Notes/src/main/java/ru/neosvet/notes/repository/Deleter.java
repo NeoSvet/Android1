@@ -15,7 +15,7 @@ public class Deleter {
         timer = new Thread(() -> {
             try {
                 Thread.sleep(delay);
-                CurrentBase.get().removeNote(id);
+                CurrentBase.get().deleteNote(id);
             } catch (InterruptedException e) {
             }
             isStart = false;
@@ -31,7 +31,7 @@ public class Deleter {
 
     public void now() {
         cancel();
-        CurrentBase.get().removeNote(id);
+        CurrentBase.get().deleteNote(id);
     }
 
     public boolean isStart() {

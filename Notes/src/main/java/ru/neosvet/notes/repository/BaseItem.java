@@ -3,15 +3,27 @@ package ru.neosvet.notes.repository;
 import java.util.Calendar;
 
 public class BaseItem {
-    private String title, description;
+    private String title, description, dateString = null;
     private int id;
     private long date;
+
+    public BaseItem() {
+
+    }
 
     public BaseItem(int id, String title, long date, String description) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.description = description;
+        initDateString();
+    }
+
+    private void initDateString() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(date);
+        dateString = int2str(c.get(Calendar.DAY_OF_MONTH)) + "." + int2str(c.get(Calendar.MONTH) + 1) + "." +
+                c.get(Calendar.YEAR) + ", " + int2str(c.get(Calendar.HOUR_OF_DAY)) + ":" + int2str(c.get(Calendar.MINUTE));
     }
 
     public int getId() {
@@ -31,10 +43,9 @@ public class BaseItem {
     }
 
     public String getDateString() {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(date);
-        return int2str(c.get(Calendar.DAY_OF_MONTH)) + "." + int2str(c.get(Calendar.MONTH) + 1) + "." +
-                c.get(Calendar.YEAR) + ", " + int2str(c.get(Calendar.HOUR_OF_DAY)) + ":" + int2str(c.get(Calendar.MINUTE));
+        if (dateString == null)
+            initDateString();
+        return dateString;
     }
 
     public static String int2str(int i) {
@@ -46,6 +57,7 @@ public class BaseItem {
 
     public void setDate(long date) {
         this.date = date;
+        initDateString();
     }
 
     public String getDescription() {

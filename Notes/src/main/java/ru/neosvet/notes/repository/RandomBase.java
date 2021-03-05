@@ -8,13 +8,20 @@ import java.util.Random;
 public class RandomBase implements Base {
     private int last_id = -1;
     private List<BaseItem> notes = new ArrayList<>();
+    private BaseHandler handler;
 
     @Override
-    public void open() {
+    public void open(BaseHandler handler) {
+        this.handler = handler;
     }
 
     @Override
-    public BaseItem[] getList(int offset, int limit) {
+    public void loadNextPage() {
+    }
+
+    @Override
+    public BaseItem[] getList(int offset) {
+        int limit = LIMIT;
         if (offset + limit > notes.size())
             generateTo(offset + limit);
         BaseItem[] m = new BaseItem[limit];
@@ -74,21 +81,25 @@ public class RandomBase implements Base {
     }
 
     @Override
-    public boolean removeNote(int id) {
+    public void deleteNote(int id) {
         int index = findIndexById(id);
         if (index == -1)
-            return false;
+            handler.onError("No have item");
         notes.remove(index);
-        return true;
+        handler.deleteNote(id);
     }
 
     @Override
-    public BaseItem addNote() {
+    public void pushNote(int id) {
+    }
+
+    @Override
+    public void addNote() {
         last_id++;
         BaseItem item = new BaseItem(last_id, "Note #" + notes.size() + ", id " + last_id,
                 System.currentTimeMillis(), "Des #" + notes.size());
         notes.add(item);
-        return item;
+        handler.addNote(item);
     }
 
     @Override

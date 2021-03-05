@@ -3,11 +3,12 @@ package ru.neosvet.notes.observer;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.neosvet.notes.repository.BaseItem;
+
 public class PublisherNote {
     private static List<ObserverNote> observers = new ArrayList<>();
-    private static String title = null, description = null;
+    private static BaseItem note = null;
     private static int id = -1;
-    private static long date = -1;
     private static boolean deleted = false;
 
     public static void subscribe(ObserverNote observer) {
@@ -18,28 +19,17 @@ public class PublisherNote {
         observers.remove(observer);
     }
 
-    public static void notifyDate(int id, long date) {
-        if (PublisherNote.id != id)
+    public static void notifyNote(BaseItem note) {
+        if (PublisherNote.id != note.getId())
             clear();
-        PublisherNote.id = id;
-        PublisherNote.date = date;
+        PublisherNote.id = note.getId();
+        PublisherNote.note = note;
         for (ObserverNote observer : observers) {
-            observer.updateDate(id, date);
+            observer.updateNote(note);
         }
     }
 
-    public static void notifyContent(int id, String title, String description) {
-        if (PublisherNote.id != id)
-            clear();
-        PublisherNote.id = id;
-        PublisherNote.title = title;
-        PublisherNote.description = description;
-        for (ObserverNote observer : observers) {
-            observer.updateContent(id, title, description);
-        }
-    }
-
-    public static void notifyDelete(int id) {
+    public static void runDelete(int id) {
         clear();
         PublisherNote.id = id;
         PublisherNote.deleted = true;
@@ -56,9 +46,7 @@ public class PublisherNote {
 
     public static void clear() {
         PublisherNote.id = -1;
-        PublisherNote.date = -1;
-        PublisherNote.title = null;
-        PublisherNote.description = null;
+        PublisherNote.note = null;
         PublisherNote.deleted = false;
     }
 
@@ -67,9 +55,7 @@ public class PublisherNote {
             observer.delete(id);
             return;
         }
-        if (date != -1)
-            observer.updateDate(id, date);
-        if (title != null)
-            observer.updateContent(id, title, description);
+        if (id != -1)
+            observer.updateNote(note);
     }
 }

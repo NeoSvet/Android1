@@ -3,6 +3,8 @@ package ru.neosvet.notes;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,14 +16,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textview.MaterialTextView;
 
+import ru.neosvet.notes.observer.PublisherNote;
+import ru.neosvet.notes.repository.BaseHandler;
+import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BaseHandler {
     private final String MAIN_STACK = "stack", ORIENTATION = "orientation",
             TAG_LIST = "list", TAG_NOTE = "note", TAG_DATE = "date";
     private boolean isLandOrientation;
     private FragmentManager manager;
+    private MaterialTextView tvStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         initDrawerMenu(toolbar);
         isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         manager = getSupportFragmentManager();
+        tvStatus = findViewById(R.id.tvStatus);
+        CurrentBase.init(this);
 
         if (savedInstanceState == null) {
             //пришлось повторить код, ибо если использовать openList(),
@@ -178,5 +187,45 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void startProgress() {
+        tvStatus.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onError(String message) {
+        tvStatus.setVisibility(View.GONE);
+        Toast.makeText(this, "Error: " + message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void listIsReady() {
+        tvStatus.setVisibility(View.GONE);
+        ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
+        if (list == null)
+            return;
+        list.refreshList();
+    }
+
+    @Override
+    public void deleteNote(int id) {
+        tvStatus.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void addNote(BaseItem note) {
+        tvStatus.setVisibility(View.GONE);
+        ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
+        if (list == null)
+            return;
+        list.addNote(note);
+    }
+
+    @Override
+    public void updateNote(BaseItem note) {
+        tvStatus.setVisibility(View.GONE);
+        PublisherNote.notifyNote(note);
     }
 }

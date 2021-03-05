@@ -1,15 +1,21 @@
 package ru.neosvet.notes.repository;
 
 public interface Base {
-    void open();
+    int LIMIT = 10;
 
-    BaseItem[] getList(int offset, int limit);
+    void open(BaseHandler handler);
+
+    void loadNextPage();
+
+    BaseItem[] getList(int offset);
 
     BaseItem getNote(int id);
 
-    boolean removeNote(int id);
+    void deleteNote(int id);
 
-    BaseItem addNote();
+    void pushNote(int id);
+
+    void addNote();
 
     void close();
 

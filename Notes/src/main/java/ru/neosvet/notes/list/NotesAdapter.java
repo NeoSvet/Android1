@@ -17,13 +17,14 @@ import ru.neosvet.notes.R;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
     private List<ListItem> data = new ArrayList<>();
     private final ListHandler handler;
-    private boolean isFinish = false;
+    private boolean isFinish = false, isWait = false;
 
     public NotesAdapter(ListHandler handler) {
         this.handler = handler;
     }
 
     public void addItems(ListItem[] items) {
+        isWait = false;
         if (items == null) {
             isFinish = true;
             return;
@@ -48,8 +49,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
         holder.onBind(data.get(position));
-        if (!isFinish && position == data.size() - 1)
-            handler.updateList(data.size());
+        if (!isWait && !isFinish && position == data.size() - 1) {
+            handler.updateList();
+            isWait = true;
+        }
     }
 
     @Override

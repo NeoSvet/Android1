@@ -110,7 +110,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                PublisherNote.notifyDelete(noteId);
+                PublisherNote.runDelete(noteId);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -144,9 +144,10 @@ public class NoteFragment extends Fragment implements ObserverNote {
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
-                PublisherNote.notifyContent(noteId,
-                        etTitle.getText().toString(),
-                        etDescription.getText().toString());
+                BaseItem note = CurrentBase.get().getNote(noteId);
+                note.setTitle(etTitle.getText().toString());
+                note.setDescription(etDescription.getText().toString());
+                CurrentBase.get().pushNote(noteId);
                 closeEditing();
             } else {
                 etTitle.setText(tvTitle.getText());
@@ -174,16 +175,6 @@ public class NoteFragment extends Fragment implements ObserverNote {
         tvDescription.setVisibility(View.VISIBLE);
     }
 
-    private void updateNote(String title, String des) {
-        BaseItem note = CurrentBase.get().getNote(noteId);
-        if (note == null)
-            return;
-        note.setTitle(title);
-        note.setDescription(des);
-        tvTitle.setText(title);
-        tvDescription.setText(des);
-    }
-
     private void loadNote() {
         BaseItem note = CurrentBase.get().getNote(noteId);
         if (note == null)
@@ -194,21 +185,12 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     @Override
-    public void updateDate(int id, long date) {
-        if (id != noteId)
+    public void updateNote(BaseItem note) {
+        if (note.getId() != noteId)
             return;
-        BaseItem note = CurrentBase.get().getNote(id);
-        if (note == null)
-            return;
-        note.setDate(date);
+        tvTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
-    }
-
-    @Override
-    public void updateContent(int id, String title, String description) {
-        if (id != noteId)
-            return;
-        updateNote(title, description);
+        tvDescription.setText(note.getDescription());
     }
 
     @Override

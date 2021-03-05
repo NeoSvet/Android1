@@ -3,7 +3,6 @@ package ru.neosvet.notes;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,10 +35,6 @@ import ru.neosvet.notes.repository.Deleter;
 
 public class ListFragment extends Fragment implements ListHandler, ObserverNote {
     private final NotesAdapter adapter = new NotesAdapter(this);
-    private final Handler updateAdapter = new Handler(msg -> {
-        adapter.notifyDataSetChanged();
-        return false;
-    });
     private final int TIME_TO_DELETE = 3000;
     private RecyclerView recyclerView;
     private Deleter deleter;
@@ -76,19 +71,25 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add) {
-            BaseItem note = CurrentBase.get().addNote();
-            adapter.addItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
-            recyclerView.scrollToPosition(0);
-            onItemClicked(note.getId());
+            CurrentBase.get().addNote();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addNote(@NonNull BaseItem note) {
+        adapter.addItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
+        recyclerView.scrollToPosition(0);
+        onItemClicked(note.getId());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
-        loadList();
+        if (adapter.getItemCount() == 0)
+            CurrentBase.get().loadNextPage();
+        else
+            adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -122,7 +123,7 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                PublisherNote.notifyDelete(adapter.getItem(pos).getId());
+                                PublisherNote.runDelete(adapter.getItem(pos).getId());
                             }
                         }
                 ));
@@ -176,13 +177,13 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
         //return  ResourcesCompat.getDrawable(getResources(), id, null);
     }
 
-    private void loadList() {
-        if (adapter.getItemCount() == 0)
-            adapter.addItems(getList(0));
+    public void refreshList() {
+        adapter.addItems(getList(adapter.getItemCount()));
+        adapter.notifyDataSetChanged();
     }
 
     private ListItem[] getList(int offset) {
-        BaseItem[] items = CurrentBase.get().getList(offset, 10);
+        BaseItem[] items = CurrentBase.get().getList(offset);
         if (items == null)
             return null;
         ListItem[] list = new ListItem[items.length];
@@ -199,9 +200,8 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     }
 
     @Override
-    public void updateList(int offset) {
-        adapter.addItems(getList(offset));
-        updateAdapter.sendEmptyMessage(0);
+    public void updateList() {
+        CurrentBase.get().loadNextPage();
     }
 
     private int findPosById(int id) {
@@ -213,21 +213,12 @@ public class ListFragment extends Fragment implements ListHandler, ObserverNote 
     }
 
     @Override
-    public void updateDate(int id, long date) {
-        int pos = findPosById(id);
+    public void updateNote(BaseItem note) {
+        int pos = findPosById(note.getId());
         if (pos == -1)
             return;
-        BaseItem item = new BaseItem(id, null, date, null);
-        adapter.getItem(pos).setSubtitle(item.getDateString());
-        adapter.notifyItemChanged(pos);
-    }
-
-    @Override
-    public void updateContent(int id, String title, String description) {
-        int pos = findPosById(id);
-        if (pos == -1)
-            return;
-        adapter.getItem(pos).setTitle(title);
+        adapter.getItem(pos).setTitle(note.getTitle());
+        adapter.getItem(pos).setSubtitle(note.getDateString());
         adapter.notifyItemChanged(pos);
     }
 
