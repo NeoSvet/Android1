@@ -44,6 +44,10 @@ public class FireBase implements Base, OnFailureListener {
                     @Override
                     public void onSuccess(QuerySnapshot docs) {
                         isBusy = false;
+                        if (docs.size() == 0) {
+                            handler.listIsReady();
+                            return;
+                        }
                         long id = (long) docs.getDocuments().get(0).get(COL_ID);
                         last_id = (int) id;
                         loadNextPage();
