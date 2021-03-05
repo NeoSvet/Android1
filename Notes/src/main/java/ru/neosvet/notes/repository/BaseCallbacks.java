@@ -1,6 +1,6 @@
 package ru.neosvet.notes.repository;
 
-public interface BaseHandler {
+public interface BaseCallbacks {
     void startProgress();
 
     void onError(String message);

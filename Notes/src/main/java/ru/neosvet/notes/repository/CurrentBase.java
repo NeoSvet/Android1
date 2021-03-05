@@ -3,12 +3,12 @@ package ru.neosvet.notes.repository;
 public class CurrentBase {
     private static Base base = null;
 
-    public static void init(BaseHandler handler) {
+    public static void init(BaseCallbacks callbacks) {
         if (base == null)
             base = new FireBase();
         else if (!base.isClosed())
             base.close();
-        base.open(handler);
+        base.open(callbacks);
     }
 
     public static Base get() {

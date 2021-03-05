@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-import ru.neosvet.notes.list.ListHandler;
+import ru.neosvet.notes.list.ListCallbacks;
 import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.SwipeHelper;
@@ -33,7 +33,7 @@ import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Deleter;
 
-public class ListFragment extends Fragment implements ListHandler, ObserverNote {
+public class ListFragment extends Fragment implements ListCallbacks, ObserverNote {
     private final NotesAdapter adapter = new NotesAdapter(this);
     private final int TIME_TO_DELETE = 3000;
     private RecyclerView recyclerView;

@@ -19,11 +19,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textview.MaterialTextView;
 
 import ru.neosvet.notes.observer.PublisherNote;
-import ru.neosvet.notes.repository.BaseHandler;
+import ru.neosvet.notes.repository.BaseCallbacks;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
 
-public class MainActivity extends AppCompatActivity implements BaseHandler {
+public class MainActivity extends AppCompatActivity implements BaseCallbacks {
     private final String MAIN_STACK = "stack", ORIENTATION = "orientation",
             TAG_LIST = "list", TAG_NOTE = "note", TAG_DATE = "date";
     private boolean isLandOrientation;

@@ -18,15 +18,15 @@ public class FireBase implements Base, OnFailureListener {
     public static final String TABLE = "notes", COL_ID = "id", COL_TITLE = "title",
             COL_DATE = "date", COL_DES = "description";
     private FirebaseFirestore base;
-    private BaseHandler handler;
+    private BaseCallbacks callbacks;
     private int last_id = -1;
     private DocumentSnapshot lastDoc = null;
     private List<BaseItem> notes = new ArrayList<>();
     private boolean isBusy = false;
 
     @Override
-    public void open(BaseHandler handler) {
-        this.handler = handler;
+    public void open(BaseCallbacks callbacks) {
+        this.callbacks = callbacks;
         base = FirebaseFirestore.getInstance();
         if (last_id == -1)
             loadLastId();
@@ -45,7 +45,7 @@ public class FireBase implements Base, OnFailureListener {
                     public void onSuccess(QuerySnapshot docs) {
                         isBusy = false;
                         if (docs.size() == 0) {
-                            handler.listIsReady();
+                            callbacks.listIsReady();
                             return;
                         }
                         long id = (long) docs.getDocuments().get(0).get(COL_ID);
@@ -60,7 +60,7 @@ public class FireBase implements Base, OnFailureListener {
         if (isBusy)
             return true;
         isBusy = true;
-        handler.startProgress();
+        callbacks.startProgress();
         return false;
     }
 
@@ -81,13 +81,13 @@ public class FireBase implements Base, OnFailureListener {
                         isBusy = false;
                         List<DocumentSnapshot> docs = response.getDocuments();
                         if (docs.size() == 0) {
-                            handler.listIsReady();
+                            callbacks.listIsReady();
                             return;
                         }
                         lastDoc = docs.get(docs.size() - 1);
                         List<BaseItem> items = response.toObjects(BaseItem.class);
                         notes.addAll(items);
-                        handler.listIsReady();
+                        callbacks.listIsReady();
                     }
                 })
                 .addOnFailureListener(this);
@@ -127,7 +127,7 @@ public class FireBase implements Base, OnFailureListener {
                     @Override
                     public void onSuccess(Void aVoid) {
                         isBusy = false;
-                        handler.deleteNote(id);
+                        callbacks.deleteNote(id);
                     }
                 })
                 .addOnFailureListener(this);
@@ -146,7 +146,7 @@ public class FireBase implements Base, OnFailureListener {
                     @Override
                     public void onSuccess(Void aVoid) {
                         isBusy = false;
-                        handler.updateNote(note);
+                        callbacks.updateNote(note);
                     }
                 })
                 .addOnFailureListener(this);
@@ -178,7 +178,7 @@ public class FireBase implements Base, OnFailureListener {
                     public void onSuccess(Void aVoid) {
                         isBusy = false;
                         notes.add(note);
-                        handler.addNote(note);
+                        callbacks.addNote(note);
                     }
                 })
                 .addOnFailureListener(this);
@@ -186,7 +186,7 @@ public class FireBase implements Base, OnFailureListener {
 
     public void onFailure(@NonNull Exception e) {
         isBusy = false;
-        handler.onError(e.getMessage());
+        callbacks.onError(e.getMessage());
     }
 
     @Override

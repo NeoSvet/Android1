@@ -1,6 +1,6 @@
 package ru.neosvet.notes.list;
 
-public interface ListHandler {
+public interface ListCallbacks {
     void onItemClicked(int id);
 
     void updateList();

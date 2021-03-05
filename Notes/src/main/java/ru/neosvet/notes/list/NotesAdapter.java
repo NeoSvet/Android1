@@ -16,11 +16,11 @@ import ru.neosvet.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
     private List<ListItem> data = new ArrayList<>();
-    private final ListHandler handler;
+    private final ListCallbacks callbacks;
     private boolean isFinish = false, isWait = false;
 
-    public NotesAdapter(ListHandler handler) {
-        this.handler = handler;
+    public NotesAdapter(ListCallbacks callbacks) {
+        this.callbacks = callbacks;
     }
 
     public void addItems(ListItem[] items) {
@@ -50,7 +50,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
         holder.onBind(data.get(position));
         if (!isWait && !isFinish && position == data.size() - 1) {
-            handler.updateList();
+            callbacks.updateList();
             isWait = true;
         }
     }
@@ -92,7 +92,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 @Override
                 public void onClick(View view) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        handler.onItemClicked(data.get(getAdapterPosition()).getId());
+                        callbacks.onItemClicked(data.get(getAdapterPosition()).getId());
                     }
                 }
             });
