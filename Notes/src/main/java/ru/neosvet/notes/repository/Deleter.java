@@ -3,8 +3,7 @@ package ru.neosvet.notes.repository;
 import android.os.Handler;
 
 public class Deleter {
-    private final int delay;
-    private final int id;
+    private final int noteId;
     private Thread timer;
     private boolean isStart = false;
     private final Handler doDelete = new Handler(msg -> {
@@ -12,16 +11,15 @@ public class Deleter {
         return false;
     });
 
-    public Deleter(int delay, int id) {
-        this.delay = delay;
-        this.id = id;
+    public Deleter(int noteId) {
+        this.noteId = noteId;
     }
 
-    public void start() {
+    public void deleteAfterMills(int mills) {
         timer = new Thread(() -> {
             try {
-                Thread.sleep(delay);
-                doDelete.sendEmptyMessage(id);
+                Thread.sleep(mills);
+                doDelete.sendEmptyMessage(noteId);
             } catch (InterruptedException e) {
             }
             isStart = false;
@@ -30,14 +28,15 @@ public class Deleter {
         isStart = true;
     }
 
-    public void cancel() {
+    public void abortDelayedDelete() {
         isStart = false;
         timer.interrupt();
     }
 
-    public void now() {
-        cancel();
-        CurrentBase.get().deleteNote(id);
+    public void deleteNow() {
+        if (isStart)
+            abortDelayedDelete();
+        CurrentBase.get().deleteNote(noteId);
     }
 
     public boolean isStart() {

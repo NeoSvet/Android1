@@ -104,7 +104,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         super.onStop();
         PublisherNote.unsubscribe(this);
         if (deleter != null && deleter.isStart())
-            deleter.now();
+            deleter.deleteNow();
     }
 
     private void initList(View view) {
@@ -157,15 +157,15 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
             @Override
             public void onClick(View view) {
                 PublisherNote.cancelDelete(id);
-                deleter.cancel();
+                deleter.abortDelayedDelete();
                 adapter.restoreItem(item, pos);
                 recyclerView.scrollToPosition(pos);
             }
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        deleter = new Deleter(TIME_TO_DELETE, id);
-        deleter.start();
+        deleter = new Deleter(id);
+        deleter.deleteAfterMills(TIME_TO_DELETE);
     }
 
     private int getColor(int id) {
@@ -242,12 +242,12 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
             @Override
             public void onClick(View view) {
                 PublisherNote.cancelDelete(id);
-                deleter.cancel();
+                deleter.abortDelayedDelete();
             }
         });
         snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
         snackbar.show();
-        deleter = new Deleter(TIME_TO_DELETE, id);
-        deleter.start();
+        deleter = new Deleter(id);
+        deleter.deleteAfterMills(TIME_TO_DELETE);
     }
 }
