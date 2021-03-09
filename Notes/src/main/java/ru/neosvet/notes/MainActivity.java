@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
 
     @Override
     public void deleteNote(int id) {
+        PublisherNote.deleted(id);
         tvStatus.setVisibility(View.GONE);
     }
 

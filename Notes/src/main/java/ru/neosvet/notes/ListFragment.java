@@ -38,6 +38,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     private final int TIME_TO_DELETE = 3000;
     private RecyclerView recyclerView;
     private Deleter deleter;
+    private Snackbar snackbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,7 +104,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     public void onStop() {
         super.onStop();
         PublisherNote.unsubscribe(this);
-        if (deleter != null && deleter.isStart())
+        if (deleter != null)
             deleter.deleteNow();
     }
 
@@ -123,7 +124,11 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                PublisherNote.runDelete(adapter.getItem(pos).getId());
+                                if (deleter != null) {
+                                    deleter.deleteNow();
+                                    snackbar.dismiss();
+                                }
+                                removeItem(pos);
                             }
                         }
                 ));
@@ -152,7 +157,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         int id = item.getId();
         adapter.removeItem(pos);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
+        snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
         snackbar.setAction(R.string.cancel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,31 +228,11 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     }
 
     @Override
-    public void delete(int id) {
-        BaseItem item = CurrentBase.get().getNote(id);
-        if (item == null) {
-            PublisherNote.clear();
-            return;
-        }
+    public void deletedNote(int id) {
         int pos = findPosById(id);
-        if (pos == -1)
-            deleteNote(id);
-        else
-            removeItem(pos);
-    }
-
-    private void deleteNote(int id) {
-        Snackbar snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
-        snackbar.setAction(R.string.cancel, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PublisherNote.cancelDelete(id);
-                deleter.abortDelayedDelete();
-            }
-        });
-        snackbar.setActionTextColor(getResources().getColor(R.color.teal_200, requireActivity().getTheme()));
-        snackbar.show();
-        deleter = new Deleter(id);
-        deleter.deleteAfterMills(TIME_TO_DELETE);
+        if (pos > -1)
+            adapter.removeItem(pos);
+        if (snackbar != null && snackbar.isShown() && deleter.equalsId(id))
+            snackbar.dismiss();
     }
 }

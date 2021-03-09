@@ -1,6 +1,12 @@
 package ru.neosvet.notes.repository;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
+
+import androidx.appcompat.app.AlertDialog;
+
+import ru.neosvet.notes.R;
 
 public class Deleter {
     private final int noteId;
@@ -34,12 +40,26 @@ public class Deleter {
     }
 
     public void deleteNow() {
-        if (isStart)
-            abortDelayedDelete();
+        if (!isStart)
+            return;
+        abortDelayedDelete();
         CurrentBase.get().deleteNote(noteId);
     }
 
-    public boolean isStart() {
-        return isStart;
+    public void deleteByDialog(Context context, String noteTitle) {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.ask_delete)
+                .setMessage(noteTitle)
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                CurrentBase.get().deleteNote(noteId);
+                            }
+                        })
+                .create().show();
+    }
+
+    public boolean equalsId(int id) {
+        return noteId == id;
     }
 }

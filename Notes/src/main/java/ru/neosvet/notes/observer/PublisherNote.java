@@ -29,12 +29,12 @@ public class PublisherNote {
         }
     }
 
-    public static void runDelete(int id) {
+    public static void deleted(int id) {
         clear();
         PublisherNote.id = id;
         PublisherNote.deleted = true;
         for (ObserverNote observer : observers) {
-            observer.delete(id);
+            observer.deletedNote(id);
         }
     }
 
@@ -52,7 +52,7 @@ public class PublisherNote {
 
     public static void queryChanges(ObserverNote observer) {
         if (deleted) {
-            observer.delete(id);
+            observer.deletedNote(id);
             return;
         }
         if (id != -1)

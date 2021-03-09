@@ -24,4 +24,6 @@
     <string name="google_auth">Аутентификация через Google</string>
     <string name="sign_out">Выйти</string>
     <string name="sign_failure">Вход не удался</string>
+    <string name="ask_delete">Удалить?</string>
+    <string name="yes">Да</string>
 </resources>

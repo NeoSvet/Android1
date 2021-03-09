@@ -25,6 +25,7 @@ import ru.neosvet.notes.observer.ObserverNote;
 import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseItem;
 import ru.neosvet.notes.repository.CurrentBase;
+import ru.neosvet.notes.repository.Deleter;
 
 public class NoteFragment extends Fragment implements ObserverNote {
     private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",
@@ -110,7 +111,8 @@ public class NoteFragment extends Fragment implements ObserverNote {
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                PublisherNote.runDelete(noteId);
+                Deleter deleter = new Deleter(noteId);
+                deleter.deleteByDialog(requireContext(), tvTitle.getText().toString());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -194,7 +196,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     @Override
-    public void delete(int id) {
+    public void deletedNote(int id) {
         if (id != noteId)
             return;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -203,6 +205,5 @@ public class NoteFragment extends Fragment implements ObserverNote {
             closeEditing();
             getActivity().onBackPressed();
         }
-
     }
 }
