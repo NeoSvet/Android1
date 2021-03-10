@@ -1,9 +1,7 @@
 package ru.neosvet.notes.list;
 
 public interface ListCallbacks {
-    void onItemClicked(int id);
+    void onItemClicked(String id);
 
-    void onLongItemClicked(int id);
-
-    void updateList();
+    void onLongItemClicked(String id);
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,10 +19,13 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.List;
+
+import ru.neosvet.notes.observer.PublisherList;
 import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseCallbacks;
-import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
+import ru.neosvet.notes.repository.Note;
 
 public class MainActivity extends AppCompatActivity implements BaseCallbacks {
     private final String MAIN_STACK = "stack", ORIENTATION = "orientation",
@@ -117,10 +121,10 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
         note = new NoteFragment();
         note.setArguments(args);
         long time = 0;
-        int id = -1;
+        String id = null;
         Fragment date = manager.findFragmentByTag(TAG_DATE);
         if (date != null) {
-            id = date.getArguments().getInt(DateFragment.ARG_ID);
+            id = date.getArguments().getString(DateFragment.ARG_ID);
             time = date.getArguments().getLong(DateFragment.ARG_TIME);
             super.onBackPressed(); //close date
         }
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
                     .addToBackStack(MAIN_STACK)
                     .commit();
         }
-        if (id > -1)
+        if (id != null)
             openDate(id, time);
     }
 
@@ -158,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
                 .commit();
     }
 
-    public void openNote(int id) {
+    public void openNote(String id) {
         NoteFragment note = NoteFragment.newInstance(id);
         if (isLandOrientation) {
             manager.beginTransaction()
@@ -172,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
         }
     }
 
-    public void openDate(int noteId, long time) {
+    public void openDate(String noteId, long time) {
         manager.beginTransaction()
                 .replace(R.id.main_container, DateFragment.newInstance(noteId, time), TAG_DATE)
                 .addToBackStack(MAIN_STACK)
@@ -202,32 +206,29 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
     }
 
     @Override
-    public void listIsReady() {
+    public void putList(@Nullable List<Note> list) {
         tvStatus.setVisibility(View.GONE);
-        ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
-        if (list == null)
-            return;
-        list.refreshList();
+        if (list != null)
+            PublisherList.notify(list);
     }
 
     @Override
-    public void deleteNote(int id) {
-        PublisherNote.deleted(id);
+    public void deleteNote(String id) {
         tvStatus.setVisibility(View.GONE);
+        PublisherNote.deleted(id);
+    }
+
+    @Override
+    public void putNote(@Nullable Note note) {
+        tvStatus.setVisibility(View.GONE);
+        if (note != null)
+            PublisherNote.notify(note);
     }
 
     @Override
     public void addNote(Note note) {
         tvStatus.setVisibility(View.GONE);
-        ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
-        if (list == null)
-            return;
-        list.addNote(note);
-    }
-
-    @Override
-    public void updateNote(Note note) {
-        tvStatus.setVisibility(View.GONE);
-        PublisherNote.notifyNote(note);
+        PublisherList.addItem(note);
+        openNote(note.getId());
     }
 }

@@ -27,13 +27,15 @@ import ru.neosvet.notes.list.ListCallbacks;
 import ru.neosvet.notes.list.ListItem;
 import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.SwipeHelper;
+import ru.neosvet.notes.observer.ObserverList;
 import ru.neosvet.notes.observer.ObserverNote;
+import ru.neosvet.notes.observer.PublisherList;
 import ru.neosvet.notes.observer.PublisherNote;
-import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Deleter;
+import ru.neosvet.notes.repository.Note;
 
-public class ListFragment extends Fragment implements ListCallbacks, ObserverNote {
+public class ListFragment extends Fragment implements ListCallbacks, ObserverNote, ObserverList {
     private final NotesAdapter adapter = new NotesAdapter(this);
     private final int TIME_TO_DELETE = 3000;
     private RecyclerView recyclerView;
@@ -77,18 +79,12 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         return super.onOptionsItemSelected(item);
     }
 
-    public void addNote(@NonNull Note note) {
-        adapter.addItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
-        recyclerView.scrollToPosition(0);
-        onItemClicked(note.getId());
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initList(view);
         if (adapter.getItemCount() == 0)
-            CurrentBase.get().loadNextPage();
+            CurrentBase.get().requestList();
         else
             adapter.notifyDataSetChanged();
     }
@@ -98,12 +94,14 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         super.onResume();
         PublisherNote.queryChanges(this);
         PublisherNote.subscribe(this);
+        PublisherList.subscribe(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         PublisherNote.unsubscribe(this);
+        PublisherList.unsubscribe(this);
         if (deleter != null)
             deleter.deleteNow();
     }
@@ -154,7 +152,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
 
     private void removeItem(int pos) {
         final ListItem item = adapter.getItem(pos);
-        int id = item.getId();
+        String id = item.getId();
         adapter.removeItem(pos);
 
         snackbar = Snackbar.make(recyclerView, R.string.note_deleted, TIME_TO_DELETE);
@@ -182,41 +180,36 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         //return  ResourcesCompat.getDrawable(getResources(), id, null);
     }
 
-    public void refreshList() {
-        adapter.addItems(getList(adapter.getItemCount()));
+    @Override
+    public void putList(List<Note> list) {
+        for (int i = 0; i < list.size(); i++) {
+            adapter.addItem(new ListItem(list.get(i).getId(),
+                    list.get(i).getTitle(),
+                    list.get(i).getDateString()));
+        }
         adapter.notifyDataSetChanged();
     }
 
-    private ListItem[] getList(int offset) {
-        Note[] items = CurrentBase.get().getList(offset);
-        if (items == null)
-            return null;
-        ListItem[] list = new ListItem[items.length];
-        for (int i = 0; i < items.length; i++) {
-            list[i] = new ListItem(items[i].getId(), items[i].getTitle(), items[i].getDateString());
-        }
-        return list;
+    @Override
+    public void addItem(Note note) {
+        adapter.insertItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
+        recyclerView.scrollToPosition(0);
     }
 
     @Override
-    public void onItemClicked(int id) {
-        MainActivity main = (MainActivity) getActivity();
+    public void onItemClicked(String id) {
+        MainActivity main = (MainActivity) requireActivity();
         main.openNote(id);
     }
 
     @Override
-    public void onLongItemClicked(int id) {
+    public void onLongItemClicked(String id) {
         RenameFragment.create(id).show(getChildFragmentManager(), null);
     }
 
-    @Override
-    public void updateList() {
-        CurrentBase.get().loadNextPage();
-    }
-
-    private int findPosById(int id) {
+    private int findPosById(String id) {
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            if (adapter.getItem(i).getId() == id)
+            if (adapter.getItem(i).getId().equals(id))
                 return i;
         }
         return -1;
@@ -233,7 +226,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     }
 
     @Override
-    public void deletedNote(int id) {
+    public void deletedNote(String id) {
         int pos = findPosById(id);
         if (pos > -1)
             adapter.removeItem(pos);

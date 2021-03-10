@@ -21,21 +21,24 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
+import ru.neosvet.notes.observer.ObserverNote;
+import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Note;
 
-public class DateFragment extends Fragment {
+public class DateFragment extends Fragment implements ObserverNote {
     public static final String ARG_TIME = "time", ARG_ID = "id";
-    private int noteId;
+    private String noteId;
+    private Note note;
     private DatePicker dpDate;
     private TextInputEditText etHour, etMinute, etFocused;
     private MaterialButton btnSave;
     private Calendar calendar = Calendar.getInstance();
 
-    public static DateFragment newInstance(int id, long time) {
+    public static DateFragment newInstance(String id, long time) {
         DateFragment fragment = new DateFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ID, id);
+        args.putString(ARG_ID, id);
         args.putLong(ARG_TIME, time);
         fragment.setArguments(args);
         return fragment;
@@ -71,11 +74,29 @@ public class DateFragment extends Fragment {
         hideTitleDatePicker();
 
         if (getArguments() != null) {
-            noteId = getArguments().getInt(ARG_ID);
+            noteId = getArguments().getString(ARG_ID);
             calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
         }
         showDate(calendar);
         initListeners();
+
+        loadNote();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PublisherNote.subscribe(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        PublisherNote.unsubscribe(this);
+    }
+
+    private void loadNote() {
+        CurrentBase.get().requestNote(noteId);
     }
 
     @Override
@@ -86,7 +107,6 @@ public class DateFragment extends Fragment {
 
     private void initListeners() {
         btnSave.setOnClickListener(v -> {
-            Note note = CurrentBase.get().getNote(noteId);
             note.setDate(getCurrentDate());
             CurrentBase.get().pushNote(note);
             requireActivity().onBackPressed();
@@ -161,5 +181,18 @@ public class DateFragment extends Fragment {
         dpDate.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         etHour.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         etMinute.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
+    }
+
+    @Override
+    public void updateNote(Note note) {
+        if (!noteId.equals(note.getId()))
+            return;
+        this.note = note;
+    }
+
+    @Override
+    public void deletedNote(String id) {
+        if (noteId.equals(id))
+            requireActivity().onBackPressed();
     }
 }

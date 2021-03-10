@@ -2,15 +2,15 @@ package ru.neosvet.notes.list;
 
 public class ListItem {
     private String title, subtitle;
-    private int id;
+    private String id;
 
-    public ListItem(int id, String title, String subtitle) {
+    public ListItem(String id, String title, String subtitle) {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

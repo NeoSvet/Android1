@@ -9,15 +9,15 @@ import androidx.appcompat.app.AlertDialog;
 import ru.neosvet.notes.R;
 
 public class Deleter {
-    private final int noteId;
+    private String noteId;
     private Thread timer;
     private boolean isStart = false;
     private final Handler doDelete = new Handler(msg -> {
-        CurrentBase.get().deleteNote(msg.what);
+        CurrentBase.get().deleteNote(noteId);
         return false;
     });
 
-    public Deleter(int noteId) {
+    public Deleter(String noteId) {
         this.noteId = noteId;
     }
 
@@ -25,7 +25,7 @@ public class Deleter {
         timer = new Thread(() -> {
             try {
                 Thread.sleep(mills);
-                doDelete.sendEmptyMessage(noteId);
+                doDelete.sendEmptyMessage(0);
             } catch (InterruptedException e) {
             }
             isStart = false;
@@ -59,7 +59,7 @@ public class Deleter {
                 .create().show();
     }
 
-    public boolean equalsId(int id) {
-        return noteId == id;
+    public boolean equalsId(String id) {
+        return noteId.equals(id);
     }
 }

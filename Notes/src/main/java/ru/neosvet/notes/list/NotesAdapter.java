@@ -17,24 +17,16 @@ import ru.neosvet.notes.R;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
     private List<ListItem> data = new ArrayList<>();
     private final ListCallbacks callbacks;
-    private boolean isFinish = false, isWait = false;
 
     public NotesAdapter(ListCallbacks callbacks) {
         this.callbacks = callbacks;
     }
 
-    public void addItems(ListItem[] items) {
-        isWait = false;
-        if (items == null) {
-            isFinish = true;
-            return;
-        }
-        for (int i = 0; i < items.length; i++) {
-            data.add(items[i]);
-        }
+    public void addItem(ListItem item) {
+        data.add(item);
     }
 
-    public void addItem(ListItem item) {
+    public void insertItem(ListItem item) {
         data.add(0, item);
         notifyItemInserted(0);
     }
@@ -49,10 +41,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
         holder.onBind(data.get(position));
-        if (!isWait && !isFinish && position == data.size() - 1) {
-            callbacks.updateList();
-            isWait = true;
-        }
     }
 
     @Override

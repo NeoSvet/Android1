@@ -23,9 +23,9 @@ import com.google.android.material.textview.MaterialTextView;
 
 import ru.neosvet.notes.observer.ObserverNote;
 import ru.neosvet.notes.observer.PublisherNote;
-import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Deleter;
+import ru.neosvet.notes.repository.Note;
 
 public class NoteFragment extends Fragment implements ObserverNote {
     private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",
@@ -34,12 +34,13 @@ public class NoteFragment extends Fragment implements ObserverNote {
     private MaterialTextView tvTitle, tvDate, tvDescription;
     private MaterialButton btnEditor;
     private boolean inEdit = false;
+    private String noteId;
     private Note note;
 
-    public static NoteFragment newInstance(int noteId) {
+    public static NoteFragment newInstance(String noteId) {
         NoteFragment fragment = new NoteFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_NOTE_ID, noteId);
+        args.putString(ARG_NOTE_ID, noteId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,8 +49,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            int id = getArguments().getInt(ARG_NOTE_ID);
-            note = CurrentBase.get().getNote(id);
+            noteId = getArguments().getString(ARG_NOTE_ID);
         }
     }
 
@@ -142,7 +142,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
 
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
-            MainActivity main = (MainActivity) getActivity();
+            MainActivity main = (MainActivity) requireActivity();
             main.openDate(note.getId(), note.getDate());
         });
         btnEditor.setOnClickListener(v -> {
@@ -178,16 +178,15 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     private void loadNote() {
-        if (note == null)
+        if (getArguments() == null)
             return;
-        tvTitle.setText(note.getTitle());
-        tvDate.setText(note.getDateString());
-        tvDescription.setText(note.getDescription());
+        String id = getArguments().getString(ARG_NOTE_ID);
+        CurrentBase.get().requestNote(id);
     }
 
     @Override
     public void updateNote(Note note) {
-        if (note.getId() != this.note.getId())
+        if (!noteId.equals(note.getId()))
             return;
         this.note = note;
         tvTitle.setText(note.getTitle());
@@ -196,14 +195,14 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     @Override
-    public void deletedNote(int id) {
-        if (id != note.getId())
+    public void deletedNote(String id) {
+        if (!noteId.equals(id))
             return;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getFragmentManager().beginTransaction().remove(this).commit();
         } else {
             closeEditing();
-            getActivity().onBackPressed();
+            requireActivity().onBackPressed();
         }
     }
 }

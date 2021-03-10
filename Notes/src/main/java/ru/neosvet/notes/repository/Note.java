@@ -4,14 +4,14 @@ import java.util.Calendar;
 
 public class Note {
     private String title, description, dateString = null;
-    private int id;
+    private String id;
     private long date;
 
     public Note() {
 
     }
 
-    public Note(int id, String title, long date, String description) {
+    public Note(String id, String title, long date, String description) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -26,7 +26,7 @@ public class Note {
                 c.get(Calendar.YEAR) + ", " + int2str(c.get(Calendar.HOUR_OF_DAY)) + ":" + int2str(c.get(Calendar.MINUTE));
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

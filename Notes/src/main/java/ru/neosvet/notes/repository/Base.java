@@ -1,17 +1,13 @@
 package ru.neosvet.notes.repository;
 
 public interface Base {
-    int LIMIT = 10;
-
     void open(BaseCallbacks callbacks);
 
-    void loadNextPage();
+    void requestList();
 
-    Note[] getList(int offset);
+    void requestNote(String id);
 
-    Note getNote(int id);
-
-    void deleteNote(int id);
+    void deleteNote(String id);
 
     void pushNote(Note note);
 

@@ -6,9 +6,10 @@ import java.util.List;
 import ru.neosvet.notes.repository.Note;
 
 public class PublisherNote {
+    private static final String NULL = "null";
     private static List<ObserverNote> observers = new ArrayList<>();
     private static Note note = null;
-    private static int id = -1;
+    private static String id = NULL;
     private static boolean deleted = false;
 
     public static void subscribe(ObserverNote observer) {
@@ -19,8 +20,8 @@ public class PublisherNote {
         observers.remove(observer);
     }
 
-    public static void notifyNote(Note note) {
-        if (PublisherNote.id != note.getId())
+    public static void notify(Note note) {
+        if (!PublisherNote.id.equals(note.getId()))
             clear();
         PublisherNote.id = note.getId();
         PublisherNote.note = note;
@@ -29,7 +30,7 @@ public class PublisherNote {
         }
     }
 
-    public static void deleted(int id) {
+    public static void deleted(String id) {
         clear();
         PublisherNote.id = id;
         PublisherNote.deleted = true;
@@ -38,14 +39,14 @@ public class PublisherNote {
         }
     }
 
-    public static void cancelDelete(int id) {
-        if (PublisherNote.id != id)
+    public static void cancelDelete(String id) {
+        if (!PublisherNote.id.equals(id))
             return;
         PublisherNote.deleted = false;
     }
 
     public static void clear() {
-        PublisherNote.id = -1;
+        PublisherNote.id = NULL;
         PublisherNote.note = null;
         PublisherNote.deleted = false;
     }
@@ -55,7 +56,7 @@ public class PublisherNote {
             observer.deletedNote(id);
             return;
         }
-        if (id != -1)
+        if (!id.equals(NULL))
             observer.updateNote(note);
     }
 }

@@ -1,15 +1,19 @@
 package ru.neosvet.notes.repository;
 
+import androidx.annotation.Nullable;
+
+import java.util.List;
+
 public interface BaseCallbacks {
     void startProgress();
 
     void onError(String message);
 
-    void listIsReady();
+    void putList(@Nullable List<Note> list);
 
-    void deleteNote(int id);
+    void deleteNote(String id);
+
+    void putNote(@Nullable Note note);
 
     void addNote(Note note);
-
-    void updateNote(Note note);
 }
