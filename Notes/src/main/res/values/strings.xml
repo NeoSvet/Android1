@@ -26,4 +26,6 @@
     <string name="sign_failure">Вход не удался</string>
     <string name="ask_delete">Удалить?</string>
     <string name="yes">Да</string>
+    <string name="rename_note">Переименовать заметку</string>
+    <string name="rename">Переименовать</string>
 </resources>
