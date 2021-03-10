@@ -126,6 +126,12 @@ public class FireBase implements Base, OnFailureListener {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        for (int i = 0; i < notes.size(); i++) {
+                            if (notes.get(i).getId() == id) {
+                                notes.remove(i);
+                                break;
+                            }
+                        }
                         isBusy = false;
                         callbacks.deleteNote(id);
                     }
