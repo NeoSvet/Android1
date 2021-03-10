@@ -205,6 +205,11 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     }
 
     @Override
+    public void onLongItemClicked(int id) {
+
+    }
+
+    @Override
     public void updateList() {
         CurrentBase.get().loadNextPage();
     }
