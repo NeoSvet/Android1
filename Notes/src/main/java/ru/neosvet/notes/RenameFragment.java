@@ -12,10 +12,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import ru.neosvet.notes.repository.CurrentBase;
+import ru.neosvet.notes.repository.Note;
 
 public class RenameFragment extends BottomSheetDialogFragment {
     private static final String ARG_NOTE_ID = "note";
-    private int noteId;
+    private Note note;
     private TextInputEditText etNoteTitle;
 
     public static RenameFragment create(int noteId) {
@@ -30,8 +31,10 @@ public class RenameFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            noteId = getArguments().getInt(ARG_NOTE_ID);
-        }
+            int id = getArguments().getInt(ARG_NOTE_ID);
+            note = CurrentBase.get().getNote(id);
+        } else
+            note = new Note();
     }
 
     @Override
@@ -44,11 +47,11 @@ public class RenameFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         etNoteTitle = view.findViewById(R.id.etNoteTitle);
-        etNoteTitle.setText(CurrentBase.get().getNote(noteId).getTitle());
+        etNoteTitle.setText(note.getTitle());
         View btnRename = view.findViewById(R.id.btnRename);
         btnRename.setOnClickListener(v -> {
-            CurrentBase.get().getNote(noteId).setTitle(etNoteTitle.getText().toString());
-            CurrentBase.get().pushNote(noteId);
+            note.setTitle(etNoteTitle.getText().toString());
+            CurrentBase.get().pushNote(note);
             dismiss();
         });
     }

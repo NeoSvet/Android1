@@ -140,13 +140,12 @@ public class FireBase implements Base, OnFailureListener {
     }
 
     @Override
-    public void pushNote(int id) {
+    public void pushNote(final Note note) {
         if (checkBusy())
             return;
-        Note note = getNote(id);
         final Map<String, Object> map = getMapFrom(note);
         base.collection(TABLE)
-                .document(String.valueOf(id))
+                .document(String.valueOf(note.getId()))
                 .set(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

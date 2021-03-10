@@ -34,7 +34,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     private MaterialTextView tvTitle, tvDate, tvDescription;
     private MaterialButton btnEditor;
     private boolean inEdit = false;
-    private int noteId;
+    private Note note;
 
     public static NoteFragment newInstance(int noteId) {
         NoteFragment fragment = new NoteFragment();
@@ -48,7 +48,8 @@ public class NoteFragment extends Fragment implements ObserverNote {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            noteId = getArguments().getInt(ARG_NOTE_ID);
+            int id = getArguments().getInt(ARG_NOTE_ID);
+            note = CurrentBase.get().getNote(id);
         }
     }
 
@@ -111,7 +112,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                Deleter deleter = new Deleter(noteId);
+                Deleter deleter = new Deleter(note.getId());
                 deleter.deleteByDialog(requireContext(), tvTitle.getText().toString());
                 break;
         }
@@ -142,14 +143,13 @@ public class NoteFragment extends Fragment implements ObserverNote {
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
             MainActivity main = (MainActivity) getActivity();
-            main.openDate(noteId, CurrentBase.get().getNote(noteId).getDate());
+            main.openDate(note.getId(), note.getDate());
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
-                Note note = CurrentBase.get().getNote(noteId);
                 note.setTitle(etTitle.getText().toString());
                 note.setDescription(etDescription.getText().toString());
-                CurrentBase.get().pushNote(noteId);
+                CurrentBase.get().pushNote(note);
                 closeEditing();
             } else {
                 etTitle.setText(tvTitle.getText());
@@ -178,7 +178,6 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     private void loadNote() {
-        Note note = CurrentBase.get().getNote(noteId);
         if (note == null)
             return;
         tvTitle.setText(note.getTitle());
@@ -188,8 +187,9 @@ public class NoteFragment extends Fragment implements ObserverNote {
 
     @Override
     public void updateNote(Note note) {
-        if (note.getId() != noteId)
+        if (note.getId() != this.note.getId())
             return;
+        this.note = note;
         tvTitle.setText(note.getTitle());
         tvDate.setText(note.getDateString());
         tvDescription.setText(note.getDescription());
@@ -197,7 +197,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
 
     @Override
     public void deletedNote(int id) {
-        if (id != noteId)
+        if (id != note.getId())
             return;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getFragmentManager().beginTransaction().remove(this).commit();

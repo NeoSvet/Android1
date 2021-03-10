@@ -13,7 +13,7 @@ public interface Base {
 
     void deleteNote(int id);
 
-    void pushNote(int id);
+    void pushNote(Note note);
 
     void addNote();
 

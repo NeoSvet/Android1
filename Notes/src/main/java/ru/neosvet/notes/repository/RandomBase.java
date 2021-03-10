@@ -85,15 +85,24 @@ public class RandomBase implements Base {
     @Override
     public void deleteNote(int id) {
         int index = findIndexById(id);
-        if (index == -1)
-            callbacks.onError("No have item");
+        if (index == -1) {
+            callbacks.onError("Item is not exists");
+            return;
+        }
         notes.remove(index);
         callbacks.deleteNote(id);
     }
 
     @Override
-    public void pushNote(int id) {
-        Note note = getNote(id);
+    public void pushNote(Note note) {
+        int index = findIndexById(note.getId());
+        if (index == -1) {
+            callbacks.onError("Item is not exists");
+            return;
+        }
+        notes.get(index).setTitle(note.getTitle());
+        notes.get(index).setDate(note.getDate());
+        notes.get(index).setDescription(note.getDescription());
         callbacks.updateNote(note);
     }
 

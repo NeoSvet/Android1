@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
 import ru.neosvet.notes.repository.CurrentBase;
+import ru.neosvet.notes.repository.Note;
 
 public class DateFragment extends Fragment {
     public static final String ARG_TIME = "time", ARG_ID = "id";
@@ -85,8 +86,9 @@ public class DateFragment extends Fragment {
 
     private void initListeners() {
         btnSave.setOnClickListener(v -> {
-            CurrentBase.get().getNote(noteId).setDate(getCurrentDate());
-            CurrentBase.get().pushNote(noteId);
+            Note note = CurrentBase.get().getNote(noteId);
+            note.setDate(getCurrentDate());
+            CurrentBase.get().pushNote(note);
             requireActivity().onBackPressed();
         });
 
