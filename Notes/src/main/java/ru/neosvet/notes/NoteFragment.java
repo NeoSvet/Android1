@@ -23,7 +23,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import ru.neosvet.notes.observer.ObserverNote;
 import ru.neosvet.notes.observer.PublisherNote;
-import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Deleter;
 
@@ -146,7 +146,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
-                BaseItem note = CurrentBase.get().getNote(noteId);
+                Note note = CurrentBase.get().getNote(noteId);
                 note.setTitle(etTitle.getText().toString());
                 note.setDescription(etDescription.getText().toString());
                 CurrentBase.get().pushNote(noteId);
@@ -178,7 +178,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     private void loadNote() {
-        BaseItem note = CurrentBase.get().getNote(noteId);
+        Note note = CurrentBase.get().getNote(noteId);
         if (note == null)
             return;
         tvTitle.setText(note.getTitle());
@@ -187,7 +187,7 @@ public class NoteFragment extends Fragment implements ObserverNote {
     }
 
     @Override
-    public void updateNote(BaseItem note) {
+    public void updateNote(Note note) {
         if (note.getId() != noteId)
             return;
         tvTitle.setText(note.getTitle());

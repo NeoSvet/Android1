@@ -9,7 +9,7 @@ public interface BaseCallbacks {
 
     void deleteNote(int id);
 
-    void addNote(BaseItem note);
+    void addNote(Note note);
 
-    void updateNote(BaseItem note);
+    void updateNote(Note note);
 }

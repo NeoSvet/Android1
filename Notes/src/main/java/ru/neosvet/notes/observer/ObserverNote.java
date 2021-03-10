@@ -1,9 +1,9 @@
 package ru.neosvet.notes.observer;
 
-import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.Note;
 
 public interface ObserverNote {
-    void updateNote(BaseItem note);
+    void updateNote(Note note);
 
     void deletedNote(int id);
 }

@@ -3,11 +3,11 @@ package ru.neosvet.notes.observer;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.Note;
 
 public class PublisherNote {
     private static List<ObserverNote> observers = new ArrayList<>();
-    private static BaseItem note = null;
+    private static Note note = null;
     private static int id = -1;
     private static boolean deleted = false;
 
@@ -19,7 +19,7 @@ public class PublisherNote {
         observers.remove(observer);
     }
 
-    public static void notifyNote(BaseItem note) {
+    public static void notifyNote(Note note) {
         if (PublisherNote.id != note.getId())
             clear();
         PublisherNote.id = note.getId();

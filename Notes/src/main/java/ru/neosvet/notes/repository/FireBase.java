@@ -21,7 +21,7 @@ public class FireBase implements Base, OnFailureListener {
     private BaseCallbacks callbacks;
     private int last_id = -1;
     private DocumentSnapshot lastDoc = null;
-    private List<BaseItem> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
     private boolean isBusy = false;
 
     @Override
@@ -85,7 +85,7 @@ public class FireBase implements Base, OnFailureListener {
                             return;
                         }
                         lastDoc = docs.get(docs.size() - 1);
-                        List<BaseItem> items = response.toObjects(BaseItem.class);
+                        List<Note> items = response.toObjects(Note.class);
                         notes.addAll(items);
                         callbacks.listIsReady();
                     }
@@ -94,13 +94,13 @@ public class FireBase implements Base, OnFailureListener {
     }
 
     @Override
-    public BaseItem[] getList(int offset) {
+    public Note[] getList(int offset) {
         int limit = LIMIT;
         if (offset + limit > notes.size())
             limit = notes.size() - offset;
         if (limit < 1)
             return null;
-        BaseItem[] m = new BaseItem[limit];
+        Note[] m = new Note[limit];
         for (int i = 0; i < limit; i++) {
             m[i] = notes.get(i + offset);
         }
@@ -108,7 +108,7 @@ public class FireBase implements Base, OnFailureListener {
     }
 
     @Override
-    public BaseItem getNote(int id) {
+    public Note getNote(int id) {
         for (int i = 0; i < notes.size(); i++) {
             if (notes.get(i).getId() == id)
                 return notes.get(i);
@@ -143,7 +143,7 @@ public class FireBase implements Base, OnFailureListener {
     public void pushNote(int id) {
         if (checkBusy())
             return;
-        BaseItem note = getNote(id);
+        Note note = getNote(id);
         final Map<String, Object> map = getMapFrom(note);
         base.collection(TABLE)
                 .document(String.valueOf(id))
@@ -158,7 +158,7 @@ public class FireBase implements Base, OnFailureListener {
                 .addOnFailureListener(this);
     }
 
-    private Map<String, Object> getMapFrom(BaseItem note) {
+    private Map<String, Object> getMapFrom(Note note) {
         final Map<String, Object> map = new HashMap<>();
         map.put(COL_ID, note.getId());
         map.put(COL_TITLE, note.getTitle());
@@ -172,7 +172,7 @@ public class FireBase implements Base, OnFailureListener {
         if (checkBusy())
             return;
         last_id++;
-        BaseItem note = new BaseItem(last_id, "title #" + last_id,
+        Note note = new Note(last_id, "title #" + last_id,
                 System.currentTimeMillis(), "description #" + last_id);
         final Map<String, Object> map = getMapFrom(note);
 

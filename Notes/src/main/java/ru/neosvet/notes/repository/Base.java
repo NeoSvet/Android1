@@ -7,9 +7,9 @@ public interface Base {
 
     void loadNextPage();
 
-    BaseItem[] getList(int offset);
+    Note[] getList(int offset);
 
-    BaseItem getNote(int id);
+    Note getNote(int id);
 
     void deleteNote(int id);
 

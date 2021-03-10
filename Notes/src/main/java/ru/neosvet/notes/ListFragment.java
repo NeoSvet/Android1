@@ -29,7 +29,7 @@ import ru.neosvet.notes.list.NotesAdapter;
 import ru.neosvet.notes.list.SwipeHelper;
 import ru.neosvet.notes.observer.ObserverNote;
 import ru.neosvet.notes.observer.PublisherNote;
-import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
 import ru.neosvet.notes.repository.Deleter;
 
@@ -77,7 +77,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
         return super.onOptionsItemSelected(item);
     }
 
-    public void addNote(@NonNull BaseItem note) {
+    public void addNote(@NonNull Note note) {
         adapter.addItem(new ListItem(note.getId(), note.getTitle(), note.getDateString()));
         recyclerView.scrollToPosition(0);
         onItemClicked(note.getId());
@@ -188,7 +188,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     }
 
     private ListItem[] getList(int offset) {
-        BaseItem[] items = CurrentBase.get().getList(offset);
+        Note[] items = CurrentBase.get().getList(offset);
         if (items == null)
             return null;
         ListItem[] list = new ListItem[items.length];
@@ -223,7 +223,7 @@ public class ListFragment extends Fragment implements ListCallbacks, ObserverNot
     }
 
     @Override
-    public void updateNote(BaseItem note) {
+    public void updateNote(Note note) {
         int pos = findPosById(note.getId());
         if (pos == -1)
             return;

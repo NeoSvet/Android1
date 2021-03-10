@@ -2,16 +2,16 @@ package ru.neosvet.notes.repository;
 
 import java.util.Calendar;
 
-public class BaseItem {
+public class Note {
     private String title, description, dateString = null;
     private int id;
     private long date;
 
-    public BaseItem() {
+    public Note() {
 
     }
 
-    public BaseItem(int id, String title, long date, String description) {
+    public Note(int id, String title, long date, String description) {
         this.id = id;
         this.title = title;
         this.date = date;

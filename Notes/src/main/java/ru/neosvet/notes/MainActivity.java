@@ -20,7 +20,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import ru.neosvet.notes.observer.PublisherNote;
 import ru.neosvet.notes.repository.BaseCallbacks;
-import ru.neosvet.notes.repository.BaseItem;
+import ru.neosvet.notes.repository.Note;
 import ru.neosvet.notes.repository.CurrentBase;
 
 public class MainActivity extends AppCompatActivity implements BaseCallbacks {
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
     }
 
     @Override
-    public void addNote(BaseItem note) {
+    public void addNote(Note note) {
         tvStatus.setVisibility(View.GONE);
         ListFragment list = (ListFragment) manager.findFragmentByTag(TAG_LIST);
         if (list == null)
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements BaseCallbacks {
     }
 
     @Override
-    public void updateNote(BaseItem note) {
+    public void updateNote(Note note) {
         tvStatus.setVisibility(View.GONE);
         PublisherNote.notifyNote(note);
     }

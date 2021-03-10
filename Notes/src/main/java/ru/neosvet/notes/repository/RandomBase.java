@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class RandomBase implements Base {
     private int last_id = -1;
-    private List<BaseItem> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
     private BaseCallbacks callbacks;
 
     @Override
@@ -22,11 +22,11 @@ public class RandomBase implements Base {
     }
 
     @Override
-    public BaseItem[] getList(int offset) {
+    public Note[] getList(int offset) {
         int limit = LIMIT;
         if (offset + limit > notes.size())
             generateTo(offset + limit);
-        BaseItem[] m = new BaseItem[limit];
+        Note[] m = new Note[limit];
         for (int i = 0; i < limit; i++) {
             m[i] = notes.get(i + offset);
         }
@@ -46,13 +46,13 @@ public class RandomBase implements Base {
             n = r.nextInt(1440);
             date.set(Calendar.MINUTE, n);
             last_id++;
-            notes.add(new BaseItem(last_id, "Note #" + i + ", id " + last_id,
+            notes.add(new Note(last_id, "Note #" + i + ", id " + last_id,
                     date.getTimeInMillis(), "Des #" + i));
         }
     }
 
     @Override
-    public BaseItem getNote(int id) {
+    public Note getNote(int id) {
         int index = findIndexById(id);
         if (index == -1)
             return null;
@@ -93,14 +93,14 @@ public class RandomBase implements Base {
 
     @Override
     public void pushNote(int id) {
-        BaseItem note = getNote(id);
+        Note note = getNote(id);
         callbacks.updateNote(note);
     }
 
     @Override
     public void addNote() {
         last_id++;
-        BaseItem item = new BaseItem(last_id, "Note #" + notes.size() + ", id " + last_id,
+        Note item = new Note(last_id, "Note #" + notes.size() + ", id " + last_id,
                 System.currentTimeMillis(), "Des #" + notes.size());
         notes.add(item);
         callbacks.addNote(item);
