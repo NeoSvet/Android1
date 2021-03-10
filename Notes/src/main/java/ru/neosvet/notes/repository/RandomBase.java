@@ -13,10 +13,12 @@ public class RandomBase implements Base {
     @Override
     public void open(BaseCallbacks callbacks) {
         this.callbacks = callbacks;
+        loadNextPage();
     }
 
     @Override
     public void loadNextPage() {
+        callbacks.listIsReady();
     }
 
     @Override
@@ -91,6 +93,8 @@ public class RandomBase implements Base {
 
     @Override
     public void pushNote(int id) {
+        BaseItem note = getNote(id);
+        callbacks.updateNote(note);
     }
 
     @Override
