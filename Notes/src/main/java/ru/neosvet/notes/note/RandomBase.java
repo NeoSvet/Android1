@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomBase implements Base {
+    private int last_id = -1;
     private List<BaseItem> notes = new ArrayList<>();
 
     @Override
@@ -35,15 +36,59 @@ public class RandomBase implements Base {
             date.set(Calendar.DAY_OF_YEAR, n);
             n = r.nextInt(1440);
             date.set(Calendar.MINUTE, n);
-            notes.add(new BaseItem("Note #" + i, date.getTimeInMillis(), "Des #" + i));
+            last_id++;
+            notes.add(new BaseItem(last_id, "Note #" + i + ", id " + last_id,
+                    date.getTimeInMillis(), "Des #" + i));
         }
     }
 
     @Override
     public BaseItem getNote(int id) {
-        if (id >= notes.size())
-            generateTo(id + 1);
-        return notes.get(id);
+        int index = findIndexById(id);
+        if (index == -1)
+            return null;
+        return notes.get(index);
+    }
+
+    private int findIndexById(int id) {
+        int n;
+        if (id >= notes.size()) {
+            n = notes.size() - 1;
+            while (n > -1 && notes.get(n).getId() != id)
+                n--;
+            return n;
+        }
+        n = notes.get(id).getId();
+        if (n < id) {
+            n = id + 1;
+            while (n < notes.size() && notes.get(n).getId() != id)
+                n++;
+            if (n == notes.size())
+                return -1;
+        } else if (n > id) {
+            n = id - 1;
+            while (n > -1 && notes.get(n).getId() != id)
+                n--;
+        }
+        return n;
+    }
+
+    @Override
+    public boolean removeNote(int id) {
+        int index = findIndexById(id);
+        if (index == -1)
+            return false;
+        notes.remove(index);
+        return true;
+    }
+
+    @Override
+    public BaseItem addNote() {
+        last_id++;
+        BaseItem item = new BaseItem(last_id, "Note #" + notes.size() + ", id " + last_id,
+                System.currentTimeMillis(), "Des #" + notes.size());
+        notes.add(item);
+        return item;
     }
 
     @Override

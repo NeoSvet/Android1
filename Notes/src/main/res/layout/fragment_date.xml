@@ -7,7 +7,7 @@
     android:padding="@dimen/default_margin"
     tools:context=".DateFragment">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etHour"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@id/etHour"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etMinute"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toEndOf="@id/separator"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -15,7 +15,7 @@ import java.util.List;
 import ru.neosvet.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
-    private List<ListItem> notes = new ArrayList<>();
+    private List<ListItem> data = new ArrayList<>();
     private final NotesHandler handler;
     private boolean isFinish = false;
 
@@ -29,8 +29,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             return;
         }
         for (int i = 0; i < items.length; i++) {
-            notes.add(items[i]);
+            data.add(items[i]);
         }
+    }
+
+    public void addItem(ListItem item) {
+        data.add(0, item);
+        notifyItemInserted(0);
     }
 
     @NonNull
@@ -42,15 +47,30 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
-        holder.onBind(notes.get(position));
-        if (!isFinish && position == notes.size() - 1)
-            handler.updateList(notes.size());
+        holder.onBind(data.get(position));
+        if (!isFinish && position == data.size() - 1)
+            handler.updateList(data.size());
     }
 
     @Override
     public int getItemCount() {
-        return notes.size();
+        return data.size();
     }
+
+    public ListItem getItem(int pos) {
+        return data.get(pos);
+    }
+
+    public void removeItem(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(ListItem item, int position) {
+        data.add(position, item);
+        notifyItemInserted(position);
+    }
+
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
         private final MaterialTextView tvTitle, tvSubtitle;
@@ -69,7 +89,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 @Override
                 public void onClick(View view) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        handler.onItemClicked(getAdapterPosition());
+                        handler.onItemClicked(data.get(getAdapterPosition()).getId());
                     }
                 }
             });

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="default_margin">10dp</dimen>
     <dimen name="header_height">176dp</dimen>
+    <dimen name="default_radius">16dp</dimen>
 </resources>

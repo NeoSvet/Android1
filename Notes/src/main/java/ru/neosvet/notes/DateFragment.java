@@ -1,35 +1,40 @@
 package ru.neosvet.notes;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
 import ru.neosvet.notes.exchange.PublisherDate;
 
 public class DateFragment extends Fragment {
-    private static final String ARG_DATE = "date";
+    public static final String ARG_TIME = "time";
     private DatePicker dpDate;
-    private EditText etHour, etMinute, etFocused;
-    private Button btnSave;
+    private TextInputEditText etHour, etMinute, etFocused;
+    private MaterialButton btnSave;
+    private Calendar calendar = Calendar.getInstance();
 
-    public static DateFragment newInstance(long date) {
+    public static DateFragment newInstance(long time) {
         DateFragment fragment = new DateFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_DATE, date);
+        args.putLong(ARG_TIME, time);
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,7 +42,21 @@ public class DateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_date, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuItem item = menu.add(R.string.now);
+        item.setIcon(R.drawable.ic_baseline_today_24);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        showDate(Calendar.getInstance());
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -49,19 +68,21 @@ public class DateFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSave);
         hideTitleDatePicker();
 
-        showDate();
+        if (getArguments() != null)
+            calendar.setTimeInMillis(getArguments().getLong(ARG_TIME));
+        showDate(calendar);
         initListeners();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getArguments().putLong(ARG_TIME, getCurrentDate());
     }
 
     private void initListeners() {
         btnSave.setOnClickListener(v -> {
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.YEAR, dpDate.getYear());
-            c.set(Calendar.MONTH, dpDate.getMonth());
-            c.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
-            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
-            c.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
-            PublisherDate.notify(c.getTimeInMillis());
+            PublisherDate.notify(getCurrentDate());
             requireActivity().onBackPressed();
         });
 
@@ -104,9 +125,9 @@ public class DateFragment extends Fragment {
 
         View.OnFocusChangeListener onFocus = (v, hasFocus) -> {
             if (hasFocus)
-                etFocused = (EditText) v;
+                etFocused = (TextInputEditText) v;
             else {
-                EditText et = (EditText) v;
+                TextInputEditText et = (TextInputEditText) v;
                 if (et.length() == 0)
                     et.setText("0");
             }
@@ -115,18 +136,24 @@ public class DateFragment extends Fragment {
         etMinute.setOnFocusChangeListener(onFocus);
     }
 
+    private long getCurrentDate() {
+        calendar.set(Calendar.YEAR, dpDate.getYear());
+        calendar.set(Calendar.MONTH, dpDate.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, dpDate.getDayOfMonth());
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(etHour.getText().toString()));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(etMinute.getText().toString()));
+        return calendar.getTimeInMillis();
+    }
+
     private void hideTitleDatePicker() {
         //в горизонтальной ориентации с ним просто жутко выглядит
         LinearLayout layout = (LinearLayout) dpDate.getChildAt(0);
         layout.getChildAt(0).setVisibility(View.GONE);
     }
 
-    private void showDate() {
-        Calendar c = Calendar.getInstance();
-        if (getArguments() != null)
-            c.setTimeInMillis(getArguments().getLong(ARG_DATE));
-        dpDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-        etHour.setText(String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
-        etMinute.setText(String.valueOf(c.get(Calendar.MINUTE)));
+    private void showDate(Calendar calendar) {
+        dpDate.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        etHour.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+        etMinute.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
     }
 }

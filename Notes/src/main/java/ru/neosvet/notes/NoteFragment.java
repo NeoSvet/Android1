@@ -2,14 +2,7 @@ package ru.neosvet.notes;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -19,10 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
@@ -30,11 +29,12 @@ import ru.neosvet.notes.note.BaseItem;
 import ru.neosvet.notes.note.CurrentBase;
 
 public class NoteFragment extends Fragment implements ObserverDate {
-    private static final String ARG_NOTE_ID = "note", ARG_TITLE = "title", ARG_DES = "des";
-    private EditText etTitle, etDescription;
-    private TextView tvTitle, tvDate, tvDescription;
-    private Button btnEditor;
-    private static boolean inEdit = false;
+    private static final String ARG_NOTE_ID = "note", ARG_EDIT = "edit",
+            ARG_TITLE = "title", ARG_DES = "des";
+    private TextInputEditText etTitle, etDescription;
+    private MaterialTextView tvTitle, tvDate, tvDescription;
+    private MaterialButton btnEditor;
+    private boolean inEdit = false;
     private int noteId;
 
     public static NoteFragment newInstance(int noteId) {
@@ -82,20 +82,24 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
         loadNote();
 
+        Bundle args = getArguments();
+        inEdit = args.getBoolean(ARG_EDIT, false);
         if (inEdit) {
             openEditing();
-            etTitle.setText(getArguments().getString(ARG_TITLE));
-            etDescription.setText(getArguments().getString(ARG_DES));
+            etTitle.setText(args.getString(ARG_TITLE));
+            etDescription.setText(args.getString(ARG_DES));
         }
     }
 
-    public Bundle getMyArguments() {
-        Bundle outState = (Bundle) getArguments().clone();
+    @Override
+    public void onPause() {
+        super.onPause();
+        Bundle args = getArguments();
+        args.putBoolean(ARG_EDIT, inEdit);
         if (inEdit) {
-            outState.putString(ARG_TITLE, etTitle.getText().toString());
-            outState.putString(ARG_DES, etDescription.getText().toString());
+            args.putString(ARG_TITLE, etTitle.getText().toString());
+            args.putString(ARG_DES, etDescription.getText().toString());
         }
-        return outState;
     }
 
     @Override
@@ -106,6 +110,10 @@ public class NoteFragment extends Fragment implements ObserverDate {
                 break;
             case R.id.attach:
                 Toast.makeText(requireContext(), R.string.attach, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.delete:
+                MainActivity main = (MainActivity) getActivity();
+                main.removeNote(noteId);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -129,10 +137,8 @@ public class NoteFragment extends Fragment implements ObserverDate {
 
     private void initListeners() {
         tvDate.setOnClickListener(v -> {
-            if (inEdit)
-                return;
             MainActivity main = (MainActivity) getActivity();
-            main.openDate();
+            main.openDate(CurrentBase.get().getNote(noteId).getDate());
         });
         btnEditor.setOnClickListener(v -> {
             if (inEdit) {
@@ -154,7 +160,6 @@ public class NoteFragment extends Fragment implements ObserverDate {
         etTitle.setVisibility(View.VISIBLE);
         tvDescription.setVisibility(View.GONE);
         etDescription.setVisibility(View.VISIBLE);
-        tvDate.setBackgroundColor(-1);
     }
 
     private void closeEditing() {
@@ -164,8 +169,6 @@ public class NoteFragment extends Fragment implements ObserverDate {
         tvTitle.setVisibility(View.VISIBLE);
         etDescription.setVisibility(View.GONE);
         tvDescription.setVisibility(View.VISIBLE);
-        tvDate.setBackgroundColor(ContextCompat.getColor(requireContext(),
-                R.color.edit_color));
     }
 
     private void updateNote(String title, String des) {

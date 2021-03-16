@@ -4,12 +4,18 @@ import java.util.Calendar;
 
 public class BaseItem {
     private String title, description;
+    private int id;
     private long date;
 
-    public BaseItem(String title, long date, String description) {
+    public BaseItem(int id, String title, long date, String description) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
