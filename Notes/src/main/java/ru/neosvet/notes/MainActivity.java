@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,15 +17,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import ru.neosvet.notes.exchange.ObserverDate;
 import ru.neosvet.notes.exchange.PublisherDate;
-import ru.neosvet.notes.note.Base;
-import ru.neosvet.notes.note.SampleBase;
+import ru.neosvet.notes.note.CurrentBase;
 
 public class MainActivity extends AppCompatActivity implements ObserverDate {
     private final String TYPE_MAIN_FRAG = "TYPE_MAIN_FRAG", NOTE_ID = "note", ORIENTATION = "orientation";
     private final byte TYPE_OTHER = 0, TYPE_NOTE = 1, TYPE_DATE = 2;
     private int noteId = -1;
     private boolean isLandOrientation;
-    private Base notes;
     private byte typeMainFrag;
 
     @Override
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
         setSupportActionBar(toolbar);
         initDrawerMenu(toolbar);
         isLandOrientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        initBase();
 
         if (savedInstanceState == null)
             openList();
@@ -101,21 +99,45 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
         switch (typeMainFrag) {
             case TYPE_NOTE:
-                if (isLandOrientation)
+                NoteFragment note = getNoteFragment();
+                if (note == null) {
+                    openNote(noteId);
+                    return;
+                }
+                Bundle args = note.getMyArguments();
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().remove(note).commit();
+                manager.executePendingTransactions();
+                note.setArguments(args);
+                if (isLandOrientation) {
                     openList();
-                openNote(noteId);
+                    manager.beginTransaction()
+                            .replace(R.id.note_container, note).commit();
+                    typeMainFrag = TYPE_NOTE;
+                } else {
+                    manager.beginTransaction()
+                            .replace(R.id.main_container, note).commit();
+                }
                 break;
             case TYPE_DATE:
-                if (isLandOrientation)
+                if (isLandOrientation) {
                     openNote(noteId);
+                    typeMainFrag = TYPE_DATE;
+                } else {
+                    NoteFragment note2 = getNoteFragment();
+                    if (note2 != null) //во избежание второго меню заметки, скрываем предыдущее
+                        note2.setMenuVisibility(false);
+                }
                 break;
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        notes.open();
+    private NoteFragment getNoteFragment() {
+        for (Fragment f : getSupportFragmentManager().getFragments()) {
+            if (f instanceof NoteFragment)
+                return (NoteFragment) f;
+        }
+        return null;
     }
 
     @Override
@@ -129,16 +151,7 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
     protected void onStop() {
         super.onStop();
         PublisherDate.unsubscribe();
-        notes.close();
-    }
-
-    private void initBase() {
-        notes = new SampleBase();
-        notes.open();
-    }
-
-    public Base getNotes() {
-        return notes;
+        CurrentBase.get().close();
     }
 
     @Override
@@ -161,12 +174,11 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
                 .replace(isLandOrientation ? R.id.note_container
                         : R.id.main_container, note)
                 .commit();
-        if (!isLandOrientation)
-            typeMainFrag = TYPE_NOTE;
+        typeMainFrag = TYPE_NOTE;
     }
 
     public void openDate() {
-        DateFragment date = DateFragment.newInstance(notes.getNote(noteId).getDate());
+        DateFragment date = DateFragment.newInstance(CurrentBase.get().getNote(noteId).getDate());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, date)
@@ -180,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
             case TYPE_OTHER:
                 break;
             case TYPE_NOTE:
+                NoteFragment note = getNoteFragment();
+                if (note != null && note.onBack())
+                    return;
                 if (isLandOrientation)
                     break;
                 else {
@@ -199,6 +214,6 @@ public class MainActivity extends AppCompatActivity implements ObserverDate {
 
     @Override
     public void updateDate(long date) {
-        notes.getNote(noteId).setDate(date);
+        CurrentBase.get().getNote(noteId).setDate(date);
     }
 }
